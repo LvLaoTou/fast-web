@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--status：用于控制log4j2日志框架本身的日志级别，如果将stratus设置为较低的级别就会看到很多关于log4j2本身的日志，如加载log4j2配置文件的路径等信息-->
+<!--monitorInterval：重新读取配置文件间隔时间 单位秒-->
+<configuration status="INFO" monitorInterval="60">
+
+    <!--自定义属性-->
+    <Properties>
+        <!--日志输出格式：%d表示日期 {yyyy-MM-dd HH:mm:ss.SSS}表示日期格式，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
+        <!-- %logger{50} 表示 Logger 名字最长50个字符  %l  输出语句所在的行数, 包括类名、方法名、文件名、行数 -->
+        <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %l %logger{50} - %msg%n" />
+
+        <!-- 文件路径 -->
+        <property name="FILE_PATH" value="logs/" />
+
+        <!-- 日志文件的大小 -->
+        <property name="FILE_SIZE" value="1024MB" />
+
+        <!-- 日志文件保存天数 -->
+        <property name="MAX_HISTORY" value="15" />
+
+        <!--回滚间隔时间-->
+        <property name="ROLLBACK_INTERVAL" value="1" />
+    </Properties>
+
+    <!--输出源，用于定义日志输出的地方-->
+    <appenders>
+
+        <!--控制台日志输出-->
+        <console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式-->
+            <PatternLayout pattern="${PATTERN}"/>
+        </console>
+
+        <!--debug级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
+        <RollingRandomAccessFile name="RollingRandomAccessFileDebug" fileName="${FILE_PATH}/debug.log" filePattern="${FILE_PATH}/debug-%d{yyyy-MM-dd}-%i.log">
+            <!--只输出debug级别的日志-->
+            <LevelRangeFilter minLevel="trace" maxLevel="debug"/>
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--
+                    日志文件切片存档  时间触发条件
+                    需要和RollingRandomAccessFile的filePattern结合使用，日期格式精确到哪一位，interval也精确到哪一个单位。
+                    注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天。默认的size是1，结合起来就是每天生成一个文件
+                -->
+                <TimeBasedTriggeringPolicy interval = "${ROLLBACK_INTERVAL}"/>
+                <!--日志文件切片存档  文件大小触发条件-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+            </Policies>
+            <!-- 默认为最多同一文件夹下7个文件开始覆盖-->
+            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+        </RollingRandomAccessFile>
+
+        <!--info级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
+        <RollingRandomAccessFile name="RollingRandomAccessFileInfo" fileName="${FILE_PATH}/info.log" filePattern="${FILE_PATH}/info-%d{yyyy-MM-dd}-%i.log">
+            <!--只输出info级别的日志-->
+            <LevelRangeFilter minLevel="info" maxLevel="info"/>
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--
+                    日志文件切片存档  时间触发条件
+                    需要和RollingRandomAccessFile的filePattern结合使用，日期格式精确到哪一位，interval也精确到哪一个单位。
+                    注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天。默认的size是1，结合起来就是每天生成一个文件
+                -->
+                <TimeBasedTriggeringPolicy interval = "${ROLLBACK_INTERVAL}"/>
+                <!--日志文件切片存档  文件大小触发条件-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+            </Policies>
+            <!-- 默认为最多同一文件夹下7个文件开始覆盖-->
+            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+        </RollingRandomAccessFile>
+
+        <!--warn级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
+        <RollingRandomAccessFile name="RollingRandomAccessFileWarn" fileName="${FILE_PATH}/warn.log" filePattern="${FILE_PATH}/warn-%d{yyyy-MM-dd}-%i.log">
+            <!--只输出warn级别的日志-->
+            <LevelRangeFilter minLevel="warn" maxLevel="warn"/>
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--
+                    日志文件切片存档  时间触发条件
+                    需要和RollingRandomAccessFile的filePattern结合使用，日期格式精确到哪一位，interval也精确到哪一个单位。
+                    注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天。默认的size是1，结合起来就是每天生成一个文件
+                -->
+                <TimeBasedTriggeringPolicy interval = "${ROLLBACK_INTERVAL}"/>
+                <!--日志文件切片存档  文件大小触发条件-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+            </Policies>
+            <!--默认为最多同一文件夹下7个文件开始覆盖-->
+            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+        </RollingRandomAccessFile>
+
+        <!--error级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
+        <RollingRandomAccessFile name="RollingRandomAccessFileError" fileName="${FILE_PATH}/error.log" filePattern="${FILE_PATH}/error-%d{yyyy-MM-dd}-%i.log">
+            <!--只输出error级别的日志-->
+            <LevelRangeFilter minLevel="error" maxLevel="error"/>
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--
+                    日志文件切片存档  时间触发条件
+                    需要和RollingRandomAccessFile的filePattern结合使用，日期格式精确到哪一位，interval也精确到哪一个单位。
+                    注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天。默认的size是1，结合起来就是每天生成一个文件
+                -->
+                <TimeBasedTriggeringPolicy interval = "${ROLLBACK_INTERVAL}"/>
+                <!--日志文件切片存档  文件大小触发条件-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+            </Policies>
+            <!--默认为最多同一文件夹下7个文件开始覆盖-->
+            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+        </RollingRandomAccessFile>
+
+    </appenders>
+
+    <loggers>
+        <!--
+        异步logger，需要添加disruptor的依赖,includeLocation结合异步logger使用，当其设置为true时，才会显示具体的行号，以及日志所在的类名,
+        如果设置为false，<Pattern>设置了输出行号也不会显示出来
+        -->
+        <AsyncRoot level="info" includeLocation="true">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingRandomAccessFileDebug"/>
+            <appender-ref ref="RollingRandomAccessFileInfo"/>
+            <appender-ref ref="RollingRandomAccessFileWarn"/>
+            <appender-ref ref="RollingRandomAccessFileError"/>
+        </AsyncRoot>
+    </loggers>
+
+</configuration>

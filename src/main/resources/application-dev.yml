@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/fast?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    hikari:
+      #最大连接数 默认值：10 建议不要配置最小连接数minimumIdle  让HikariCP充当固定大小的连接池
+      maximumPoolSize: 15
+      #建议不要配置最小连接数minimumIdle 默认值与maximumPoolSize相同  让HikariCP充当固定大小的连接池,防止空闲很久时创建连接耗时较长从而影响RT
+      #minimum-idle: 15
+      #连接在池中空闲的最长时间  默认值：600000（10分钟） 当且仅当minimumIdle小于maximumPoolSize 时才会生效
+      #idleTimeout: 30000
+      #是否开启自动提交  默认为true
+      auto-commit: true
+      #连接池的用户定义名称，主要出现在日志记录和JMX管理控制台中，以识别池和池配置。 默认值：自动生成
+      poolName: DatebookHikariCP
+      #连接的最大生存期 最小允许值为30000ms（30秒）。 默认值：1800000（30分钟） 单位毫秒
+      maxLifetime: 1800000
+      #最大连接超时时间  默认30秒  单位毫秒
+      connectionTimeout: 30000
+
+#mybatis-plus日志输出
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#knife4j配置
+knife4j:
+  # 开启增强配置
+  enable: true
+  #是否生产环境  生产环境会关闭访问
+  production: false
+  basic:
+    #是否开启认证
+    enable: true
+    #认证用户名
+    username: admin
+    #认证密码
+    password: admin
+
+#配置日志
+logging:
+  level:
+    root: debug
+
+# 自定义配置
+my:
+  jwt:
+    # 加密密钥
+    secret: fast@jwt#token$2021
+    # 有效期限 单位s 默认24小时
+    validDuration: 86400

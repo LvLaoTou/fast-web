@@ -1,0 +1,14 @@
+package com.lv.fast.common;
+
+/**
+ * @Description 全局统一描述接口
+ * @Author jie.lv
+ */
+public interface Describe extends Code {
+
+    /**
+     * 获取描述
+     * @return 描述
+     */
+    String getDescribe();
+}
