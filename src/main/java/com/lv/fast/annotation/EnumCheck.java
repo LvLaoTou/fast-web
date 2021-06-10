@@ -31,4 +31,7 @@ public @interface EnumCheck {
 
     /** 需要排除的 */
     String[] exclude() default { };
+
+    /** 当作用于集合或者数组的时候 是否需要全部匹配  */
+    boolean isAllMatch() default true;
 }
