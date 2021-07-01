@@ -4,6 +4,7 @@ import com.lv.fast.common.Code;
 import com.lv.fast.common.Describe;
 import com.lv.fast.constant.RestResultCodeConstant;
 import com.lv.fast.exception.MyException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,8 +66,27 @@ public class EnumUtil {
      * @return 泛型对象
      */
     public static  <T extends Enum<? extends Code>> boolean isValid(Class<T> target, String code){
+        return isValid(target, code, true);
+    }
+
+    /**
+     * 校验指定值是否在目标枚举范围内
+     * @param target 目标对象
+     * @param code 需要校验的值
+     * @param <T> 泛型
+     * @return 泛型对象
+     */
+    public static  <T extends Enum<? extends Code>> boolean isValid(Class<T> target, String code, boolean ignoreCase){
         Code[] enumConstants = (Code[]) target.getEnumConstants();
-        long count = Arrays.stream(enumConstants).filter(enumValid -> Objects.equals(enumValid.getCode(), code)).count();
+        if (enumConstants == null || enumConstants.length < 1){
+            return false;
+        }
+        long count = Arrays.stream(enumConstants).filter(enumValid -> {
+            if (StringUtils.isBlank(code)){
+                return false;
+            }
+            return ignoreCase ? code.equalsIgnoreCase(enumValid.getCode()) : code.equals(enumValid.getCode());
+        }).count();
         return count == 1;
     }
 

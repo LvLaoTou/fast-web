@@ -11,7 +11,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -26,11 +25,17 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
 
     private boolean isAllMatch;
 
+    private boolean excludeIgnoreCase;
+
+    private boolean matchIgnoreCase;
+
     @Override
     public void initialize(EnumCheck enumCheck) {
         enumClass = enumCheck.enumClass();
         exclude = enumCheck.exclude();
         isAllMatch = enumCheck.isAllMatch();
+        excludeIgnoreCase = enumCheck.excludeIgnoreCase();
+        matchIgnoreCase = enumCheck.matchIgnoreCase();
     }
 
     @Override
@@ -39,26 +44,25 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             return true;
         }
         Assert.assertNotNull(enumClass,"枚举参数校验异常");
-        Collection<String> target = null;
+        Collection<Object> target = null;
         try{
             if (code instanceof Collection){
-                target = ((Collection<String>) code);
+                target = ((Collection<Object>) code);
             }
             if (code.getClass().isArray()){
-                target = Arrays.stream((String[]) code).collect(Collectors.toSet());
+                target = Arrays.stream((Object[]) code).collect(Collectors.toSet());
             }
         }catch (ClassCastException e){
             log.error("EnumCheck注解目标对象转换异常", e);
             throw new MyException("EnumCheck注解只能作用于String或者Collection<String>或者String[]类型");
         }
-        Assert.assertIsTrue((target == null && !(code instanceof String)), "EnumCheck注解只能作用于String或者Collection<String>或者String[]类型");
         boolean flag;
         if (target != null){
             // 校验需要排除的
             if (exclude != null){
                 flag = target.stream().allMatch(
                         targetCode->!Arrays.stream(exclude)
-                                .anyMatch(excludeCode -> Objects.equals(targetCode, excludeCode)
+                                .anyMatch(excludeCode -> (excludeIgnoreCase ? targetCode.toString().equalsIgnoreCase(excludeCode) : targetCode.toString().equals(excludeCode))
                                 )
                 );
                 if (!flag){
@@ -67,9 +71,9 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             }
             // 校验内容
             if (isAllMatch){
-                flag = target.stream().allMatch(targetCode->EnumUtil.isValid(enumClass,targetCode));
+                flag = target.stream().allMatch(targetCode->EnumUtil.isValid(enumClass, targetCode.toString(), matchIgnoreCase));
             }else {
-                flag = target.stream().anyMatch(targetCode->EnumUtil.isValid(enumClass,targetCode));
+                flag = target.stream().anyMatch(targetCode->EnumUtil.isValid(enumClass, targetCode.toString(), matchIgnoreCase));
             }
         }else {
             flag = EnumUtil.isValid(enumClass, code.toString());
