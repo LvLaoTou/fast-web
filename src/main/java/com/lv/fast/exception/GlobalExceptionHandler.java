@@ -1,7 +1,7 @@
 package com.lv.fast.exception;
 
-import com.lv.fast.DTO.RestResult;
-import com.lv.fast.enums.RestResultEnum;
+import com.lv.fast.common.RestResult;
+import com.lv.fast.common.enums.RestResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
