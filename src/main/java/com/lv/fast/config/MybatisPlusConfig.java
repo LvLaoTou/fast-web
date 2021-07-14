@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @author jie.lv
  */
 @Configuration
-@MapperScan("com.*.*.dao")
+@MapperScan("com.**.dao")
 public class MybatisPlusConfig {
 
     @Bean
