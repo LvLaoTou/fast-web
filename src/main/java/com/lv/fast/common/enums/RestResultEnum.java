@@ -52,11 +52,11 @@ public enum RestResultEnum implements Describe {
 
     @Override
     public String getCode() {
-        return null;
+        return this.code;
     }
 
     @Override
     public String getDescribe() {
-        return null;
+        return this.describe;
     }
 }
