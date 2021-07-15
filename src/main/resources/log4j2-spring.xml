@@ -35,7 +35,7 @@
         <!--debug级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
         <RollingRandomAccessFile name="RollingRandomAccessFileDebug" fileName="${FILE_PATH}/debug.log" filePattern="${FILE_PATH}/debug-%d{yyyy-MM-dd}-%i.log">
             <!--只输出debug级别的日志-->
-            <LevelRangeFilter minLevel="trace" maxLevel="debug"/>
+            <LevelRangeFilter minLevel="debug" maxLevel="debug"/>
             <PatternLayout pattern="${PATTERN}"/>
             <Policies>
                 <!--
