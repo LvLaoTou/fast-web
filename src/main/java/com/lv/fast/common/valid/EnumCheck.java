@@ -1,7 +1,4 @@
-package com.lv.fast.common.annotation;
-
-import com.lv.fast.common.EnumValid;
-import com.lv.fast.common.valid.EnumCheckValidator;
+package com.lv.fast.common.valid;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -27,7 +24,7 @@ public @interface EnumCheck {
     Class<? extends Payload>[] payload() default { };
 
     /** 指定枚举类 */
-    Class<? extends Enum<? extends EnumValid>> enumClass();
+    Class<? extends Enum<? extends Code>> enumClass();
 
     /** 需要排除的 */
     String[] exclude() default { };

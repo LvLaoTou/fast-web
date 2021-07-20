@@ -1,10 +1,8 @@
-package com.lv.fast.common.util;
+package com.lv.fast.common.valid;
 
-import com.lv.fast.common.Code;
-import com.lv.fast.common.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
+import com.lv.fast.common.util.Assert;
 import com.lv.fast.exception.MyException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +63,7 @@ public class EnumUtil {
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <T extends Enum<? extends Code>> boolean isValid(Class<T> target, String code){
+    public static  <E,T extends Enum<? extends Code<E>>> boolean isValid(Class<T> target, E code){
         return isValid(target, code, true);
     }
 
@@ -76,16 +74,23 @@ public class EnumUtil {
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <T extends Enum<? extends Code>> boolean isValid(Class<T> target, String code, boolean ignoreCase){
+    public static  <E,T extends Enum<? extends Code<E>>> boolean isValid(Class<T> target, E code, boolean ignoreCase){
         Code[] enumConstants = (Code[]) target.getEnumConstants();
         if (enumConstants == null || enumConstants.length < 1){
             return false;
         }
         long count = Arrays.stream(enumConstants).filter(enumValid -> {
-            if (StringUtils.isBlank(code)){
+            if (code == null){
                 return false;
             }
-            return ignoreCase ? code.equalsIgnoreCase(enumValid.getCode()) : code.equals(enumValid.getCode());
+            if (code instanceof String){
+                return ignoreCase ? ((String) code).equalsIgnoreCase((String) enumValid.getCode())
+                        : (code).equals(enumValid.getCode());
+            }
+            if (code instanceof Integer || code instanceof Long){
+                return (code).equals(enumValid.getCode());
+            }
+            throw new MyException("枚举泛型非法");
         }).count();
         return count == 1;
     }

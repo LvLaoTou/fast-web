@@ -2,6 +2,7 @@ package com.lv.fast.common;
 
 import com.google.common.collect.Maps;
 import com.lv.fast.common.enums.RestResultEnum;
+import com.lv.fast.common.valid.Describe;
 import lombok.Data;
 
 import java.io.Serializable;

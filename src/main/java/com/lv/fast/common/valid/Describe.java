@@ -1,10 +1,10 @@
-package com.lv.fast.common;
+package com.lv.fast.common.valid;
 
 /**
  * @Description 全局统一描述接口
  * @Author jie.lv
  */
-public interface Describe extends Code {
+public interface Describe extends StringCode {
 
     /**
      * 获取描述
