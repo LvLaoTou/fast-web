@@ -1,6 +1,6 @@
 package com.lv.fast.common;
 
-import com.lv.fast.common.annotation.EnumCheck;
+import com.lv.fast.common.valid.EnumCheck;
 import com.lv.fast.common.constant.PageConstant;
 import com.lv.fast.common.enums.OrderTypeEnum;
 import io.swagger.annotations.ApiModelProperty;

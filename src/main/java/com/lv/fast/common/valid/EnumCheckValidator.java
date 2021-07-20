@@ -1,10 +1,7 @@
 package com.lv.fast.common.valid;
 
-import com.lv.fast.common.annotation.EnumCheck;
-import com.lv.fast.common.Code;
-import com.lv.fast.exception.MyException;
 import com.lv.fast.common.util.Assert;
-import com.lv.fast.common.util.EnumUtil;
+import com.lv.fast.exception.MyException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
@@ -19,7 +16,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object> {
-    private Class<? extends Enum<? extends Code>> enumClass;
+    private Class<? extends Enum<? extends Code<Object>>> enumClass;
 
     private String[] exclude;
 
@@ -31,7 +28,7 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
 
     @Override
     public void initialize(EnumCheck enumCheck) {
-        enumClass = enumCheck.enumClass();
+        enumClass = (Class<? extends Enum<? extends Code<Object>>>) enumCheck.enumClass();
         exclude = enumCheck.exclude();
         isAllMatch = enumCheck.isAllMatch();
         excludeIgnoreCase = enumCheck.excludeIgnoreCase();
@@ -54,7 +51,7 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             }
         }catch (ClassCastException e){
             log.error("EnumCheck注解目标对象转换异常", e);
-            throw new MyException("EnumCheck注解只能作用于String或者Collection<String>或者String[]类型");
+            throw new MyException("EnumCheck注解类型转换异常");
         }
         boolean flag;
         if (target != null){
@@ -71,12 +68,12 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             }
             // 校验内容
             if (isAllMatch){
-                flag = target.stream().allMatch(targetCode->EnumUtil.isValid(enumClass, targetCode.toString(), matchIgnoreCase));
+                flag = target.stream().allMatch(targetCode->EnumUtil.isValid(enumClass, targetCode, matchIgnoreCase));
             }else {
-                flag = target.stream().anyMatch(targetCode->EnumUtil.isValid(enumClass, targetCode.toString(), matchIgnoreCase));
+                flag = target.stream().anyMatch(targetCode->EnumUtil.isValid(enumClass, targetCode, matchIgnoreCase));
             }
         }else {
-            flag = EnumUtil.isValid(enumClass, code.toString());
+            flag = EnumUtil.isValid(enumClass, code);
         }
         return flag;
     }

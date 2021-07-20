@@ -1,7 +1,7 @@
 package com.lv.fast.common.util;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.lv.fast.common.Describe;
+import com.lv.fast.common.valid.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.exception.MyException;
 import org.apache.commons.lang3.StringUtils;
