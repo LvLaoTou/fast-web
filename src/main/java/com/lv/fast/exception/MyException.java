@@ -33,16 +33,19 @@ public class MyException extends RuntimeException implements Describe {
      * @param describe 统一响应接口
      */
     public MyException(Describe describe){
+        super(describe.getDescribe());
         this.code = describe.getCode();
         this.describe = describe.getDescribe();
     }
 
     public MyException(String code, String describe){
+        super(describe);
         this.code = code;
         this.describe = describe;
     }
 
     public MyException(String describe){
+        super(describe);
         this.code = RestResultCodeConstant.PARAM_ERROR;
         this.describe = describe;
     }
