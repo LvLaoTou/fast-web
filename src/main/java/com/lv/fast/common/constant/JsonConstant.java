@@ -26,7 +26,7 @@ public class JsonConstant {
 
     private JsonConstant(){}
 
-    public static final ObjectMapper objectMapper = getObjectMapper();
+    public static final ObjectMapper MAPPER = getObjectMapper();
 
     private static ObjectMapper getObjectMapper(){
         ObjectMapper objectMapper = new ObjectMapper();

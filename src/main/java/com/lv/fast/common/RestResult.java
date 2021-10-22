@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * @Description 统一响应对象
- * @Author jie.lv
+ *  统一响应对象
+ * @author jie.lv
  */
 @Data
 public class RestResult<T> implements Serializable {

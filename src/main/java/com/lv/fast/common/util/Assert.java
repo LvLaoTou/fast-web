@@ -11,7 +11,6 @@ import java.util.Collection;
 /**
  * 自定义断言
  * @author lvlaotou
- * @version 1.0.0
  */
 public class Assert {
 

@@ -1,8 +1,8 @@
 package com.lv.fast.common.constant;
 
 /**
- * @Description 全局响应标识码常量类
- * @Author jie.lv
+ *  全局响应标识码常量类
+ * @author jie.lv
  */
 public class RestResultCodeConstant {
 

@@ -1,10 +1,10 @@
 package com.lv.fast.common.valid;
 
 /**
- * @Description 全局带标识码的接口
- * @Author jie.lv
+ *  全局带标识码的接口
+ * @author jie.lv
  */
-interface Code<T> {
+public interface Code<T> {
 
     /**
      * 获取标识码

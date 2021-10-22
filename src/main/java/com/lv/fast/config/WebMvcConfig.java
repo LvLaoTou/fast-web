@@ -91,7 +91,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * LocalDateTime转换器，用于转换RequestParam和PathVariable参数
      */
     @Bean
-    public Converter<String, LocalDateTime> localDateTimeConverter1() {
+    public Converter<String, LocalDateTime> localDateTimeConverter() {
         return new Converter<String, LocalDateTime>() {
             @Override
             public LocalDateTime convert(String source) {

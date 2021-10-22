@@ -13,7 +13,6 @@ import java.util.Objects;
 /**
  * 查询条件工具类
  * @author lv
- * @version 1.0.0
  */
 public class QueryWrapperUtil {
 

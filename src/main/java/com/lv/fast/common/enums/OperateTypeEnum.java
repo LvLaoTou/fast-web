@@ -1,13 +1,13 @@
 package com.lv.fast.common.enums;
 
-import com.lv.fast.common.valid.IntegerCode;
+import com.lv.fast.common.valid.Code;
 
 /**
  * 操作类型枚举类
  * @author lv
  * @version 1.0.0
  */
-public enum OperateTypeEnum implements IntegerCode {
+public enum OperateTypeEnum implements Code<Integer> {
 
     /**
      * 删除

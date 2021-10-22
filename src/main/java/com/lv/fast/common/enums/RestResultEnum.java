@@ -5,8 +5,8 @@ import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.constant.RestResultDescribeConstant;
 
 /**
- * @Description 全局统一响应枚举对象
- * @Author jie.lv
+ *  全局统一响应枚举对象
+ * @author jie.lv
  */
 public enum RestResultEnum implements Describe {
 
