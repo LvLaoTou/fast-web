@@ -12,5 +12,5 @@ public class UserConstant {
     public static final String JSON_KEY = "user";
 
     /** 超级管理员角色id */
-    public static final String SUPER_ADMINISTRATOR_ROLE_ID = "0";
+    public static final long SUPER_ADMINISTRATOR_ROLE_ID = 0;
 }
