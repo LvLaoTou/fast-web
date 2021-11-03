@@ -1,10 +1,12 @@
 package com.lv.fast.common.util;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lv.fast.common.PageQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,11 +27,17 @@ public class PageUtil {
      * @return 新的分页对象
      */
     public static  <T,S> IPage<T> pageBeanConvert(IPage<S> source, Class<T> target){
+        List<S> records = source.getRecords();
+        IPage<T> targetPage = new Page<>();
+        BeanUtil.copyProperties(source,targetPage);
+        if (CollectionUtil.isEmpty(records)){
+            List<T> targetList = new ArrayList<>();
+            targetPage.setRecords(targetList);
+            return targetPage;
+        }
         List<T> collect = source.getRecords().stream()
                 .map(s -> BeanUtil.copyProperties(s, target))
                 .collect(Collectors.toList());
-        IPage<T> targetPage = new Page<>();
-        BeanUtil.copyProperties(source,targetPage);
         targetPage.setRecords(collect);
         return targetPage;
     }
