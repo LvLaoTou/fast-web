@@ -28,11 +28,3 @@ knife4j:
 logging:
   level:
     root: debug
-
-# 自定义配置
-my:
-  jwt:
-    # 加密密钥
-    secret: fast@jwt#token$2021
-    # 有效期限 单位s 默认24小时
-    validDuration: 86400

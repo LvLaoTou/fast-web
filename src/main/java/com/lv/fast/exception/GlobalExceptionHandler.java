@@ -1,6 +1,5 @@
 package com.lv.fast.exception;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lv.fast.common.entity.RestResult;
 import com.lv.fast.common.enums.RestResultEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -59,9 +58,6 @@ public class GlobalExceptionHandler {
         Throwable cause = e.getCause();
         if (cause instanceof MyException){
             return handle((MyException) cause);
-        }
-        if (cause instanceof JWTVerificationException){
-            return handle((JWTVerificationException) cause);
         }
         if (cause instanceof  BindException){
             return handle((BindException) cause);
