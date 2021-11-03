@@ -75,3 +75,15 @@ management:
       exposure:
         include: 'health'
       base-path: /info
+
+# xss攻击配置 参考文档https://www.dreamlu.net/components/mica-xss.html
+mica:
+  xss:
+    # 是否开启Xss
+    enabled: true
+    # 是否去掉前后空格
+    trim-text: true
+    # 模式：clear 清理（默认），escape 转义
+    mode: escape
+    # 拦截路径
+    path-patterns: /**

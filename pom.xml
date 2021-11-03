@@ -139,6 +139,13 @@
             <artifactId>java-jwt</artifactId>
             <version>${jwt.version}</version>
         </dependency>
+
+        <!-- xss过滤 -->
+        <dependency>
+            <groupId>net.dreamlu</groupId>
+            <artifactId>mica-xss</artifactId>
+            <version>2.5.6</version>
+        </dependency>
     </dependencies>
 
     <build>
