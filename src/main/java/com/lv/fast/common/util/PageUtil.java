@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lv.fast.common.PageQuery;
+import com.lv.fast.common.entity.PageQuery;
 
 import java.util.ArrayList;
 import java.util.List;

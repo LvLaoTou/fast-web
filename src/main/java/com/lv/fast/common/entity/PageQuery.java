@@ -1,4 +1,4 @@
-package com.lv.fast.common;
+package com.lv.fast.common.entity;
 
 import com.lv.fast.common.valid.EnumCheck;
 import com.lv.fast.common.constant.PageConstant;

@@ -1,4 +1,4 @@
-package com.lv.fast.common;
+package com.lv.fast.common.entity;
 
 import com.google.common.collect.Maps;
 import com.lv.fast.common.enums.RestResultEnum;

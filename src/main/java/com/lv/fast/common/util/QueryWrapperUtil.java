@@ -1,7 +1,7 @@
 package com.lv.fast.common.util;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lv.fast.common.PageQuery;
+import com.lv.fast.common.entity.PageQuery;
 import com.lv.fast.common.enums.OrderTypeEnum;
 import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.exception.MyException;
