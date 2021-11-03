@@ -34,7 +34,7 @@ public class MyException extends RuntimeException implements Describe {
      */
     public MyException(Describe describe){
         super(describe.getDescribe());
-        this.code = describe.getCode();
+        this.code = describe.getCode().toString();
         this.describe = describe.getDescribe();
     }
 

@@ -4,7 +4,7 @@ package com.lv.fast.common.valid;
  * 全局统一描述接口
  * @author jie.lv
  */
-public interface Describe extends Code<String> {
+public interface Describe<T> extends Code<T> {
 
     /**
      * 获取描述

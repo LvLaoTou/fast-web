@@ -43,7 +43,7 @@ public class Assert {
      * @param describe 错误信息
      */
     public static void assertNotNull(Object target, Describe describe){
-        assertNotNull(target, describe.getCode(), describe.getDescribe());
+        assertNotNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -73,7 +73,7 @@ public class Assert {
      * @param describe 错误信息
      */
     public static void assertNotNull(String target, Describe describe){
-        assertNotNull(target, describe.getCode(), describe.getDescribe());
+        assertNotNull(target, describe.getCode().toString().toString(), describe.getDescribe());
     }
 
     /**
@@ -91,7 +91,7 @@ public class Assert {
      * @param describe 描述信息
      */
     public static void assertNotNull(Collection<?> target, Describe describe){
-        assertNotNull(target, describe.getCode(), describe.getDescribe());
+        assertNotNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -121,7 +121,7 @@ public class Assert {
      * @param describe 错误描述信息
      */
     public static void assertNotNull(Object[] target,Describe describe){
-        assertNotNull(target, describe.getCode(), describe.getDescribe());
+        assertNotNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -161,7 +161,7 @@ public class Assert {
      * @param describe 错误信息
      */
     public static void assertIsTrue(boolean flag, Describe describe){
-        assertIsTrue(flag, describe.getCode(), describe.getDescribe());
+        assertIsTrue(flag, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -189,7 +189,7 @@ public class Assert {
      * @param describe 错误信息
      */
     public static void assertIsFalse(boolean flag, Describe describe){
-        assertIsFalse(flag, describe.getCode(), describe.getDescribe());
+        assertIsFalse(flag, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -210,7 +210,7 @@ public class Assert {
      * @param describe 错误信息
      */
     public static void assertIsNull(String target, Describe describe){
-        assertIsNull(target, describe.getCode(), describe.getDescribe());
+        assertIsNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -237,7 +237,7 @@ public class Assert {
      * @param describe 描述信息
      */
     public static void assertIsNull(Collection<?> target, Describe describe){
-        assertIsNull(target, describe.getCode(), describe.getDescribe());
+        assertIsNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -267,7 +267,7 @@ public class Assert {
      * @param describe 错误描述信息
      */
     public static void assertIsNull(Object[] target,Describe describe){
-        assertIsNull(target, describe.getCode(), describe.getDescribe());
+        assertIsNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 
     /**
@@ -309,6 +309,6 @@ public class Assert {
      * @param describe 错误信息
      */
     public static void assertIsNull(Object target, Describe describe){
-        assertIsNull(target, describe.getCode(), describe.getDescribe());
+        assertIsNull(target, describe.getCode().toString(), describe.getDescribe());
     }
 }

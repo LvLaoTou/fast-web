@@ -42,11 +42,11 @@ public class RestResult<T> implements Serializable {
     }
 
     public static <T> RestResult<T> build(Describe describe, T data){
-        return build(describe.getCode(), describe.getDescribe(), data);
+        return build(describe.getCode().toString(), describe.getDescribe(), data);
     }
 
     public static RestResult build(Describe describe){
-        return build(describe.getCode(), describe.getDescribe(), null);
+        return build(describe.getCode().toString(), describe.getDescribe(), null);
     }
 
     public static RestResult build(boolean isSuccess){
