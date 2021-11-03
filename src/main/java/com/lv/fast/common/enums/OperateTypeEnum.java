@@ -1,5 +1,9 @@
 package com.lv.fast.common.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.lv.fast.common.util.EnumUtil;
 import com.lv.fast.common.valid.Code;
 
 /**
@@ -30,6 +34,8 @@ public enum OperateTypeEnum implements Code<Integer> {
     INSERT(4)
     ;
 
+    @EnumValue
+    @JsonValue
     private int code;
 
     OperateTypeEnum(int code){
@@ -39,5 +45,10 @@ public enum OperateTypeEnum implements Code<Integer> {
     @Override
     public Integer getCode() {
         return this.code;
+    }
+
+    @JsonCreator
+    public static OperateTypeEnum create(int code){
+        return EnumUtil.getEnumByCode(OperateTypeEnum.class, code, "无效的操作类型");
     }
 }
