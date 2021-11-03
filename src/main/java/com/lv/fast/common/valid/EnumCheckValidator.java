@@ -1,6 +1,7 @@
 package com.lv.fast.common.valid;
 
 import com.lv.fast.common.util.Assert;
+import com.lv.fast.common.util.EnumUtil;
 import com.lv.fast.exception.MyException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,7 +69,7 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             }
             // 校验内容
             if (isAllMatch){
-                flag = target.stream().allMatch(targetCode->EnumUtil.isValid(enumClass, targetCode, matchIgnoreCase));
+                flag = target.stream().allMatch(targetCode-> EnumUtil.isValid(enumClass, targetCode, matchIgnoreCase));
             }else {
                 flag = target.stream().anyMatch(targetCode->EnumUtil.isValid(enumClass, targetCode, matchIgnoreCase));
             }

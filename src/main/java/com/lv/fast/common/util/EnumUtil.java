@@ -1,7 +1,6 @@
-package com.lv.fast.common.valid;
+package com.lv.fast.common.util;
 
-import com.lv.fast.common.constant.RestResultCodeConstant;
-import com.lv.fast.common.util.Assert;
+import com.lv.fast.common.valid.Code;
 import com.lv.fast.exception.MyException;
 
 import java.util.Arrays;
@@ -16,44 +15,22 @@ import java.util.stream.Collectors;
  */
 public class EnumUtil {
 
-    private EnumUtil(){}
-
     /**
      * 通过code获取枚举对象
      * @param target 枚举对象
      * @param code code
+     * @param errorDescribe 错误描述
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <T extends Enum<? extends Code>> T getEnumByCode(Class<T> target, String code){
+    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, P code, String errorDescribe){
         T[] enumConstants = target.getEnumConstants();
-        List<T> baseList = Arrays.stream(enumConstants).filter(t -> Objects.equals(((Code)t).getCode(), code))
-                .collect(Collectors.toList());
-        Assert.assertNotNull(baseList,"没有匹配的枚举");
-        if(baseList.size() > 1){
-            throw new MyException(RestResultCodeConstant.PARAM_ERROR, "枚举异常，预计1个枚举匹配，实际"+baseList.size()+"个匹配");
-        }
-        return baseList.get(0);
-    }
 
-    /**
-     * 获取枚举描述信息
-     * @param target 枚举对象
-     * @param code 标识码
-     * @param <T> 枚举泛型
-     * @return 描述
-     */
-    public static  <T extends Enum<? extends Describe>> String getEnumDescribeByCode(Class<T> target, String code){
-        T[] enumConstants = target.getEnumConstants();
-        List<T> baseList = Arrays.stream(enumConstants).filter(t -> Objects.equals(((Describe)t).getCode(), code))
+        List<T> baseList = Arrays.stream(enumConstants).filter(t -> Objects.equals(((Code)t).getCode().toString(), code.toString()))
                 .collect(Collectors.toList());
-        Assert.assertNotNull(baseList,"没有匹配的枚举");
-        if(baseList.size() > 1){
-            throw new MyException(RestResultCodeConstant.PARAM_ERROR, "枚举异常，预计1个枚举匹配，实际"+baseList.size()+"个匹配");
-        }
-        T t = baseList.get(0);
-        String describe = ((Describe) t).getDescribe();
-        return describe;
+        Assert.assertNotNull(baseList,errorDescribe);
+        Assert.assertIsTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
+        return baseList.get(0);
     }
 
     /**

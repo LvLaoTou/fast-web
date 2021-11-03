@@ -10,10 +10,13 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.lv.fast.common.constant.DateTimeConstant;
+import com.lv.fast.common.valid.Code;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.converter.ConverterFactory;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -25,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * webmvc配置类
@@ -35,6 +39,38 @@ import java.time.format.DateTimeFormatter;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final Jackson2ObjectMapperBuilder builder;
+
+    /**
+     * get请求对枚举参数的支持
+     * @param registry
+     */
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new ConverterFactory<String, Enum<? extends Code<String>>>() {
+            private final ConcurrentHashMap<Class, EnumConverter> CONCURRENT_MAP = new ConcurrentHashMap<>();
+            @Override
+            public <T extends Enum<? extends Code<String>>> Converter<String, T> getConverter(Class<T> aClass) {
+                EnumConverter<String, T> enumConverter = CONCURRENT_MAP.get(aClass);
+                if (enumConverter == null){
+                    enumConverter = new EnumConverter<>(aClass);
+                    CONCURRENT_MAP.put(aClass, enumConverter);
+                }
+                return enumConverter;
+            }
+        });
+        registry.addConverterFactory(new ConverterFactory<Integer, Enum<? extends Code<Integer>>>() {
+            private final ConcurrentHashMap<Class, EnumConverter> CONCURRENT_MAP = new ConcurrentHashMap<>();
+            @Override
+            public <T extends Enum<? extends Code<Integer>>> Converter<Integer, T> getConverter(Class<T> aClass) {
+                EnumConverter<Integer, T> enumConverter = CONCURRENT_MAP.get(aClass);
+                if (enumConverter == null){
+                    enumConverter = new EnumConverter<>(aClass);
+                    CONCURRENT_MAP.put(aClass, enumConverter);
+                }
+                return enumConverter;
+            }
+        });
+    }
 
     /**
      * 增加knife4j资源映射
