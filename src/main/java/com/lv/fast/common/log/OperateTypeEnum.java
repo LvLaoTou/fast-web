@@ -1,4 +1,4 @@
-package com.lv.fast.common.enums;
+package com.lv.fast.common.log;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
