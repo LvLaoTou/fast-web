@@ -1,6 +1,5 @@
 package com.lv.fast.common.log;
 
-import com.lv.fast.common.util.Assert;
 import com.lv.fast.common.util.ParameterUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -75,7 +74,7 @@ public class LogRecordAop {
                 String conditionSpel = logRecord.condition();
                 if (StringUtils.isNoneBlank(conditionSpel)){
                     // 获取触发条件
-                    isRecord = parser.parseExpression(conditionSpel).getValue(rootObject, Boolean.class);
+                    isRecord = parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class);
                 }
                 if (isRecord){
                     boolean isSuccess = StringUtils.isBlank(rootObject.getErrorMessage());
@@ -86,11 +85,12 @@ public class LogRecordAop {
                     }else {
                         operator = parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class);
                     }
-                    String describe;
+                    String describe = null;
                     if (isSuccess){
                         String successSpel = logRecord.success();
-                        Assert.assertNotNull(successSpel, "记录操作日志success spel表达式不能为空");
-                        describe = parser.parseExpression(successSpel).getValue(evaluationContext, String.class);
+                        if (StringUtils.isNoneBlank(successSpel)){
+                            describe = parser.parseExpression(successSpel).getValue(evaluationContext, String.class);
+                        }
                     }else {
                         String failSpel = logRecord.fail();
                         if (StringUtils.isNoneBlank(failSpel)){
@@ -99,13 +99,18 @@ public class LogRecordAop {
                             describe = rootObject.getErrorMessage();
                         }
                     }
+
                     Record.RecordBuilder recordBuilder = Record.builder()
                             .success(isSuccess)
                             .operateType(logRecord.operateType())
-                            .operator(operator)
-                            .describe(describe);
-                    if (StringUtils.isNoneBlank(logRecord.bizNo())){
-                        recordBuilder.bizNo(logRecord.bizNo());
+                            .operator(operator);
+                    if (StringUtils.isNoneBlank(describe)){
+                        recordBuilder.describe(describe);
+                    }
+                    String bizNoSpel = logRecord.bizNo();
+                    if (StringUtils.isNoneBlank(bizNoSpel)){
+                        String bizNo = parser.parseExpression(bizNoSpel).getValue(evaluationContext, String.class);
+                        recordBuilder.bizNo(bizNo);
                     }
                     // 执行记录
                     logRecordService.record(recordBuilder.build());
