@@ -2,21 +2,21 @@
 本项目主要为快速启动一个springboot开发框架，可用于快速启动一个项目，不用每次重复配置日志、ORM、异常等配置。
 ## 项目结构
 ```
-|--fast-springboot-web  
+|--fast-web  
     |-- src  
         |-- main 代码和配置文件  
             |-- java 代码  
                 |-- com.lv.fast  
-                    |-- annotation 自定义注解包  
-                    |-- common 公共对象包  
+                    |-- common 公共对象包
+                        |-- annotation 自定义注解包  
+                        |-- constant 常量对象包  
+                        |-- entity 实体包  
+                        |-- enums 枚举包
+                        |-- log 业务日志包  
+                        |-- util 工具类包  
+                        |-- valid 校验相关对象包  
                     |-- config 配置对象包  
-                    |-- constant 常量对象包  
-                    |-- DTO 业务传输对象包  
-                    |-- enums 枚举包  
                     |-- exception 异常包  
-                    |-- properties 配置属性对象包  
-                    |-- util 工具类包  
-                    |-- valid 校验相关对象包  
             |-- resource 配置文件  
                 |-- mapper mybatis/mybatis-plus dao xml文件  
                 |-- static 静态资源文件  
@@ -37,7 +37,7 @@
   - 分页：配置为Mysql分页方式，详情查看com.lv.fast.config.MybatisPlusConfig
   - mapperScan：配置为com.*.*.dao，详情查看com.lv.fast.config.MybatisPlusConfig
   - 日志：dev环境，配置打印SQL日志，详情查看src/main/resources/application-dev.yml
-  - 包别名：配置为com.lv.**.DO，详情查看src/main/resources/application.yml
+  - 包别名：配置为com.**.DO，详情查看src/main/resources/application.yml
   - 主键策略：配置为使用数据库自增，详情查看src/main/resources/application.yml
   - 其他配置：开启驼峰命名映射，关闭缓存，允许value为null，关闭Mybatis-plus banner打印，详情查看src/main/resources/application.yml
 - 数据库：集成Mysql，具体配置参考src/main/resources/application-dev.yml
@@ -55,7 +55,6 @@
   - 数据库：Mysql
   - 应用监控：Actuator
   - 接口管理：Knife4j
-  - Token工具：Jwt
   - 工具包：Guava Lombok Hutool
 ## 自定义扩展功能
   - 参数校验
