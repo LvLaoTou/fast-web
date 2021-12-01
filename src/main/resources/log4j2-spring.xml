@@ -13,14 +13,30 @@
         <!-- 文件路径 -->
         <property name="FILE_PATH" value="logs/" />
 
-        <!-- 日志文件的大小 -->
-        <property name="FILE_SIZE" value="1024MB" />
+        <!-- 单个日志文件的大小 -->
+        <property name="FILE_SIZE" value="200MB" />
 
-        <!-- 日志文件保存天数 -->
-        <property name="MAX_HISTORY" value="15" />
+        <!--
+            上一次修改时间,即日志文件保存天数
+            格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+            建议最少保留15天,避免某些bug是以周为单位出现,利于排查问题
+        -->
+        <property name="LAST_MODIFIED" value="P15D" />
 
-        <!--回滚间隔时间-->
+        <!-- 单类日志文件累计最大数量 -->
+        <property name="ACCUMULATED_FILE_COUNT" value="150" />
+
+        <!-- 单类日志文件累计最大容量 -->
+        <property name="ACCUMULATED_FILE_SIZE" value="30GB" />
+
+        <!-- 单类回滚间隔时间 -->
         <property name="ROLLBACK_INTERVAL" value="1" />
+
+        <!-- 单类最大切割次数 -->
+        <property name="MAX_CUT" value="10" />
+
+        <!-- 单类滚动删除日志文件时扫描子目录最大深度 -->
+        <property name="MAX_DEPTH" value="1" />
     </Properties>
 
     <!--输出源，用于定义日志输出的地方-->
@@ -33,7 +49,7 @@
         </console>
 
         <!--debug级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
-        <RollingRandomAccessFile name="RollingRandomAccessFileDebug" fileName="${FILE_PATH}/debug.log" filePattern="${FILE_PATH}/debug-%d{yyyy-MM-dd}-%i.log">
+        <RollingRandomAccessFile name="RollingRandomAccessFileDebug" fileName="${FILE_PATH}/debug.log" filePattern="${FILE_PATH}/debug-%d{yyyy-MM-dd}_%i.log">
             <!--只输出debug级别的日志-->
             <LevelRangeFilter minLevel="debug" maxLevel="debug"/>
             <PatternLayout pattern="${PATTERN}"/>
@@ -47,8 +63,58 @@
                 <!--日志文件切片存档  文件大小触发条件-->
                 <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
             </Policies>
-            <!-- 默认为最多同一文件夹下7个文件开始覆盖-->
-            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+            <!--
+                 以下配置文件保存策略,仅表示以下配置的含义,因为保存策略中某些配置与filePattern的粒度有关。
+                 日志目录下debug级别日志文件(含debug.log和debug-*.log),当属性冲突时,从最小值开始满足,多余的舍去
+                    每天最多生成三个文件
+                    单个文件大小最大100MB
+                    最多保留16(15+1)天以前的配置,当天日志不会归档
+                    最多保留46(15*3+1)个文件
+                    最多保留10G大小的日志文件
+                 同一属性有冲突：
+                    比如：配置最大日志容量为10G,单个文件1G最多保留30个文件,即 文件数量 * 单个文件大小 != 最大日志容量   这时取两者的最小值
+                    同理：配置最大日志数量为30,最大保留15天前日志,一天最多分割3个文件,即 最大保留天数 * 每天最大数量 != 最大日志数量 取最小值
+                 不同属性冲突:
+                    比如：配置最大日志容量为10G,配置最大日志数量为30,最大保留15天前日志,一天最多分割3个文件
+                    即 最大日志容量(10Gb) < 最大文件数量(30) * 单个文件大小(1Gb) < (最大保留天数{ACCUMULATED_FILE_COUNT(15)-1=14} * 每个最多文件数量{max_cut(3) - 1 = 2})+1{未切割的日志文件}) * 单个文件大小(1Gb)
+                    从最小值开始满足,即优先取最大容量(10Gb),然后取最大文件数量因为30*1>10取最小值即最大文件10/1个,然后取最大保留天数(14*2+1>10)所以取(10-1)/2天前的日志
+            -->
+            <!--
+                参考官网说明：https://logging.apache.org/log4j/2.x/manual/appenders.html#DefaultRolloverStrategy
+                含义：在filePattern指定的时间范围内i%参数的最大值,
+                举例：上文中配置的filePattern的格式为%d{yyyy-MM-dd}-%i,其中日期格式yyyy-MM-dd表示最小粒度为天,整个含义为当天最大切割出{max属性-1}(未切割的日志也包含在内)个文件
+                配置含义：即一天最大包含三个文件即debug.log,debug-{yyyy-MM-dd}_1.log,debug-{yyyy-MM-dd}_2.log
+            -->
+            <DefaultRolloverStrategy max="${MAX_CUT}">
+                <!--
+                    basePath:扫描路径
+                    maxDepth:扫描的最大子目录深度值为Integer,默认为1。
+                    例：
+                        Integer.MAX_VALUE表示扫描所有的目录层。
+                        0表示basePath指定的文件自身
+                        1表示仅扫描basePath下的文件
+                        2表示扫描basePath文件夹及其子文件夹
+                -->
+                <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
+                    <!--删除条件 默认关系为and 即需要满足所有条件-->
+                    <!--文件名需要满足的格式-->
+                    <IfFileName glob="debug-*.log">
+                        <IfAny>
+                            <!--
+                                最后修改时间 age必须和filePattern的精确度一致否则不生效
+                                格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+                                而且建议值大于2避免同一个文件在使用的同时触发删除导致无法删除
+                            -->
+                            <IfLastModified age="${LAST_MODIFIED}" />
+                            <!--累计文件大小,如果超过则启动删除-->
+                            <IfAccumulatedFileSize exceeds="${ACCUMULATED_FILE_SIZE}" />
+                            <!--累计文件数量,如果超过启动删除-->
+                            <IfAccumulatedFileCount exceeds="${ACCUMULATED_FILE_COUNT}" />
+                        </IfAny>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+
         </RollingRandomAccessFile>
 
         <!--info级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
@@ -66,8 +132,27 @@
                 <!--日志文件切片存档  文件大小触发条件-->
                 <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
             </Policies>
-            <!-- 默认为最多同一文件夹下7个文件开始覆盖-->
-            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+            <!-- 保存策略-->
+            <DefaultRolloverStrategy max = "${MAX_CUT}">
+                <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
+                    <!--删除条件 默认关系为and 即需要满足所有条件-->
+                    <!--文件名需要满足的格式-->
+                    <IfFileName glob="info-*.log">
+                        <IfAny>
+                            <!--
+                                最后修改时间 age必须和filePattern的精确度一致否则不生效
+                                格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+                                而且建议值大于2避免同一个文件在使用的同时触发删除导致无法删除
+                            -->
+                            <IfLastModified age="${LAST_MODIFIED}" />
+                            <!--累计文件大小,如果超过则启动删除-->
+                            <IfAccumulatedFileSize exceeds="${ACCUMULATED_FILE_SIZE}" />
+                            <!--累计文件数量,如果超过启动删除-->
+                            <IfAccumulatedFileCount exceeds="${ACCUMULATED_FILE_COUNT}" />
+                        </IfAny>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
 
         <!--warn级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
@@ -85,8 +170,27 @@
                 <!--日志文件切片存档  文件大小触发条件-->
                 <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
             </Policies>
-            <!--默认为最多同一文件夹下7个文件开始覆盖-->
-            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+            <!-- 保存策略-->
+            <DefaultRolloverStrategy max = "${MAX_CUT}">
+                <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
+                    <!--删除条件 默认关系为and 即需要满足所有条件-->
+                    <!--文件名需要满足的格式-->
+                    <IfFileName glob="warn-*.log">
+                        <IfAny>
+                            <!--
+                                最后修改时间 age必须和filePattern的精确度一致否则不生效
+                                格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+                                而且建议值大于2避免同一个文件在使用的同时触发删除导致无法删除
+                            -->
+                            <IfLastModified age="${LAST_MODIFIED}" />
+                            <!--累计文件大小,如果超过则启动删除-->
+                            <IfAccumulatedFileSize exceeds="${ACCUMULATED_FILE_SIZE}" />
+                            <!--累计文件数量,如果超过启动删除-->
+                            <IfAccumulatedFileCount exceeds="${ACCUMULATED_FILE_COUNT}" />
+                        </IfAny>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
 
         <!--error级别日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
@@ -104,8 +208,65 @@
                 <!--日志文件切片存档  文件大小触发条件-->
                 <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
             </Policies>
-            <!--默认为最多同一文件夹下7个文件开始覆盖-->
-            <DefaultRolloverStrategy max = "${MAX_HISTORY}"/>
+            <!-- 保存策略-->
+            <DefaultRolloverStrategy max = "${MAX_CUT}">
+                <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
+                    <!--删除条件 默认关系为and 即需要满足所有条件-->
+                    <!--文件名需要满足的格式-->
+                    <IfFileName glob="error-*.log">
+                        <IfAny>
+                            <!--
+                                最后修改时间 age必须和filePattern的精确度一致否则不生效
+                                格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+                                而且建议值大于2避免同一个文件在使用的同时触发删除导致无法删除
+                            -->
+                            <IfLastModified age="${LAST_MODIFIED}" />
+                            <!--累计文件大小,如果超过则启动删除-->
+                            <IfAccumulatedFileSize exceeds="${ACCUMULATED_FILE_SIZE}" />
+                            <!--累计文件数量,如果超过启动删除-->
+                            <IfAccumulatedFileCount exceeds="${ACCUMULATED_FILE_COUNT}" />
+                        </IfAny>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+        <!--http请求日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
+        <RollingRandomAccessFile name="RequestLog" fileName="${FILE_PATH}/request.log" filePattern="${FILE_PATH}/request-%d{yyyy-MM-dd}-%i.log">
+            <!--只输出error级别的日志-->
+            <LevelRangeFilter minLevel="debug" maxLevel="debug"/>
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--
+                    日志文件切片存档  时间触发条件
+                    需要和RollingRandomAccessFile的filePattern结合使用，日期格式精确到哪一位，interval也精确到哪一个单位。
+                    注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天。默认的size是1，结合起来就是每天生成一个文件
+                -->
+                <TimeBasedTriggeringPolicy interval = "${ROLLBACK_INTERVAL}"/>
+                <!--日志文件切片存档  文件大小触发条件-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+            </Policies>
+            <!-- 保存策略-->
+            <DefaultRolloverStrategy max = "${MAX_CUT}">
+                <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
+                    <!--删除条件 默认关系为and 即需要满足所有条件-->
+                    <!--文件名需要满足的格式-->
+                    <IfFileName glob="error-*.log">
+                        <IfAny>
+                            <!--
+                                最后修改时间 age必须和filePattern的精确度一致否则不生效
+                                格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+                                而且建议值大于2避免同一个文件在使用的同时触发删除导致无法删除
+                            -->
+                            <IfLastModified age="${LAST_MODIFIED}" />
+                            <!--累计文件大小,如果超过则启动删除-->
+                            <IfAccumulatedFileSize exceeds="${ACCUMULATED_FILE_SIZE}" />
+                            <!--累计文件数量,如果超过启动删除-->
+                            <IfAccumulatedFileCount exceeds="${ACCUMULATED_FILE_COUNT}" />
+                        </IfAny>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
 
     </appenders>
@@ -122,6 +283,11 @@
             <appender-ref ref="RollingRandomAccessFileWarn"/>
             <appender-ref ref="RollingRandomAccessFileError"/>
         </AsyncRoot>
+
+        <!--http请求日志 additivity不继承父logger的appender避免日志重复输出-->
+        <logger name="RequestLog" level="debug" includeLocation="true" additivity="false">
+            <appender-ref ref="RequestLog"/>
+        </logger>
     </loggers>
 
 </configuration>

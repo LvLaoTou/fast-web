@@ -1,11 +1,15 @@
 package com.lv.fast.common.util;
 
 import com.google.common.collect.Maps;
+import com.lv.fast.common.constant.JsonConstant;
+import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author jie.lv
@@ -32,5 +36,14 @@ public class ParameterUtil {
             return params;
         }
         return null;
+    }
+
+    @SneakyThrows
+    public static String getRequestParamJson(JoinPoint joinPoint){
+        Map<String, Object> requestParam = getRequestParam(joinPoint);
+        Map<String, Object> param = requestParam.entrySet().stream()
+                .filter(entry -> !(entry.getValue() instanceof MultipartFile))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return JsonConstant.MAPPER.writeValueAsString(param);
     }
 }
