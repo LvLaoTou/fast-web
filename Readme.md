@@ -17,6 +17,8 @@
                         |-- valid 校验相关对象包  
                     |-- config 配置对象包  
                     |-- exception 异常包  
+                    |-- model 业务模块
+                        |-- test 测试模块/提供参考
             |-- resource 配置文件  
                 |-- mapper mybatis/mybatis-plus dao xml文件  
                 |-- static 静态资源文件  
@@ -79,3 +81,10 @@
   - 分页
     - 分页基础对象com.lv.fast.DTO.PageQuery
     - 分页工具类com.lv.fast.util.PageUtil
+  - 记录业务日志
+    - 使用注解com.lv.fast.common.log.LogRecord，参考使用：com.lv.fast.model.test.service.TestService.convert
+    - 实现获取操作者接口com.lv.fast.common.log.OperatorService，参考：com.lv.fast.model.test.service.TestOperatorServiceImpl.getOperator
+    - 实现日志存储接口com.lv.fast.common.log.LogRecordService，默认实现：com.lv.fast.common.log.LogRecordConfig.logRecordService
+    - 设置线程上下文变量（暂时不支持使用线程池）com.lv.fast.common.log.LogRecordContext，
+      注意如果需要在同一个线程设置多个环境变量需要使用com.lv.fast.common.log.LogRecordContext#put(Map<String,Object>)方法
+## 业务功能参考

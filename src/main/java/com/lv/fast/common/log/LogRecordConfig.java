@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @author jie.lv
  */
 @Configuration
-public class LogRecordBeanConfig {
+public class LogRecordConfig {
 
     @Bean
     @ConditionalOnMissingBean(LogRecordService.class)
