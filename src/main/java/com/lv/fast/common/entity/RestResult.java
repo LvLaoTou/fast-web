@@ -1,8 +1,11 @@
 package com.lv.fast.common.entity;
 
 import com.google.common.collect.Maps;
+import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.enums.RestResultEnum;
 import com.lv.fast.common.valid.Describe;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,17 +16,21 @@ import java.util.HashMap;
  * @author jie.lv
  */
 @Data
+@ApiModel("Http Restful 接口统一响应对象")
 public class RestResult<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /** 状态标识码 */
+    @ApiModelProperty(value = "状态码 成功:"+RestResultCodeConstant.SUCCESS, example = RestResultCodeConstant.SUCCESS, required = true)
     private String code;
 
     /** 描述信息 */
+    @ApiModelProperty(value = "请求响应描述", example = "success", required = true)
     private String message;
 
     /** 数据 */
+    @ApiModelProperty(value = "响应数据")
     private T data;
 
     public RestResult(String code, String message, T data) {
