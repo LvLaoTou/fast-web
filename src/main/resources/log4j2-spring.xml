@@ -233,8 +233,46 @@
 
         <!--http请求日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
         <RollingRandomAccessFile name="RequestLog" fileName="${FILE_PATH}/request.log" filePattern="${FILE_PATH}/request-%d{yyyy-MM-dd}-%i.log">
-            <!--只输出error级别的日志-->
+            <!--只输出debug级别的日志-->
             <LevelRangeFilter minLevel="debug" maxLevel="debug"/>
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <!--
+                    日志文件切片存档  时间触发条件
+                    需要和RollingRandomAccessFile的filePattern结合使用，日期格式精确到哪一位，interval也精确到哪一个单位。
+                    注意filePattern中配置的文件重命名规则是%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天。默认的size是1，结合起来就是每天生成一个文件
+                -->
+                <TimeBasedTriggeringPolicy interval = "${ROLLBACK_INTERVAL}"/>
+                <!--日志文件切片存档  文件大小触发条件-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+            </Policies>
+            <!-- 保存策略-->
+            <DefaultRolloverStrategy max = "${MAX_CUT}">
+                <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
+                    <!--删除条件 默认关系为and 即需要满足所有条件-->
+                    <!--文件名需要满足的格式-->
+                    <IfFileName glob="error-*.log">
+                        <IfAny>
+                            <!--
+                                最后修改时间 age必须和filePattern的精确度一致否则不生效
+                                格式参考:https://logging.apache.org/log4j/2.x/log4j-core/apidocs/org/apache/logging/log4j/core/appender/rolling/action/Duration.html
+                                而且建议值大于2避免同一个文件在使用的同时触发删除导致无法删除
+                            -->
+                            <IfLastModified age="${LAST_MODIFIED}" />
+                            <!--累计文件大小,如果超过则启动删除-->
+                            <IfAccumulatedFileSize exceeds="${ACCUMULATED_FILE_SIZE}" />
+                            <!--累计文件数量,如果超过启动删除-->
+                            <IfAccumulatedFileCount exceeds="${ACCUMULATED_FILE_COUNT}" />
+                        </IfAny>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+
+        <!--业务日志文件，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面作为存档-->
+        <RollingRandomAccessFile name="BusinessLog" fileName="${FILE_PATH}/business.log" filePattern="${FILE_PATH}/business-%d{yyyy-MM-dd}-%i.log">
+            <!--输出debug、info、warn级别的日志,注意minLevel是高的日志级别，maxLevel是低的日志级别-->
+            <LevelRangeFilter minLevel="warn" maxLevel="debug"/>
             <PatternLayout pattern="${PATTERN}"/>
             <Policies>
                 <!--
@@ -287,6 +325,11 @@
         <!--http请求日志 additivity不继承父logger的appender避免日志重复输出-->
         <logger name="RequestLog" level="debug" includeLocation="true" additivity="false">
             <appender-ref ref="RequestLog"/>
+        </logger>
+
+        <!--http请求日志 additivity不继承父logger的appender避免日志重复输出-->
+        <logger name="BusinessLog" level="debug" includeLocation="true" additivity="false">
+            <appender-ref ref="BusinessLog"/>
         </logger>
     </loggers>
 

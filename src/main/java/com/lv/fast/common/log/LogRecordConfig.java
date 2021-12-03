@@ -13,6 +13,6 @@ public class LogRecordConfig {
     @Bean
     @ConditionalOnMissingBean(LogRecordService.class)
     public LogRecordService logRecordService(){
-        return new DefaultLogRecordService();
+        return new DefaultLogRecordServiceImpl();
     }
 }
