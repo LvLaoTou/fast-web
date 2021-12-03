@@ -1,8 +1,8 @@
 package com.lv.fast.common.log;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.google.common.collect.Maps;
 import com.lv.fast.common.util.Assert;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Stack;
@@ -11,6 +11,7 @@ import java.util.Stack;
  * 日志记录上下文
  * @author jie.lv
  */
+@Slf4j
 public class LogRecordContext {
 
     private LogRecordContext(){}
@@ -20,33 +21,25 @@ public class LogRecordContext {
      */
     private final static InheritableThreadLocal<Stack<Map<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
 
-    public static void put(String key, Object value){
+    public static void putVariable(String key, Object value){
         Assert.assertNotNull(key, "key不能为空");
         Assert.assertNotNull(value, "value不能为空");
-        Map<String, Object> variable = Maps.newHashMapWithExpectedSize(1);
-        variable.put(key, value);
-        put(variable);
-    }
-
-    public static void put(Map<String, Object> variable){
-        Assert.assertNotNull(variable, "变量不能为空");
-        Stack<Map<String, Object>> mapStack = variableMapStack.get();
-        if (mapStack == null || mapStack.isEmpty()){
-            mapStack = new Stack<>();
-        }
-        mapStack.push(variable);
-        variableMapStack.set(mapStack);
+        // 由线程日志切面完成初始化
+        Stack<Map<String, Object>> mapStack = getStack();
+        Assert.assertNotNull(mapStack, "日志变量线程上下文未初始化");
+        Map<String, Object> variableMap = mapStack.peek();
+        variableMap.put(key, value);
     }
 
     public static Map<String, Object> listVariable(){
-        Stack<Map<String, Object>> mapStack = variableMapStack.get();
+        Stack<Map<String, Object>> mapStack = getStack();
         if (mapStack == null || mapStack.isEmpty()){
             return null;
         }
         return mapStack.peek();
     }
 
-    public static Object get(String key){
+    public static Object getVariable(String key){
         Map<String, Object> variableMap = listVariable();
         if (CollectionUtil.isEmpty(variableMap)){
             return null;
@@ -54,7 +47,17 @@ public class LogRecordContext {
         return variableMap.get(key);
     }
 
+    public static Stack<Map<String, Object>> getStack(){
+        return variableMapStack.get();
+    }
+
+    public static void setStack(Stack<Map<String, Object>> stack){
+        Assert.assertNotNull(stack, "操作日志线程上下文环境变量栈不能为空");
+        variableMapStack.set(stack);
+    }
+
     public static void clear(){
+        log.debug("清除日志环境变量线程上下文");
         variableMapStack.remove();
     }
 }

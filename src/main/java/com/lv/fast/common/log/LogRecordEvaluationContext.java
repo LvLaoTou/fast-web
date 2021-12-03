@@ -11,11 +11,10 @@ import java.util.Map;
  */
 public class LogRecordEvaluationContext extends MethodBasedEvaluationContext {
 
-    public LogRecordEvaluationContext(LogRecordRootObject rootObject, ParameterNameDiscoverer parameterNameDiscoverer) {
+    public LogRecordEvaluationContext(LogRecordRootObject rootObject, ParameterNameDiscoverer parameterNameDiscoverer, Map<String, Object> variables) {
         //把方法的参数都放到 SpEL 解析的 RootObject 中
         super(rootObject, rootObject.getMethod(), rootObject.getArgs(), parameterNameDiscoverer);
         //把 LogRecordContext 中的变量都放到 RootObject 中
-        Map<String, Object> variables = LogRecordContext.listVariable();
         if (CollectionUtil.isNotEmpty(variables)){
             variables.forEach((k,v)->{
                 setVariable(k, v);

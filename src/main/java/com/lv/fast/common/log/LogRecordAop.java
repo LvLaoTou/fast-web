@@ -1,6 +1,8 @@
 package com.lv.fast.common.log;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.lv.fast.common.util.ParameterUtil;
+import com.lv.fast.common.util.ThreadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,9 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * @author jie.lv
@@ -53,77 +57,110 @@ public class LogRecordAop {
     @Around("pointcut(logRecord)")
     public Object around(ProceedingJoinPoint joinPoint, LogRecord logRecord){
         LogRecordRootObject.LogRecordRootObjectBuilder builder = LogRecordRootObject.builder();
+        Object result = null;
         try {
-            Map<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
-            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-            Method method = methodSignature.getMethod();
-            Object result = joinPoint.proceed();
-            builder.param(params)
-                    .method(method)
-                    .result(result);
+            // 初始化环境变量线程上下文
+            initVariableThreadContext();
+            result = joinPoint.proceed();
             return result;
         }catch (Throwable throwable){
             builder.errorMessage(throwable.getMessage());
             throw throwable;
         } finally {
-            try{
-                LogRecordRootObject rootObject = builder.build();
-                LogRecordEvaluationContext evaluationContext = new LogRecordEvaluationContext(rootObject, discoverer);
-                // 是否记录日志
-                boolean isRecord = true;
-                String conditionSpel = logRecord.condition();
-                if (StringUtils.isNoneBlank(conditionSpel)){
-                    // 获取触发条件
-                    isRecord = parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class);
-                }
-                if (isRecord){
-                    boolean isSuccess = StringUtils.isBlank(rootObject.getErrorMessage());
-                    Operator operator;
-                    String operatorSpel = logRecord.operator();
-                    if (StringUtils.isBlank(operatorSpel)){
-                        operator = operatorService.getOperator();
-                    }else {
-                        operator = parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class);
-                    }
-                    String describe = null;
-                    if (isSuccess){
-                        String successSpel = logRecord.success();
-                        if (StringUtils.isNoneBlank(successSpel)){
-                            describe = parser.parseExpression(successSpel).getValue(evaluationContext, String.class);
+            try {
+                Map<String, Object> variable = LogRecordContext.listVariable();
+                // 清除线程上下问环境变量
+                clearVariableThreadContext();
+                Object finalResult = result;
+                ThreadUtil.LOG_THREAD_POOL_EXECUTOR.execute(()->{
+                    try{
+                        Map<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
+                        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+                        Method method = methodSignature.getMethod();
+                        builder.param(params).method(method);
+                        if (finalResult != null){
+                            builder.result(finalResult);
                         }
-                    }else {
-                        String failSpel = logRecord.fail();
-                        if (StringUtils.isNoneBlank(failSpel)){
-                            describe = parser.parseExpression(failSpel).getValue(evaluationContext, String.class);
-                        }else {
-                            describe = rootObject.getErrorMessage();
+                        LogRecordRootObject rootObject = builder.build();
+                        LogRecordEvaluationContext evaluationContext = new LogRecordEvaluationContext(rootObject, discoverer, variable);
+                        if (CollectionUtil.isNotEmpty(variable)){
+                            variable.forEach((k, v)->{
+                                evaluationContext.setVariable(k, v);
+                            });
                         }
-                    }
+                        // 是否记录日志
+                        boolean isRecord = true;
+                        String conditionSpel = logRecord.condition();
+                        if (StringUtils.isNoneBlank(conditionSpel)){
+                            // 获取触发条件
+                            isRecord = parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class);
+                        }
+                        if (isRecord){
+                            boolean isSuccess = StringUtils.isBlank(rootObject.getErrorMessage());
+                            Operator operator;
+                            String operatorSpel = logRecord.operator();
+                            if (StringUtils.isBlank(operatorSpel)){
+                                operator = operatorService.getOperator();
+                            }else {
+                                operator = parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class);
+                            }
+                            String describe = null;
+                            if (isSuccess){
+                                String successSpel = logRecord.success();
+                                if (StringUtils.isNoneBlank(successSpel)){
+                                    describe = parser.parseExpression(successSpel).getValue(evaluationContext, String.class);
+                                }
+                            }else {
+                                String failSpel = logRecord.fail();
+                                if (StringUtils.isNoneBlank(failSpel)){
+                                    describe = parser.parseExpression(failSpel).getValue(evaluationContext, String.class);
+                                }else {
+                                    describe = rootObject.getErrorMessage();
+                                }
+                            }
 
-                    Record.RecordBuilder recordBuilder = Record.builder()
-                            .success(isSuccess)
-                            .operateType(logRecord.operateType())
-                            .operator(operator);
-                    if (StringUtils.isNoneBlank(describe)){
-                        recordBuilder.describe(describe);
+                            Record.RecordBuilder recordBuilder = Record.builder()
+                                    .success(isSuccess)
+                                    .operateType(logRecord.operateType())
+                                    .operator(operator);
+                            if (StringUtils.isNoneBlank(describe)){
+                                recordBuilder.describe(describe);
+                            }
+                            String bizNoSpel = logRecord.bizNo();
+                            if (StringUtils.isNoneBlank(bizNoSpel)){
+                                String bizNo = parser.parseExpression(bizNoSpel).getValue(evaluationContext, String.class);
+                                recordBuilder.bizNo(bizNo);
+                            }
+                            // 执行记录
+                            logRecordService.record(recordBuilder.build());
+                        }
+                    }catch (Exception e){
+                        log.error("记录操作日志异常:{}", e);
                     }
-                    String bizNoSpel = logRecord.bizNo();
-                    if (StringUtils.isNoneBlank(bizNoSpel)){
-                        String bizNo = parser.parseExpression(bizNoSpel).getValue(evaluationContext, String.class);
-                        recordBuilder.bizNo(bizNo);
-                    }
-                    // 执行记录
-                    logRecordService.record(recordBuilder.build());
-                }
+                });
             }catch (Exception e){
-                log.error("记录操作日志异常:{}", e);
-            }finally {
-                try{
-                    // 释放上下文数据
-                    LogRecordContext.clear();
-                }catch (Exception e){
-                    log.error("释放操作日志线程上下文变量异常", e);
-                }
+                log.error("记录操作日志异常", e);
+            }
+        }
+    }
+
+    private static void initVariableThreadContext(){
+        Stack<Map<String, Object>> stack = LogRecordContext.getStack();
+        if (stack == null){
+            stack = new Stack<>();
+        }
+        stack.push(new HashMap<>());
+        LogRecordContext.setStack(stack);
+    }
+
+    private static void clearVariableThreadContext(){
+        Stack<Map<String, Object>> stack = LogRecordContext.getStack();
+        if (stack == null){
+            LogRecordContext.clear();
+        }else {
+            stack.pop();
+            if (stack.isEmpty()){
+                LogRecordContext.clear();
             }
         }
     }

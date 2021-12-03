@@ -89,11 +89,12 @@
     - 记录内容：请求参数、执行时间、响应结果、是否执行成功、请求URI路径、客户端ip
     - 持久化：默认使用名为RequestLog的logger输出日志，默认单独输出到logs/request*.log文件中
   - 记录业务日志
+    - 实现参考美团技术团队的文章，奈何没有找到源码，所以自己实现了一个简单版本，[原文](https://mp.weixin.qq.com/s/JC51S_bI02npm4CE5NEEow)
     - 使用注解com.lv.fast.common.log.LogRecord，参考使用：com.lv.fast.model.test.service.TestService.convert
     - 实现获取操作者接口com.lv.fast.common.log.OperatorService，参考：com.lv.fast.model.test.service.TestOperatorServiceImpl.getOperator
     - 实现日志存储接口com.lv.fast.common.log.LogRecordService，默认实现：com.lv.fast.common.log.LogRecordConfig.logRecordService(输出到info级别的日志文件))
     - 设置线程上下文变量（暂时不支持使用线程池）com.lv.fast.common.log.LogRecordContext，
-      ***注意如果需要在同一个线程设置多个环境变量需要使用com.lv.fast.common.log.LogRecordContext#put(Map<String,Object>)方法***
+      ***注意因为使用aop实现记录业务日志，如果嵌套使用需要满足spring aop嵌套使用规则，避免aop失效导致未记录日志，[spring aop官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop)***
 ## 业务编码参考
 com.lv.fast.model包是用于写业务代码，规划为以模块为单位划分包，com.lv.fast.model.test为测试模块
 提供参考参考，mvc模型开发方式，可以测试记录请求日志和业务日志以及参数校验和swagger等功能。不需要可以自行删除。
