@@ -21,7 +21,6 @@ public class TestService2 {
     public long test(TestRequest request){
         LogRecordContext.putVariable("methodName", "test");
         LogRecordContext.putVariable("requestName", "testRequest");
-        int i = 1 / 0;
         return request.getId();
     }
 }
