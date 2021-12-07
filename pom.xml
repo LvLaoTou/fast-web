@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>com.lv</groupId>
-    <artifactId>fast-springboot-web-maven</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>fast-springboot-web-maven</name>
+    <artifactId>fast-web</artifactId>
+    <version>1.0.0</version>
+    <name>fast-web</name>
     <description>spring boot web</description>
 
     <properties>
@@ -142,6 +142,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
