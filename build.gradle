@@ -44,8 +44,7 @@ dependencies {
         exclude group:'com.baomidou',module:'mybatis-plus-generator'
     }
     //log4j2 Async Logger 附加依赖
-    implementation 'com.lmax:disruptor:3.4.2'
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.lmax:disruptor:3.4.4'
     implementation 'com.google.guava:guava:31.0.1-jre'
     implementation 'cn.hutool:hutool-all:5.7.16'
     implementation 'net.dreamlu:mica-xss:2.5.7'
