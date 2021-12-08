@@ -10,21 +10,21 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-#knife4j配置
-knife4j:
-  # 开启增强配置
-  enable: true
-  #是否生产环境  生产环境会关闭访问
-  production: false
-  basic:
-    #是否开启认证
-    enable: false
-    #认证用户名
-    username: admin
-    #认证密码
-    password: admin
-
 #配置日志
 logging:
   level:
     root: debug
+
+# spring doc配置
+springdoc:
+  cache:
+    # 是否禁用缓存
+    disabled: true
+  # 是否在spring doc openapi显示actuator端点
+  show-actuator: true
+  # 是否 允许带有 ModelAndView 的 RestControllers 返回出现在 OpenAPI 描述中
+  model-and-view-allowed: false
+  # 是否将 @ControllerAdvice 响应添加到所有生成的响应中
+  override-with-generic-response: true
+  # 是否格式化打印 springdoc.api-docs.path返回的数据
+  writer-with-default-pretty-printer: true

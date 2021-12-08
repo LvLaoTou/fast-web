@@ -1,12 +1,13 @@
 package com.lv.fast.model.test.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.lv.fast.common.entity.PageQuery;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,21 +16,22 @@ import javax.validation.constraints.NotNull;
  * @author jie.lv
  */
 @Data
-@Builder
+@Validated
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("测试请求参数对象")
-public class TestRequest {
+@Schema(description = "测试请求参数对象")
+public class TestRequest extends PageQuery {
 
     @NotNull(message = "id不能为空")
-    @ApiModelProperty(value = "id", example = "1", required = true)
+    @Schema(description = "id", example = "1", required = true)
     private Long id;
 
     @NotBlank(message = "名称不能为空")
     @Length(max = 50, message = "名称最大长度为50个字符")
-    @ApiModelProperty(value = "姓名 最大长度50字符", example = "张三", required = true)
+    @Schema(description = "姓名", example = "张三", required = true, maxLength = 50)
     private String name;
 
-    @ApiModelProperty(value = "是否成功", example = "true", required = true)
+    @Schema(description = "是否成功", example = "true")
     private Boolean success;
 }
