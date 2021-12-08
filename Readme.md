@@ -28,7 +28,8 @@
                 |-- log4j2-spring.xml 日志配置文件  
         |-- test 单元测试  
     |-- .gitignore  
-    |-- pom.xml  
+    |-- build.gradle  
+    |-- settings.gradle  
     |-- Readme.md
 ```
 ## 技术桟
