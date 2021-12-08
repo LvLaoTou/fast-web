@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.0'
+    id 'org.springframework.boot' version '2.6.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -35,10 +35,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation ('com.github.xiaoymin:knife4j-spring-boot-starter:3.0.3'){
-        // 排除guava
-        exclude group:'com.google.guava',module:'guava'
-    }
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.13'
     implementation ('com.baomidou:mybatis-plus-boot-starter:3.4.3.4'){
         // 排除逆向工具
         exclude group:'com.baomidou',module:'mybatis-plus-generator'
