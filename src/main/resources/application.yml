@@ -73,7 +73,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: 'health'
+        include: health
       base-path: /info
 
 # xss攻击配置 参考文档https://www.dreamlu.net/components/mica-xss.html

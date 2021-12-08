@@ -98,18 +98,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!--接口管理工具-->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${knife4j.version}</version>
-            <exclusions>
-                <!--排除谷歌guava工具包,手动依赖新的版本-->
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.5.13</version>
         </dependency>
 
         <!--Mybatis Plus ORM框架-->
