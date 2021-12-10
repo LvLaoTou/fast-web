@@ -1,6 +1,10 @@
 # spring boot web 脚手架
 本项目主要为快速启动一个springboot web开发框架，避免每次重复配置日志、ORM、异常等配置。
 同时也封装一些常用功能，目标是达到开箱即用，做一个能用、好用的Java Web脚手架。
+## bug
+| 描述 | 发现时间 | 来源 | 说明 |
+| --- | --- | --- | --- |
+| log4j2严重漏洞 | 2021-12-09 | https://github.com/apache/logging-log4j2/releases/tag/log4j-2.15.0-rc1 | 目前log4j2官方暂未推送jar包到maven仓库,等待Springboot官方或者log4j2官方解决,如着急修复烦请自行前往github打包解决 |
 ## 项目结构
 ```
 |--fast-web  
