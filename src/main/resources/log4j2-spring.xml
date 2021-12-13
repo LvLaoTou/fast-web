@@ -323,14 +323,14 @@
         </AsyncRoot>
 
         <!--http请求日志 additivity不继承父logger的appender避免日志重复输出-->
-        <logger name="RequestLog" level="debug" includeLocation="true" additivity="false">
+        <AsyncLogger name="RequestLog" level="debug" includeLocation="true" additivity="false">
             <appender-ref ref="RequestLog"/>
-        </logger>
+        </AsyncLogger>
 
         <!--http请求日志 additivity不继承父logger的appender避免日志重复输出-->
-        <logger name="BusinessLog" level="debug" includeLocation="true" additivity="false">
+        <AsyncLogger name="BusinessLog" level="debug" includeLocation="true" additivity="false">
             <appender-ref ref="BusinessLog"/>
-        </logger>
+        </AsyncLogger>
     </loggers>
 
 </configuration>
