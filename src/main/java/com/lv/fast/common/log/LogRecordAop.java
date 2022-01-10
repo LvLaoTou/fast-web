@@ -86,9 +86,7 @@ public class LogRecordAop {
                         LogRecordRootObject rootObject = builder.build();
                         LogRecordEvaluationContext evaluationContext = new LogRecordEvaluationContext(rootObject, discoverer, variable);
                         if (CollectionUtil.isNotEmpty(variable)){
-                            variable.forEach((k, v)->{
-                                evaluationContext.setVariable(k, v);
-                            });
+                            variable.forEach(evaluationContext::setVariable);
                         }
                         // 是否记录日志
                         boolean isRecord = true;
