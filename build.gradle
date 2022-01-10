@@ -29,7 +29,7 @@ configurations {
     all*.exclude module: 'log4j-over-slf4j'
 }
 
-ext['log4j2.version'] = '2.17.0'
+ext['log4j2.version'] = '2.17.1'
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
