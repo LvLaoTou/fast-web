@@ -22,12 +22,13 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author jie.lv
  */
 @Aspect
-@Order(1)
+@Order
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -72,6 +73,7 @@ public class LogRecordAop {
                 // 清除线程上下问环境变量
                 clearVariableThreadContext();
                 Object finalResult = result;
+                AtomicReference<Operator> operator = new AtomicReference<>(operatorService.getOperator());
                 ThreadUtil.LOG_THREAD_POOL_EXECUTOR.execute(()->{
                     try{
                         Map<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
@@ -97,12 +99,9 @@ public class LogRecordAop {
                         }
                         if (isRecord){
                             boolean isSuccess = StringUtils.isBlank(rootObject.getErrorMessage());
-                            Operator operator;
                             String operatorSpel = logRecord.operator();
-                            if (StringUtils.isBlank(operatorSpel)){
-                                operator = operatorService.getOperator();
-                            }else {
-                                operator = parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class);
+                            if (StringUtils.isNoneBlank(operatorSpel)){
+                                operator.set(parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class));
                             }
                             String describe = null;
                             if (isSuccess){
@@ -122,7 +121,7 @@ public class LogRecordAop {
                             Record.RecordBuilder recordBuilder = Record.builder()
                                     .success(isSuccess)
                                     .operateType(logRecord.operateType())
-                                    .operator(operator);
+                                    .operator(operator.get());
                             if (StringUtils.isNoneBlank(describe)){
                                 recordBuilder.describe(describe);
                             }
