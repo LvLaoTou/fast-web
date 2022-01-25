@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @version 1.0.0
  */
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR,reason = "发生自定义异常")
-public class MyException extends RuntimeException implements Describe {
+public class BusinessException extends RuntimeException implements Describe {
 
     /**
      * 状态码
@@ -26,25 +26,25 @@ public class MyException extends RuntimeException implements Describe {
     /**
      * 无参构造
      */
-    public MyException(){}
+    public BusinessException(){}
 
     /**
      * 使用自定义异常枚举类构造自定义异常
      * @param describe 统一响应接口
      */
-    public MyException(Describe describe){
+    public BusinessException(Describe describe){
         super(describe.getDescribe());
         this.code = describe.getCode().toString();
         this.describe = describe.getDescribe();
     }
 
-    public MyException(String code, String describe){
+    public BusinessException(String code, String describe){
         super(describe);
         this.code = code;
         this.describe = describe;
     }
 
-    public MyException(String describe){
+    public BusinessException(String describe){
         super(describe);
         this.code = RestResultCodeConstant.PARAM_ERROR;
         this.describe = describe;

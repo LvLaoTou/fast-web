@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.lv.fast.common.constant.JsonConstant;
 import com.lv.fast.common.valid.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
-import com.lv.fast.exception.MyException;
+import com.lv.fast.exception.BusinessException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -81,7 +81,7 @@ public class Assert {
     public static void assertNotNull(Object target, String code, String message, Object logOutData){
         if (target == null){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -146,7 +146,7 @@ public class Assert {
     public static void assertNotNull(String target, String code, String message, Object logOutData){
         if (StringUtils.isBlank(target)){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -210,7 +210,7 @@ public class Assert {
     public static void assertNotNull(Collection<?> target, String code, String message, Object logOutData){
         if (CollectionUtil.isEmpty(target)){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -274,7 +274,7 @@ public class Assert {
     public static void assertNotNull(Object[] target, String code, String message, Object logOutData){
         if (target == null || target.length == 0){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -336,7 +336,7 @@ public class Assert {
     public static void assertIsTrue(boolean flag, String code, String message, Object logOutData){
         if (!flag){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -398,7 +398,7 @@ public class Assert {
     public static void assertIsFalse(boolean flag, String code, String message, Object logOutData){
         if (flag){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -463,7 +463,7 @@ public class Assert {
     public static void assertIsNull(String target, String code, String message, Object logOutData){
         if (StringUtils.isNoneBlank(target)){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -527,7 +527,7 @@ public class Assert {
     public static void assertIsNull(Collection<?> target, String code, String message, Object logOutData){
         if (CollectionUtil.isNotEmpty(target)){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -591,7 +591,7 @@ public class Assert {
     public static void assertIsNull(Object[] target, String code, String message, Object logOutData){
         if (target != null && target.length != 0){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 
@@ -655,7 +655,7 @@ public class Assert {
     public static void assertIsNull(Object target, String code, String message, Object logOutData){
         if (target != null){
             logOutError(logOutData);
-            throw new MyException(code, message);
+            throw new BusinessException(code, message);
         }
     }
 

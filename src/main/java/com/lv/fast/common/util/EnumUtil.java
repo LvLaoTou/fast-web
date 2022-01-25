@@ -1,7 +1,7 @@
 package com.lv.fast.common.util;
 
 import com.lv.fast.common.valid.Code;
-import com.lv.fast.exception.MyException;
+import com.lv.fast.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -74,7 +74,7 @@ public class EnumUtil {
             if (code instanceof Integer || code instanceof Long){
                 return (code).equals(enumValid.getCode());
             }
-            throw new MyException("枚举泛型非法");
+            throw new BusinessException("枚举泛型非法");
         }).count();
         return count == 1;
     }
