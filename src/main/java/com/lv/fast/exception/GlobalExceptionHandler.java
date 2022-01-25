@@ -24,8 +24,8 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MyException.class)
-    public RestResult handle(MyException e) {
+    @ExceptionHandler(BusinessException.class)
+    public RestResult handle(BusinessException e) {
         log.error("发生自定义异常", e);
         return RestResult.build(e);
     }
@@ -92,8 +92,8 @@ public class GlobalExceptionHandler {
         if (throwable instanceof UndeclaredThrowableException){
             return handle((UndeclaredThrowableException) throwable);
         }
-        if (throwable instanceof MyException){
-            return handle((MyException) throwable);
+        if (throwable instanceof BusinessException){
+            return handle((BusinessException) throwable);
         }
         if (throwable instanceof BindException){
             return handle((BindException) throwable);

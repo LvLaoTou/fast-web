@@ -2,7 +2,7 @@ package com.lv.fast.common.valid;
 
 import com.lv.fast.common.util.Assert;
 import com.lv.fast.common.util.EnumUtil;
-import com.lv.fast.exception.MyException;
+import com.lv.fast.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
@@ -52,7 +52,7 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             }
         }catch (ClassCastException e){
             log.error("EnumCheck注解目标对象转换异常", e);
-            throw new MyException("EnumCheck注解类型转换异常");
+            throw new BusinessException("EnumCheck注解类型转换异常");
         }
         boolean flag;
         if (target != null){

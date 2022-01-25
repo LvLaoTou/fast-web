@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lv.fast.common.entity.PageQuery;
 import com.lv.fast.common.enums.OrderTypeEnum;
 import com.lv.fast.common.constant.RestResultCodeConstant;
-import com.lv.fast.exception.MyException;
+import com.lv.fast.exception.BusinessException;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,7 +46,7 @@ public class QueryWrapperUtil {
             queryWrapper.orderByDesc(pageQuery.getSortBy());
             return queryWrapper;
         }
-        throw new MyException(RestResultCodeConstant.PARAM_ERROR, "分页搜索，排序类型非法");
+        throw new BusinessException(RestResultCodeConstant.PARAM_ERROR, "分页搜索，排序类型非法");
     }
 
     /**
@@ -65,7 +65,7 @@ public class QueryWrapperUtil {
             queryWrapper.orderByAsc(orderFields);
             return queryWrapper;
         }
-        throw new MyException(RestResultCodeConstant.PARAM_ERROR, "分页搜索，排序类型非法");
+        throw new BusinessException(RestResultCodeConstant.PARAM_ERROR, "分页搜索，排序类型非法");
     }
 
     /**
