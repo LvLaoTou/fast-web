@@ -19,7 +19,6 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <knife4j.version>3.0.3</knife4j.version>
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
         <hutool.version>5.7.16</hutool.version>
         <guava.version>30.1.1-jre</guava.version>
