@@ -251,7 +251,7 @@
                 <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
                     <!--删除条件 默认关系为and 即需要满足所有条件-->
                     <!--文件名需要满足的格式-->
-                    <IfFileName glob="error-*.log">
+                    <IfFileName glob="request-*.log">
                         <IfAny>
                             <!--
                                 最后修改时间 age必须和filePattern的精确度一致否则不生效
@@ -289,7 +289,7 @@
                 <Delete basePath="${FILE_PATH}" maxDepth="${MAX_DEPTH}">
                     <!--删除条件 默认关系为and 即需要满足所有条件-->
                     <!--文件名需要满足的格式-->
-                    <IfFileName glob="error-*.log">
+                    <IfFileName glob="business-*.log">
                         <IfAny>
                             <!--
                                 最后修改时间 age必须和filePattern的精确度一致否则不生效

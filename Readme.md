@@ -18,7 +18,7 @@
                         |-- valid 参数校验包  
                     |-- config 配置对象包  
                     |-- exception 异常包  
-                    |-- model 业务模块
+                    |-- module 业务模块
                         |-- test 测试模块(可删除,提供业务代码编写参考)
             |-- resource 配置文件  
                 |-- mapper mybatis/mybatis-plus dao xml文件  
@@ -91,8 +91,8 @@
     - 持久化：默认使用名为RequestLog的logger输出日志，默认单独输出到logs/request*.log文件中
   - 记录业务日志
     - 实现参考美团技术团队的文章，奈何没有找到源码，所以自己实现了一个简单版本，[原文](https://mp.weixin.qq.com/s/JC51S_bI02npm4CE5NEEow)
-    - 使用注解com.lv.fast.common.log.LogRecord，参考使用：com.lv.fast.model.test.service.TestService.convert
-    - 实现获取操作者接口com.lv.fast.common.log.OperatorService，参考：com.lv.fast.model.test.service.TestOperatorServiceImpl.getOperator
+    - 使用注解com.lv.fast.common.log.LogRecord，参考使用：TestService.convert
+    - 实现获取操作者接口com.lv.fast.common.log.OperatorService，参考：TestOperatorServiceImpl.getOperator
     - 实现日志存储接口com.lv.fast.common.log.LogRecordService，默认实现：com.lv.fast.common.log.LogRecordConfig.logRecordService(输出到info级别的日志文件))
     - 设置线程上下文变量（暂时不支持使用线程池）com.lv.fast.common.log.LogRecordContext，
       ***注意因为使用aop实现记录业务日志，如果嵌套使用需要满足spring aop嵌套使用规则，避免aop失效导致未记录日志，[spring aop官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop)***
