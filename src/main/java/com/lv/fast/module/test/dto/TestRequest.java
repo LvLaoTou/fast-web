@@ -1,4 +1,4 @@
-package com.lv.fast.model.test.dto;
+package com.lv.fast.module.test.dto;
 
 import com.lv.fast.common.entity.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;

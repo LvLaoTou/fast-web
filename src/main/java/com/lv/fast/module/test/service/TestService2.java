@@ -1,10 +1,10 @@
-package com.lv.fast.model.test.service;
+package com.lv.fast.module.test.service;
 
 import com.lv.fast.common.log.LogRecord;
 import com.lv.fast.common.log.LogRecordConstant;
 import com.lv.fast.common.log.LogRecordContext;
 import com.lv.fast.common.log.OperateTypeEnum;
-import com.lv.fast.model.test.dto.TestRequest;
+import com.lv.fast.module.test.dto.TestRequest;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,8 +1,8 @@
-package com.lv.fast.model.test.controller;
+package com.lv.fast.module.test.controller;
 
 import com.lv.fast.common.entity.RestResult;
-import com.lv.fast.model.test.dto.TestRequest;
-import com.lv.fast.model.test.service.TestService;
+import com.lv.fast.module.test.dto.TestRequest;
+import com.lv.fast.module.test.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

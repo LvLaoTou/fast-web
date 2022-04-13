@@ -1,4 +1,4 @@
-package com.lv.fast.model.test.service;
+package com.lv.fast.module.test.service;
 
 import com.lv.fast.common.log.Operator;
 import com.lv.fast.common.log.OperatorService;
