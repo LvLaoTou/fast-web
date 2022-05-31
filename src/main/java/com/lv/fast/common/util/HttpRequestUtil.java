@@ -1,7 +1,6 @@
 package com.lv.fast.common.util;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.lv.fast.common.constant.HttpConstant;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,18 +35,5 @@ public class HttpRequestUtil {
             ip = request.getRemoteAddr();
         }
         return ip;
-    }
-
-    /**
-     * 从请求头获取token
-     * @param request 请求对象
-     * @return token
-     */
-    public static String getToken(HttpServletRequest request){
-        String token = request.getHeader(HttpConstant.TOKEN_HEADER_KEY_SYS);
-        if (StringUtils.isBlank(token)){
-            token = request.getParameter(HttpConstant.TOKEN_HEADER_KEY_SYS);
-        }
-        return token;
     }
 }
