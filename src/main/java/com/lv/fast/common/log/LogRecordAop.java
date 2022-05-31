@@ -1,12 +1,12 @@
 package com.lv.fast.common.log;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.util.ParameterUtil;
 import com.lv.fast.common.util.ThreadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -91,25 +91,25 @@ public class LogRecordAop {
                         // 是否记录日志
                         boolean isRecord = true;
                         String conditionSpel = logRecord.condition();
-                        if (StringUtils.isNoneBlank(conditionSpel)){
+                        if (StrUtil.isNotBlank(conditionSpel)){
                             // 获取触发条件
                             isRecord = parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class);
                         }
                         if (isRecord){
-                            boolean isSuccess = StringUtils.isBlank(rootObject.getErrorMessage());
+                            boolean isSuccess = StrUtil.isBlank(rootObject.getErrorMessage());
                             String operatorSpel = logRecord.operator();
-                            if (StringUtils.isNoneBlank(operatorSpel)){
+                            if (StrUtil.isNotBlank(operatorSpel)){
                                 operator.set(parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class));
                             }
                             String describe = null;
                             if (isSuccess){
                                 String successSpel = logRecord.success();
-                                if (StringUtils.isNoneBlank(successSpel)){
+                                if (StrUtil.isNotBlank(successSpel)){
                                     describe = parser.parseExpression(successSpel).getValue(evaluationContext, String.class);
                                 }
                             }else {
                                 String failSpel = logRecord.fail();
-                                if (StringUtils.isNoneBlank(failSpel)){
+                                if (StrUtil.isNotBlank(failSpel)){
                                     describe = parser.parseExpression(failSpel).getValue(evaluationContext, String.class);
                                 }else {
                                     describe = rootObject.getErrorMessage();
@@ -120,11 +120,11 @@ public class LogRecordAop {
                                     .success(isSuccess)
                                     .operateType(logRecord.operateType())
                                     .operator(operator.get());
-                            if (StringUtils.isNoneBlank(describe)){
+                            if (StrUtil.isNotBlank(describe)){
                                 recordBuilder.describe(describe);
                             }
                             String bizNoSpel = logRecord.bizNo();
-                            if (StringUtils.isNoneBlank(bizNoSpel)){
+                            if (StrUtil.isNotBlank(bizNoSpel)){
                                 String bizNo = parser.parseExpression(bizNoSpel).getValue(evaluationContext, String.class);
                                 recordBuilder.bizNo(bizNo);
                             }

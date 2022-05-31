@@ -327,7 +327,7 @@
             <appender-ref ref="RequestLog"/>
         </AsyncLogger>
 
-        <!--http请求日志 additivity不继承父logger的appender避免日志重复输出-->
+        <!--业务日志 additivity不继承父logger的appender避免日志重复输出-->
         <AsyncLogger name="BusinessLog" level="debug" includeLocation="true" additivity="false">
             <appender-ref ref="BusinessLog"/>
         </AsyncLogger>

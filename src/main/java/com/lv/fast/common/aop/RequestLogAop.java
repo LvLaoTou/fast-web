@@ -1,7 +1,7 @@
 package com.lv.fast.common.aop;
 
-import com.lv.fast.common.constant.JsonConstant;
 import com.lv.fast.common.util.HttpRequestUtil;
+import com.lv.fast.common.util.JsonUtil;
 import com.lv.fast.common.util.ParameterUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -56,7 +56,7 @@ public class RequestLogAop {
                 log.debug("请求URI路径：{}", request.getRequestURI());
                 log.debug("客户端IP地址：{}", HttpRequestUtil.getRequestIp(request));
                 log.debug("请求参数：{}", requestParamJson);
-                log.debug("请求响应：{}", result == null ? "" : (result instanceof MultipartFile) ? "响应文件" : JsonConstant.MAPPER.writeValueAsString(result));
+                log.debug("请求响应：{}", result == null ? "" : (result instanceof MultipartFile) ? "响应内容" : JsonUtil.toJson(result));
                 log.debug("是否执行成功：{}", isSuccess);
                 stopWatch.stop();
                 log.debug("耗时详情：");

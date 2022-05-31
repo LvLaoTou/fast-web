@@ -1,12 +1,12 @@
 package com.lv.fast.common.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.entity.PageQuery;
 import com.lv.fast.common.enums.OrderTypeEnum;
-import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.exception.BusinessException;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -30,7 +30,7 @@ public class QueryWrapperUtil {
     public static <Q extends PageQuery,T> QueryWrapper<T> getPageQueryWrapper(Q pageQuery, String... columns){
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         String key = pageQuery.getKey();
-        if (StringUtils.isNotBlank(key)){
+        if (StrUtil.isNotBlank(key)){
             for (int i = 0; i < columns.length; i++) {
                 queryWrapper.like(columns[i],key);
                 if (i < columns.length - 1){

@@ -1,9 +1,9 @@
 package com.lv.fast.exception;
 
+import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.entity.RestResult;
 import com.lv.fast.common.enums.RestResultEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
     public RestResult handle(ConstraintViolationException e) {
         log.error("请求参数异常", e);
         String message = e.getMessage();
-        if (StringUtils.isNotBlank(message)){
+        if (StrUtil.isNotBlank(message)){
             message = message.substring(message.lastIndexOf(":")+1).trim();
         }
         return RestResult.build(RestResultEnum.PARAM_ERROR).withMessage(message);
