@@ -1,7 +1,6 @@
 package com.lv.fast.common.util;
 
 import com.google.common.collect.Maps;
-import com.lv.fast.common.constant.JsonConstant;
 import lombok.SneakyThrows;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -44,6 +43,6 @@ public class ParameterUtil {
         Map<String, Object> param = requestParam.entrySet().stream()
                 .filter(entry -> !(entry.getValue() instanceof MultipartFile))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return JsonConstant.MAPPER.writeValueAsString(param);
+        return JsonUtil.toJson(param);
     }
 }

@@ -1,9 +1,8 @@
 package com.lv.fast.common.util;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.lv.fast.common.constant.JsonConstant;
-import com.lv.fast.common.valid.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
+import com.lv.fast.common.valid.Describe;
 import com.lv.fast.exception.BusinessException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -668,7 +667,7 @@ public class Assert {
     @SneakyThrows
     public static void logOutError(Object logOutData){
         if (logOutData != null){
-            log.error("断言不为空日志数据：", JsonConstant.MAPPER.writeValueAsString(logOutData));
+            log.error("断言不为空日志数据：", JsonUtil.toJson(logOutData));
         }
     }
 }

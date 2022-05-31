@@ -13,7 +13,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import lombok.SneakyThrows;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -29,19 +28,11 @@ public class JsonConstant {
 
     private JsonConstant(){}
 
-    public static final ObjectMapper MAPPER = getObjectMapper();
+    /** 序列化 */
+    public static final ObjectMapper WRITE_MAPPER = getObjectMapper();
 
-    public static final JsonMapper JSON_MAPPER = getJsonMapper();
-
-    @SneakyThrows
-    public static String writeValueAsString(Object value){
-        return MAPPER.writeValueAsString(value);
-    }
-
-    @SneakyThrows
-    public static String writeAsString(Object value){
-        return getJsonMapper().writeValueAsString(value);
-    }
+    /** 反序列化 */
+    public static final JsonMapper READ_MAPPER = getJsonMapper();
 
     private static ObjectMapper getObjectMapper(){
         ObjectMapper objectMapper = new ObjectMapper();
