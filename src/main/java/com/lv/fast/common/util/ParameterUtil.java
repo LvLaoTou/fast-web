@@ -23,7 +23,7 @@ public class ParameterUtil {
      * @return
      */
     public static Map<String, Object> getRequestParam(JoinPoint joinPoint){
-        Assert.assertNotNull(joinPoint, "JoinPoint is null");
+        Assert.notEmpty(joinPoint, "JoinPoint is null");
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         String[] parameterNames = methodSignature.getParameterNames();
         Object[] parameterValues = joinPoint.getArgs();

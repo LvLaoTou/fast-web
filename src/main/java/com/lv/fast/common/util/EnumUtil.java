@@ -38,7 +38,7 @@ public class EnumUtil {
      * @return 泛型对象
      */
     public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, P code, String errorDescribe, boolean ignoreCase){
-        Assert.assertNotNull(code, StringUtils.isNoneBlank(errorDescribe) ? errorDescribe : "code不能为空");
+        Assert.notEmpty(code, StringUtils.isNoneBlank(errorDescribe) ? errorDescribe : "code不能为空");
         T[] enumConstants = target.getEnumConstants();
         List<T> baseList = Arrays.stream(enumConstants).filter(t -> {
             if (ignoreCase){
@@ -46,8 +46,8 @@ public class EnumUtil {
             }
             return code.toString().equals(((Code)t).getCode().toString());
         }).collect(Collectors.toList());
-        Assert.assertNotNull(baseList,errorDescribe);
-        Assert.assertIsTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
+        Assert.notEmpty(baseList,errorDescribe);
+        Assert.isTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
         return baseList.get(0);
     }
 

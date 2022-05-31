@@ -22,11 +22,11 @@ public class LogRecordContext {
     private final static InheritableThreadLocal<Stack<Map<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
 
     public static void putVariable(String key, Object value){
-        Assert.assertNotNull(key, "key不能为空");
-        Assert.assertNotNull(value, "value不能为空");
+        Assert.notEmpty(key, "key不能为空");
+        Assert.notEmpty(value, "value不能为空");
         // 由线程日志切面完成初始化
         Stack<Map<String, Object>> mapStack = getStack();
-        Assert.assertNotNull(mapStack, "日志变量线程上下文未初始化");
+        Assert.notEmpty(mapStack, "日志变量线程上下文未初始化");
         Map<String, Object> variableMap = mapStack.peek();
         variableMap.put(key, value);
     }
@@ -52,7 +52,7 @@ public class LogRecordContext {
     }
 
     public static void setStack(Stack<Map<String, Object>> stack){
-        Assert.assertNotNull(stack, "操作日志线程上下文环境变量栈不能为空");
+        Assert.notEmpty(stack, "操作日志线程上下文环境变量栈不能为空");
         variableMapStack.set(stack);
     }
 
