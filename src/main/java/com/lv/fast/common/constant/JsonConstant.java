@@ -28,10 +28,16 @@ public class JsonConstant {
 
     private JsonConstant(){}
 
-    /** 序列化 */
+    /**
+     * 序列化
+     * 不建议直接使用, 建议使用包装工具类方法{@link com.lv.fast.common.util.JsonUtil#toJson(Object)}  }
+     */
     public static final ObjectMapper WRITE_MAPPER = getObjectMapper();
 
-    /** 反序列化 */
+    /**
+     * 反序列化
+     * 不建议直接使用, 建议使用包装工具类方法{@link com.lv.fast.common.util.JsonUtil#toObject(String, Class)}
+     */
     public static final JsonMapper READ_MAPPER = getJsonMapper();
 
     private static ObjectMapper getObjectMapper(){
