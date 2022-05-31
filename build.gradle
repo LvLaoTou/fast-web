@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.3'
+    id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -35,16 +35,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.5.13'
-    implementation ('com.baomidou:mybatis-plus-boot-starter:3.4.3.4'){
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+    implementation ('com.baomidou:mybatis-plus-boot-starter:3.5.1'){
         // 排除逆向工具
         exclude group:'com.baomidou',module:'mybatis-plus-generator'
     }
     //log4j2 Async Logger 附加依赖
     implementation 'com.lmax:disruptor:3.4.4'
-    implementation 'com.google.guava:guava:31.0.1-jre'
-    implementation 'cn.hutool:hutool-all:5.7.16'
-    implementation 'net.dreamlu:mica-xss:2.5.7'
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'cn.hutool:hutool-all:5.8.2'
+    implementation 'net.dreamlu:mica-xss:2.6.7'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
