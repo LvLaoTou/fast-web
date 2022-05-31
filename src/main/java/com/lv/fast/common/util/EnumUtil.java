@@ -1,8 +1,8 @@
 package com.lv.fast.common.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.valid.Code;
 import com.lv.fast.exception.BusinessException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,7 @@ public class EnumUtil {
      * @return 泛型对象
      */
     public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, P code, String errorDescribe, boolean ignoreCase){
-        Assert.notEmpty(code, StringUtils.isNoneBlank(errorDescribe) ? errorDescribe : "code不能为空");
+        Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
         T[] enumConstants = target.getEnumConstants();
         List<T> baseList = Arrays.stream(enumConstants).filter(t -> {
             if (ignoreCase){
