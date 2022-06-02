@@ -152,6 +152,41 @@
                     </layers>
                 </configuration>
             </plugin>
+            <plugin>
+                <!--官网：https://github.com/fabric8io/docker-maven-plugin-->
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.40.0</version>
+                <configuration>
+                    <!--如果本机没有docker环境的话可以指定远程docker服务-->
+                    <dockerHost>tcp://10.156.160.33:2375</dockerHost>
+                    <!--镜像仓库 也可直接放在images.image.name, 可通过mvn -Ddocker.registry传入-->
+                    <registry>docker.io</registry>
+                    <!--
+                        镜像仓库认证信息, 也可放在maven setting.xml中的<server>元素进行配置
+                        注意授权信息配置此处：
+                            优点：其他项目参与者可以直接推送镜像无需配置maven的setting.xml
+                            缺点：是明文暴露在代码中
+                            使用建议：镜像仓库和代码都是在内网,且密码可以告知开发人员
+                    -->
+                    <!--<authConfig>
+                        <username>jolokia</username>
+                        <password>s!cr!t</password>
+                    </authConfig>-->
+                    <images>
+                        <image>
+                            <!--也可将仓库地址放在此处,例${docker.registry}/${project.name}:${project.version},
+                            其中变量${docker.registry}可通过mvn -Ddocker.registry传入,也可固定-->
+                            <!--镜像名称-->
+                            <name>${project.name}:${project.version}</name>
+                            <build>
+                                <!--指定dockerfile路径-->
+                                <dockerFileDir>${project.basedir}/</dockerFileDir>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
