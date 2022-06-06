@@ -4,6 +4,18 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/fast?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
     username: root
     password: 123456
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+    password:
+    timeout: 1000ms
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 15
+        min-idle: 0
+        max-idle: 50
 
 #mybatis-plus日志输出
 mybatis-plus:
