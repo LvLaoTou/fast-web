@@ -1,4 +1,4 @@
-package com.lv.fast.common.log;
+package com.lv.fast.common.aop;
 
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LogRecordRootObject {
+public class AopRootObject {
 
     private Map<String, Object> param;
 

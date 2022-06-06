@@ -2,6 +2,9 @@ package com.lv.fast.common.log;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import com.lv.fast.common.aop.AopContext;
+import com.lv.fast.common.aop.AopEvaluationContext;
+import com.lv.fast.common.aop.AopRootObject;
 import com.lv.fast.common.util.ParameterUtil;
 import com.lv.fast.common.util.ThreadUtil;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +60,7 @@ public class LogRecordAop {
     @SneakyThrows
     @Around("pointcut(logRecord)")
     public Object around(ProceedingJoinPoint joinPoint, LogRecord logRecord){
-        LogRecordRootObject.LogRecordRootObjectBuilder builder = LogRecordRootObject.builder();
+        AopRootObject.AopRootObjectBuilder builder = AopRootObject.builder();
         Object result = null;
         try {
             // 初始化环境变量线程上下文
@@ -69,7 +72,7 @@ public class LogRecordAop {
             throw throwable;
         } finally {
             try {
-                Map<String, Object> variable = LogRecordContext.listVariable();
+                Map<String, Object> variable = AopContext.listVariable();
                 // 清除线程上下问环境变量
                 clearVariableThreadContext();
                 Object finalResult = result;
@@ -83,8 +86,8 @@ public class LogRecordAop {
                         if (finalResult != null){
                             builder.result(finalResult);
                         }
-                        LogRecordRootObject rootObject = builder.build();
-                        LogRecordEvaluationContext evaluationContext = new LogRecordEvaluationContext(rootObject, discoverer, variable);
+                        AopRootObject rootObject = builder.build();
+                        AopEvaluationContext evaluationContext = new AopEvaluationContext(rootObject, discoverer, variable);
                         if (CollectionUtil.isNotEmpty(variable)){
                             variable.forEach(evaluationContext::setVariable);
                         }
@@ -142,22 +145,22 @@ public class LogRecordAop {
     }
 
     private static void initVariableThreadContext(){
-        Stack<Map<String, Object>> stack = LogRecordContext.getStack();
+        Stack<Map<String, Object>> stack = AopContext.getStack();
         if (stack == null){
             stack = new Stack<>();
         }
         stack.push(new HashMap<>());
-        LogRecordContext.setStack(stack);
+        AopContext.setStack(stack);
     }
 
     private static void clearVariableThreadContext(){
-        Stack<Map<String, Object>> stack = LogRecordContext.getStack();
+        Stack<Map<String, Object>> stack = AopContext.getStack();
         if (stack == null){
-            LogRecordContext.clear();
+            AopContext.clear();
         }else {
             stack.pop();
             if (stack.isEmpty()){
-                LogRecordContext.clear();
+                AopContext.clear();
             }
         }
     }

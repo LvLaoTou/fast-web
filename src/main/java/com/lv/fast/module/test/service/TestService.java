@@ -1,7 +1,7 @@
 package com.lv.fast.module.test.service;
 
+import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.log.LogRecord;
-import com.lv.fast.common.log.LogRecordContext;
 import com.lv.fast.common.log.OperateTypeEnum;
 import com.lv.fast.module.test.dto.TestRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ public class TestService {
             fail = "'执行获取请求姓名失败'",
             condition = "#request.success")
     public String convert(TestRequest request){
-        LogRecordContext.putVariable("methodName", "convert");
+        AopContext.putVariable("methodName", "convert");
         testService2.test(request);
-        LogRecordContext.putVariable("requestName", "convert");
+        AopContext.putVariable("requestName", "convert");
         return request.getName();
     }
 }

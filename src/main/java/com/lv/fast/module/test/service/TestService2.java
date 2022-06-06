@@ -1,8 +1,8 @@
 package com.lv.fast.module.test.service;
 
+import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.log.LogRecord;
 import com.lv.fast.common.log.LogRecordConstant;
-import com.lv.fast.common.log.LogRecordContext;
 import com.lv.fast.common.log.OperateTypeEnum;
 import com.lv.fast.module.test.dto.TestRequest;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ public class TestService2 {
             fail = "'执行嵌套,错误信息:'+#"+ LogRecordConstant.ERROR_MESSAGE_EVALUATION,
             condition = "#request.success")
     public long test(TestRequest request){
-        LogRecordContext.putVariable("methodName", "test");
-        LogRecordContext.putVariable("requestName", "testRequest");
+        AopContext.putVariable("methodName", "test");
+        AopContext.putVariable("requestName", "testRequest");
         return request.getId();
     }
 }
