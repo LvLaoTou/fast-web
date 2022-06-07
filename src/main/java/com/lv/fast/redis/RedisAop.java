@@ -34,6 +34,16 @@ public class RedisAop {
 
     }
 
+    @Pointcut("@annotation(evict)")
+    public void evictPointcut(RedisEvict evict) {
+
+    }
+
+    @Pointcut("@annotation(batchEvict)")
+    public void batchEvictPointcut(RedisBatchEvict batchEvict) {
+
+    }
+
     @SneakyThrows
     @Around("hashCachePointcut(redisHashCache)")
     public Object hashCache(ProceedingJoinPoint joinPoint, RedisHashCache redisHashCache){
@@ -69,6 +79,33 @@ public class RedisAop {
                 long timeout = redisHashCache.timeout();
                 if (timeout > 0){
                     redisTemplate.expire(key, timeout, redisHashCache.unit());
+                }
+            }
+            return result;
+        }finally {
+            AopContext.clearVariableThreadContext();
+        }
+    }
+
+    @SneakyThrows
+    @Around("evictPointcut(evict)")
+    public Object evictCache(ProceedingJoinPoint joinPoint, RedisEvict evict){
+        AopContext.initVariableThreadContext();
+        try {
+            Object result = joinPoint.proceed();
+            String unless = evict.unless();
+            boolean isEvict = true;
+            if (StrUtil.isNotBlank(unless)){
+                isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+            }
+            if (isEvict){
+                String keySpel = evict.key();
+                String hashKeySpel = evict.hashKey();
+                String key = AopUtil.parseExpression(joinPoint, keySpel, String.class);
+                if (StrUtil.isNotBlank(hashKeySpel)){
+                    redisTemplate.opsForHash().delete(key, AopUtil.parseExpression(joinPoint, hashKeySpel, String.class));
+                }else {
+                    redisTemplate.delete(key);
                 }
             }
             return result;
