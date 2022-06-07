@@ -1,10 +1,15 @@
 package com.lv.fast.redis;
 
+import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author jie.lv
  */
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
 public @interface RedisHashCache{
 
     /**
