@@ -1,6 +1,8 @@
 package com.lv.fast.redis;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.collect.Sets;
 import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.aop.AopUtil;
 import com.lv.fast.common.util.JsonUtil;
@@ -16,6 +18,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author jie.lv
@@ -106,6 +112,46 @@ public class RedisAop {
                     redisTemplate.opsForHash().delete(key, AopUtil.parseExpression(joinPoint, hashKeySpel, String.class));
                 }else {
                     redisTemplate.delete(key);
+                }
+            }
+            return result;
+        }finally {
+            AopContext.clearVariableThreadContext();
+        }
+    }
+
+    @SneakyThrows
+    @Around("batchEvictPointcut(batchEvict)")
+    public Object batchEvictCache(ProceedingJoinPoint joinPoint, RedisBatchEvict batchEvict){
+        AopContext.initVariableThreadContext();
+        try {
+            Object result = joinPoint.proceed();
+            String unless = batchEvict.unless();
+            boolean isEvict = true;
+            if (StrUtil.isNotBlank(unless)){
+                isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+            }
+            if (isEvict){
+                RedisEvict[] value = batchEvict.value();
+                Map<String, Set<String>> hashMap = Arrays.stream(value)
+                        .filter(evict -> StrUtil.isNotBlank(evict.hashKey()))
+                        .collect(Collectors.toMap(RedisEvict::key, evict -> Sets.newHashSet(evict.hashKey()),
+                                (Set<String> a, Set<String> b) -> {
+                                        a.addAll(b);
+                                        return a;
+                                })
+                        );
+                if (CollectionUtil.isNotEmpty(hashMap)){
+                    hashMap.forEach((k,v)->{
+                        redisTemplate.opsForHash().delete(k, v.toArray());
+                    });
+                }
+                Set<String> keyList = Arrays.stream(value)
+                        .filter(evict -> StrUtil.isBlank(evict.hashKey()))
+                        .map(RedisEvict::key)
+                        .collect(Collectors.toSet());
+                if (CollectionUtil.isNotEmpty(keyList)){
+                    redisTemplate.delete(keyList);
                 }
             }
             return result;
