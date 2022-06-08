@@ -126,33 +126,58 @@ public class RedisAop {
         AopContext.initVariableThreadContext();
         try {
             Object result = joinPoint.proceed();
-            String unless = batchEvict.unless();
-            boolean isEvict = true;
-            if (StrUtil.isNotBlank(unless)){
-                isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+            String batchUnless = batchEvict.unless();
+            boolean batchIsEvict = true;
+            if (StrUtil.isNotBlank(batchUnless)){
+                batchIsEvict = AopUtil.parseExpression(joinPoint, batchUnless, Boolean.class);
             }
-            if (isEvict){
-                RedisEvict[] value = batchEvict.value();
-                Map<String, Set<String>> hashMap = Arrays.stream(value)
-                        .filter(evict -> StrUtil.isNotBlank(evict.hashKey()))
-                        .collect(Collectors.toMap(RedisEvict::key, evict -> Sets.newHashSet(evict.hashKey()),
-                                (Set<String> a, Set<String> b) -> {
-                                        a.addAll(b);
-                                        return a;
-                                })
-                        );
-                if (CollectionUtil.isNotEmpty(hashMap)){
-                    hashMap.forEach((k,v)->{
-                        redisTemplate.opsForHash().delete(k, v.toArray());
-                    });
-                }
-                Set<String> keyList = Arrays.stream(value)
-                        .filter(evict -> StrUtil.isBlank(evict.hashKey()))
-                        .map(RedisEvict::key)
-                        .collect(Collectors.toSet());
-                if (CollectionUtil.isNotEmpty(keyList)){
-                    redisTemplate.delete(keyList);
-                }
+            RedisEvict[] value = batchEvict.value();
+            boolean finalBatchIsEvict = batchIsEvict;
+            Map<String, Set<String>> hashMap = Arrays.stream(value)
+                    .filter(evict -> {
+                        String hashKey = evict.hashKey();
+                        if (StrUtil.isBlank(hashKey)){
+                            return false;
+                        }
+                        String unless = evict.unless();
+                        if (StrUtil.isNotBlank(unless)){
+                            Boolean isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+                            if (isEvict != null){
+                                return isEvict;
+                            }
+                        }
+                        return finalBatchIsEvict;
+                    })
+                    .collect(Collectors.toMap(RedisEvict::key, evict -> Sets.newHashSet(evict.hashKey()),
+                            (Set<String> a, Set<String> b) -> {
+                                    a.addAll(b);
+                                    return a;
+                            })
+                    );
+            if (CollectionUtil.isNotEmpty(hashMap)){
+                hashMap.forEach((k,v)->{
+                    redisTemplate.opsForHash().delete(k, v.toArray());
+                });
+            }
+            Set<String> keyList = Arrays.stream(value)
+                    .filter(evict -> {
+                        String hashKey = evict.hashKey();
+                        if (StrUtil.isNotBlank(hashKey)){
+                            return false;
+                        }
+                        String unless = evict.unless();
+                        if (StrUtil.isNotBlank(unless)){
+                            Boolean isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+                            if (isEvict != null){
+                                return isEvict;
+                            }
+                        }
+                        return finalBatchIsEvict;
+                    })
+                    .map(RedisEvict::key)
+                    .collect(Collectors.toSet());
+            if (CollectionUtil.isNotEmpty(keyList)){
+                redisTemplate.delete(keyList);
             }
             return result;
         }finally {
