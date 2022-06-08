@@ -13,7 +13,7 @@ public @interface RedisEvict {
 
     /**
      * redis key
-     * 默认为方法名+参数
+     * 默认为方法名
      * @return
      */
     String key() default "";

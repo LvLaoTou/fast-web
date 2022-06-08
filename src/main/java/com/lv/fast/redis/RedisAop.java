@@ -63,8 +63,8 @@ public class RedisAop {
                 // 获取触发条件
                 isQueryCache = AopUtil.parseExpression(joinPoint, condition, Boolean.class);
             }
-            String key = AopUtil.parseExpression(joinPoint, keySpel, String.class);
-            String hashKey = AopUtil.parseExpression(joinPoint, hashKeySpel, String.class);
+            String key = AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
+            String hashKey = AopUtil.parseExpressionIfBlankReturnMethodParam(joinPoint, hashKeySpel);
             if (isQueryCache){
                 Object redisValue = redisTemplate.opsForHash().get(key, hashKey);
                 if (redisValue != null && StrUtil.isNotBlank(redisValue.toString())){
@@ -107,7 +107,7 @@ public class RedisAop {
             if (isEvict){
                 String keySpel = evict.key();
                 String hashKeySpel = evict.hashKey();
-                String key = AopUtil.parseExpression(joinPoint, keySpel, String.class);
+                String key = AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
                 if (StrUtil.isNotBlank(hashKeySpel)){
                     redisTemplate.opsForHash().delete(key, AopUtil.parseExpression(joinPoint, hashKeySpel, String.class));
                 }else {
@@ -148,7 +148,8 @@ public class RedisAop {
                         }
                         return finalBatchIsEvict;
                     })
-                    .collect(Collectors.toMap(RedisEvict::key, evict -> Sets.newHashSet(evict.hashKey()),
+                    .collect(Collectors.toMap(evict-> AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()),
+                            evict -> Sets.newHashSet(AopUtil.parseExpression(joinPoint, evict.hashKey(), String.class)),
                             (Set<String> a, Set<String> b) -> {
                                     a.addAll(b);
                                     return a;
@@ -174,7 +175,7 @@ public class RedisAop {
                         }
                         return finalBatchIsEvict;
                     })
-                    .map(RedisEvict::key)
+                    .map(evict-> AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()))
                     .collect(Collectors.toSet());
             if (CollectionUtil.isNotEmpty(keyList)){
                 redisTemplate.delete(keyList);
