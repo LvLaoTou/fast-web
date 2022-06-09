@@ -10,6 +10,7 @@
                 |-- com.lv.fast  
                     |-- common 公共包
                         |-- annotation 注解包  
+                        |-- aop 切面包  
                         |-- constant 常量包  
                         |-- entity 实体包  
                         |-- enums 枚举包
@@ -20,6 +21,7 @@
                     |-- exception 异常包  
                     |-- module 业务模块
                         |-- test 测试模块(可删除,提供业务代码编写参考)
+                    |-- redis 缓存组件Redis相关功能代码 (如不需要可删除,同时删除pom.xml的redis相关依赖)
             |-- resource 配置文件  
                 |-- mapper mybatis/mybatis-plus dao xml文件  
                 |-- static 静态资源文件  
@@ -28,15 +30,20 @@
                 |-- log4j2-spring.xml 日志配置文件  
         |-- test 单元测试  
     |-- .gitignore  
-    |-- pom.xml  
+    |-- pom.xml
+    |-- LICENSE 授权文件
+    |-- TODO.md 功能规划  
     |-- Readme.md
+    |-- Dockerfile 构建docker镜像
 ```
 ## 技术桟
 - 基础框架：SpringBoot
 - ORM：Mybatis-plus
 - 日志：Sl4j Log4j2
 - 数据库：Mysql
+- 缓存：Redis
 - 应用监控：Actuator
+- 容器：Docker
 - 接口管理：Spring doc
 - 工具包：Guava Lombok Hutool
 ## 基础功能
@@ -95,6 +102,10 @@
     - 实现日志存储接口com.lv.fast.common.log.LogRecordService，默认实现：com.lv.fast.common.log.LogRecordConfig.logRecordService(输出到info级别的日志文件))
     - 设置线程上下文变量（暂时不支持使用线程池）com.lv.fast.common.log.LogRecordContext，
       ***注意因为使用aop实现记录业务日志，如果嵌套使用需要满足spring aop嵌套使用规则，避免aop失效导致未记录日志，[spring aop官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop)***
+  - Redis自定义注解
+    - com.lv.fast.redis.RedisHashCache 使用Redis Hash数据结构进行缓存,使用案例：com.lv.fast.module.test.service.TestService.testRedisCache
+    - com.lv.fast.redis.RedisEvict 清除Redis缓存,使用案例：com.lv.fast.module.test.service.TestService.testRedisEvict
+    - com.lv.fast.redis.RedisBatchEvict 批量清除Redis缓存,使用案例：com.lv.fast.module.test.service.TestService.testRedisBatchEvict
 ## 业务编码参考
-com.lv.fast.model包是用于写业务代码，规划为以模块为单位划分包，com.lv.fast.model.test为测试模块
-提供参考参考，mvc模型开发方式，可以测试记录请求日志和业务日志以及参数校验和swagger等功能。不需要可以自行删除。
+com.lv.fast.module包是用于写业务代码，规划为以模块为单位划分包，com.lv.fast.module.test为测试模块
+提供参考参考，mvc模型开发方式，可以测试记录请求日志和业务日志以及参数校验和swagger以及自定义Redis注解等功能。不需要可以自行删除。
