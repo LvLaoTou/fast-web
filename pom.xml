@@ -25,6 +25,7 @@
         <disruptor.version>3.4.4</disruptor.version>
         <spring-doc.version>1.6.9</spring-doc.version>
         <mica-xss.version>2.6.7</mica-xss.version>
+        <docker-plugin.version>0.40.0</docker-plugin.version>
     </properties>
 
     <dependencies>
@@ -168,7 +169,7 @@
                 <!--官网：https://github.com/fabric8io/docker-maven-plugin-->
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.40.0</version>
+                <version>${docker-plugin.version}</version>
                 <configuration>
                     <!--如果本机没有docker环境的话可以指定远程docker服务-->
                     <dockerHost>tcp://10.156.160.33:2375</dockerHost>
