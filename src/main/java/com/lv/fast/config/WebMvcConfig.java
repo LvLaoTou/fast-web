@@ -11,7 +11,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.lv.fast.common.constant.DateTimeConstant;
 import com.lv.fast.common.valid.Code;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author lv
  */
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final Jackson2ObjectMapperBuilder builder;
@@ -115,38 +116,26 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * LocalDateTime转换器，用于转换RequestParam和PathVariable参数
      */
     @Bean
+    @ConditionalOnBean(name = "requestMappingHandlerAdapter")
     public Converter<String, LocalDateTime> localDateTimeConverter() {
-        return new Converter<String, LocalDateTime>() {
-            @Override
-            public LocalDateTime convert(String source) {
-                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DateTimeConstant.DATE_TIME_FORMAT));
-            }
-        };
+        return source -> LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DateTimeConstant.DATE_TIME_FORMAT));
     }
 
     /**
      * LocalDate转换器，用于转换RequestParam和PathVariable参数
      */
     @Bean
+    @ConditionalOnBean(name = "requestMappingHandlerAdapter")
     public Converter<String, LocalDate> localDateConverter() {
-        return new Converter<String, LocalDate>() {
-            @Override
-            public LocalDate convert(String source) {
-                return LocalDate.parse(source,  DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT));
-            }
-        };
+        return source -> LocalDate.parse(source,  DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT));
     }
 
     /**
      * LocalTime转换器，用于转换RequestParam和PathVariable参数
      */
     @Bean
+    @ConditionalOnBean(name = "requestMappingHandlerAdapter")
     public Converter<String, LocalTime> localTimeConverter() {
-        return new Converter<String, LocalTime>() {
-            @Override
-            public LocalTime convert(String source) {
-                return LocalTime.parse(source,  DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT));
-            }
-        };
+        return source -> LocalTime.parse(source,  DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT));
     }
 }
