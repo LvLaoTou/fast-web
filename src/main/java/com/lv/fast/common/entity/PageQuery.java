@@ -45,12 +45,4 @@ public class PageQuery {
     @Schema(description = "搜索关键字", example = "deleteToken", maxLength = PageConstant.SEARCH_KEY_MAX_LENGTH)
     @Length(max = PageConstant.SEARCH_KEY_MAX_LENGTH, message = "搜索关键字最多"+PageConstant.SEARCH_KEY_MAX_LENGTH+"个字符")
     private String key;
-
-    @Schema(description = "排序方式", example = "desc", defaultValue = PageConstant.DEFAULT_PAGE_ORDER_TYPE)
-    private OrderTypeEnum order = OrderTypeEnum.DESC;
-
-    @Schema(description = "排序字段", example = "created_time", maxLength = DataBaseConstant.FIELD_MAX_LENGTH, defaultValue = PageConstant.DEFAULT_PAGE_ORDER_FIELD)
-    @Pattern(regexp = "[A-Za-z0-9_]{1,64}", message = "排序字段格式非法")
-    @Length(max = DataBaseConstant.FIELD_MAX_LENGTH, message = "排序字段最多"+DataBaseConstant.FIELD_MAX_LENGTH+"个字符")
-    private String sortBy = PageConstant.DEFAULT_PAGE_ORDER_FIELD;
 }
