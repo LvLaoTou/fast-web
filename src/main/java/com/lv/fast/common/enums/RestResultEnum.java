@@ -22,17 +22,8 @@ public enum RestResultEnum implements Describe {
     /** 数据库已存在 */
     DATABASE_EXIST_ERROR(RestResultCodeConstant.DATABASE_EXIST, RestResultDescribeConstant.DATABASE_EXIST),
 
-    /** 权限不足 */
-    AUTHORIZATION_INSUFFICIENT_ERROR(RestResultCodeConstant.AUTHORIZATION_INSUFFICIENT, RestResultDescribeConstant.AUTHORIZATION_INSUFFICIENT),
-
-    /** 没有对应的处理器 */
-    PATH_NOT_FOUND(RestResultCodeConstant.PATH_NO_HANDLER, RestResultDescribeConstant.PATH_NO_HANDLER),
-
-    /** token为空错误 */
-    TOKEN_IS_NULL(RestResultCodeConstant.AUTHORIZATION_TOKEN_IS_NULL, RestResultDescribeConstant.AUTHORIZATION_TOKEN_IS_NULL),
-
-    /** token已失效 */
-    TOKEN_INVALID(RestResultCodeConstant.AUTHORIZATION_TOKEN_INVALID, RestResultDescribeConstant.AUTHORIZATION_TOKEN_INVALID),
+    /** 数据库不存在 */
+    DATABASE_NOT_EXIST_ERROR(RestResultCodeConstant.DATABASE_NOT_EXIST, RestResultDescribeConstant.DATABASE_NOT_EXIST),
     ;
 
     /**
