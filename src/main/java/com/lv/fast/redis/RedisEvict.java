@@ -3,7 +3,7 @@ package com.lv.fast.redis;
 import java.lang.annotation.*;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

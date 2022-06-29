@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Json常量类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class JsonConstant {
 

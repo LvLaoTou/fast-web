@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 日志操作者
- * @author jie.lv
+ * @author lvlaotou
  */
 @Data
 @Builder

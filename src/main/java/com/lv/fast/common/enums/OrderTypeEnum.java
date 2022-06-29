@@ -7,7 +7,7 @@ import com.lv.fast.common.valid.Code;
 
 /**
  * 排序方式
- * @author lv
+ * @author lvlaotou
  */
 public enum OrderTypeEnum implements Code<String> {
 

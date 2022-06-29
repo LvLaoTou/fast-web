@@ -2,7 +2,7 @@ package com.lv.fast.common.log;
 
 /**
  * 日志记录业务接口
- * @author jie.lv
+ * @author lvlaotou
  */
 public interface LogRecordService {
 

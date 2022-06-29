@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 记录日志注解
- * @author jie.lv
+ * @author lvlaotou
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

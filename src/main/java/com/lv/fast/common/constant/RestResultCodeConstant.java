@@ -2,7 +2,7 @@ package com.lv.fast.common.constant;
 
 /**
  *  全局响应标识码常量类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class RestResultCodeConstant {
 

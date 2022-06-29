@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * 分页工具类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class PageUtil {
 

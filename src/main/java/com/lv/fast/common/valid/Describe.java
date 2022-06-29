@@ -2,7 +2,7 @@ package com.lv.fast.common.valid;
 
 /**
  * 全局统一描述接口
- * @author jie.lv
+ * @author lvlaotou
  */
 public interface Describe<T> extends Code<T> {
 

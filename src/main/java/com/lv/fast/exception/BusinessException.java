@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * 自定义异常
- * @author lv
- * @version 1.0.0
+ * @author lvlaotou
  */
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR,reason = "发生自定义异常")
 public class BusinessException extends RuntimeException implements Describe {

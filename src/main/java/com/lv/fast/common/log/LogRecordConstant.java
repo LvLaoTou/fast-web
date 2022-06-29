@@ -2,7 +2,7 @@ package com.lv.fast.common.log;
 
 /**
  * 日志记录常量类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class LogRecordConstant {
 

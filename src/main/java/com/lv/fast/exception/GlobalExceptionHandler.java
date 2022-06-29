@@ -17,8 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * 全局异常处理
- * @author lv
- * @version 1.0.0
+ * @author lvlaotou
  */
 @RestControllerAdvice
 @Slf4j

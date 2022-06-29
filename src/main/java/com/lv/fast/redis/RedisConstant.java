@@ -1,7 +1,7 @@
 package com.lv.fast.redis;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 public class RedisConstant {
 

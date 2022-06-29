@@ -2,7 +2,7 @@ package com.lv.fast.common.valid;
 
 /**
  *  全局带标识码的接口
- * @author jie.lv
+ * @author lvlaotou
  */
 public interface Code<T> {
 

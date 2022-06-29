@@ -3,7 +3,7 @@ package com.lv.fast.common.constant;
 
 /**
  * 分页常量类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class PageConstant {
 

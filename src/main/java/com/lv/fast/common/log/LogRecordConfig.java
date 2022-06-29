@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Configuration
 public class LogRecordConfig {

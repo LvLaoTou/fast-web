@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * 使用枚举作为限定条件的校验注解
- * @author lv
- * @version 1.0.0
+ * @author lvlaotou
  */
 @Target({ ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

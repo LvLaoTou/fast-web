@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * 日期时间常量类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class DateTimeConstant {
 

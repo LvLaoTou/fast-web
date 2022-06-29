@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  * 查询条件工具类
- * @author lv
+ * @author lvlaotou
  */
 public class QueryWrapperUtil {
 

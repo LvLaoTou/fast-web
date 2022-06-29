@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 /**
  *  统一响应对象
- * @author jie.lv
+ * @author lvlaotou
  */
 @Data
 @Schema(description = "Http Restful 接口统一响应对象")

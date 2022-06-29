@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * HttpRequest工具类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class HttpRequestUtil {
 

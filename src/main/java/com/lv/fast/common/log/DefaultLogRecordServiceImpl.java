@@ -3,7 +3,7 @@ package com.lv.fast.common.log;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Slf4j(topic = "BusinessLog")
 public class DefaultLogRecordServiceImpl implements LogRecordService {

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * MyBatisPlus配置类
- * @author jie.lv
+ * @author lvlaotou
  */
 @Configuration
 @MapperScan("com.**.dao")

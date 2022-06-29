@@ -4,7 +4,7 @@ import javax.validation.groups.Default;
 
 /**
  * 修改策略
- * @author lv
+ * @author lvlaotou
  */
 public interface UpdateStrategy extends Default {
 }

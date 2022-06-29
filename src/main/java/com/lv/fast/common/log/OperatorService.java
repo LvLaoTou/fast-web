@@ -1,7 +1,7 @@
 package com.lv.fast.common.log;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 public interface OperatorService {
 

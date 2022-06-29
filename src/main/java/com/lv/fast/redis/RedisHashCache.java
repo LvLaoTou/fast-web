@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

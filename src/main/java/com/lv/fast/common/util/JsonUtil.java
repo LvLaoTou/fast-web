@@ -5,7 +5,7 @@ import com.lv.fast.common.constant.JsonConstant;
 import lombok.SneakyThrows;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 public class JsonUtil {
 

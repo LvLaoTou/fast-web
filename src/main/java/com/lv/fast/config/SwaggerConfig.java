@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * swagger配置类
- * @author lv
+ * @author lvlaotou
  */
 @Configuration
 @Profile({"dev","test"})

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 请求日志aop
- * @author jie.lv
+ * @author lvlaotou
  */
 @Order
 @Slf4j(topic = "RequestLog")

@@ -5,7 +5,7 @@ import com.lv.fast.common.log.OperatorService;
 import org.springframework.stereotype.Service;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Service
 public class TestOperatorServiceImpl implements OperatorService {

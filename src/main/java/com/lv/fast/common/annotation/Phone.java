@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 手机号校验注解
- * @author lv
+ * @author lvlaotou
  */
 @Documented
 @ConstraintComposition(CompositionType.AND)

@@ -28,7 +28,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Aspect
 @Order

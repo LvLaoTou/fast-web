@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 /**
  * 枚举工具类
- * @author lv
- * @version 1.0.0
+ * @author lvlaotou
  */
 public class EnumUtil {
 

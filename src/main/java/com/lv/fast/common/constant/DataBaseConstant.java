@@ -2,7 +2,7 @@ package com.lv.fast.common.constant;
 
 /**
  * 数据库常量类
- * @author jie.lv
+ * @author lvlaotou
  */
 public class DataBaseConstant {
 

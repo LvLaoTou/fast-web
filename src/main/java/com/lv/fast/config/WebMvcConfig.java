@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * webmvc配置类
- * @author lv
+ * @author lvlaotou
  */
 @Configuration
 @RequiredArgsConstructor

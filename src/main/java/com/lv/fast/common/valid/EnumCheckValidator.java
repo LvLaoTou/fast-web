@@ -12,8 +12,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * @author lv
- * @version 1.0.0
+ * @author lvlaotou
  */
 @Slf4j
 public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object> {

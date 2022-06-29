@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author jie.lv
+ * @author lvlaotou
  */
 @Data
 @Validated

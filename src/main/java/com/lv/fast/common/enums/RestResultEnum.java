@@ -6,7 +6,7 @@ import com.lv.fast.common.constant.RestResultDescribeConstant;
 
 /**
  *  全局统一响应枚举对象
- * @author jie.lv
+ * @author lvlaotou
  */
 public enum RestResultEnum implements Describe {
 

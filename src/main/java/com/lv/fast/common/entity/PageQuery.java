@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 分页查询对象
- * @author lv
+ * @author lvlaotou
  */
 @Data
 @Validated
