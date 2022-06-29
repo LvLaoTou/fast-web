@@ -1,7 +1,7 @@
 package com.lv.fast.common.util;
 
 import cn.hutool.core.util.StrUtil;
-import com.lv.fast.common.valid.Code;
+import com.lv.fast.common.entity.Code;
 import com.lv.fast.exception.BusinessException;
 
 import java.util.Arrays;

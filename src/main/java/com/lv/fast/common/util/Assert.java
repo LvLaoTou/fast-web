@@ -3,7 +3,7 @@ package com.lv.fast.common.util;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.constant.RestResultCodeConstant;
-import com.lv.fast.common.valid.Describe;
+import com.lv.fast.common.entity.Describe;
 import com.lv.fast.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 

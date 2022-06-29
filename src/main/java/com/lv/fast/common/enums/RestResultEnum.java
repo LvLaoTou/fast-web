@@ -1,6 +1,6 @@
 package com.lv.fast.common.enums;
 
-import com.lv.fast.common.valid.Describe;
+import com.lv.fast.common.entity.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.constant.RestResultDescribeConstant;
 

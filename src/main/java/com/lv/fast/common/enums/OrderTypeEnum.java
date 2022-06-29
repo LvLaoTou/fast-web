@@ -3,7 +3,7 @@ package com.lv.fast.common.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.lv.fast.common.util.EnumUtil;
-import com.lv.fast.common.valid.Code;
+import com.lv.fast.common.entity.Code;
 
 /**
  * 排序方式

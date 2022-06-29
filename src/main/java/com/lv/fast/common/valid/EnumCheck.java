@@ -1,5 +1,7 @@
 package com.lv.fast.common.valid;
 
+import com.lv.fast.common.entity.Code;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

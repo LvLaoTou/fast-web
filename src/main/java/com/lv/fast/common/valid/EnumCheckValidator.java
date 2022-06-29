@@ -1,5 +1,6 @@
 package com.lv.fast.common.valid;
 
+import com.lv.fast.common.entity.Code;
 import com.lv.fast.common.util.Assert;
 import com.lv.fast.common.util.EnumUtil;
 import com.lv.fast.exception.BusinessException;

@@ -1,4 +1,4 @@
-package com.lv.fast.common.annotation;
+package com.lv.fast.common.valid;
 
 import org.hibernate.validator.constraints.CompositionType;
 import org.hibernate.validator.constraints.ConstraintComposition;

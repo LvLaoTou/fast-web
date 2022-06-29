@@ -3,7 +3,6 @@ package com.lv.fast.common.entity;
 import com.google.common.collect.Maps;
 import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.enums.RestResultEnum;
-import com.lv.fast.common.valid.Describe;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

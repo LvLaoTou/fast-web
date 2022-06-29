@@ -1,6 +1,6 @@
 package com.lv.fast.exception;
 
-import com.lv.fast.common.valid.Describe;
+import com.lv.fast.common.entity.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

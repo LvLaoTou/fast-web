@@ -1,6 +1,6 @@
 package com.lv.fast.config;
 
-import com.lv.fast.common.valid.Code;
+import com.lv.fast.common.entity.Code;
 import com.lv.fast.common.util.EnumUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;

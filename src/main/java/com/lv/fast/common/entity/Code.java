@@ -1,4 +1,4 @@
-package com.lv.fast.common.valid;
+package com.lv.fast.common.entity;
 
 /**
  *  全局带标识码的接口
