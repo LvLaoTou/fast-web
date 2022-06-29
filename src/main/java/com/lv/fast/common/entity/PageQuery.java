@@ -1,8 +1,6 @@
 package com.lv.fast.common.entity;
 
-import com.lv.fast.common.constant.DataBaseConstant;
 import com.lv.fast.common.constant.PageConstant;
-import com.lv.fast.common.enums.OrderTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 
 /**
  * 分页查询对象

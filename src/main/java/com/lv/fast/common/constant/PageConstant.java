@@ -35,21 +35,6 @@ public class PageConstant {
     public static final int MAX_PAGE_SIZE = 100;
 
     /**
-     * 默认分页排序方式
-     */
-    public static final String DEFAULT_PAGE_ORDER_TYPE = "desc";
-
-    /**
-     * 默认分页排序字段
-     */
-    public static final String DEFAULT_PAGE_ORDER_FIELD = "created_time";
-
-    /**
-     * 数据库单词分隔符
-     */
-    public static final String SEPARATOR_BEAN_NAME = "_";
-
-    /**
      * 搜索关键字最大长度
      */
     public static final int SEARCH_KEY_MAX_LENGTH = 20;
