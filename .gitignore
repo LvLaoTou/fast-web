@@ -8,4 +8,4 @@ target
 HELP.md
 mvnw.cmd
 mvnw
-/src/test/java/com/lv/fast/ApplicationTests.java
+/src/test/java/com/lv/fast/ApiTest.java
