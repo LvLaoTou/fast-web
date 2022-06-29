@@ -19,30 +19,23 @@ public class RestResultCodeConstant {
         成功：0
      */
 
-    /**
-     * 成功
-     */
+    /** 成功 */
     public static final String SUCCESS = "0";
 
-    /**
-     * 服务端未知错误
-     */
+    /** 服务端未知错误 */
     public static final String UNKNOWN = "20000";
 
     /*---------------------------------------------用户输入错误-------------------------------------------------------------*/
 
-    /**
-     * 参数模块---参数错误
-     */
+    /** 参数错误 */
     public static final String PARAM_ERROR = "10101";
 
-    /**
-     * 数据库模块---记录已存在
-     */
+    /** 数据库记录已存在 */
     public static final String DATABASE_EXIST = "10201";
 
-    /**
-     * 数据库模块---记录不存在
-     */
+    /** 数据库记录不存在 */
     public static final String DATABASE_NOT_EXIST = "10202";
+
+    /** 接口地址不存在 */
+    public static final String PATH_NOT_FOUND = "10301";
 }

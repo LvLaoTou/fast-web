@@ -24,7 +24,9 @@ public enum RestResultEnum implements Describe {
 
     /** 数据库不存在 */
     DATABASE_NOT_EXIST_ERROR(RestResultCodeConstant.DATABASE_NOT_EXIST, RestResultDescribeConstant.DATABASE_NOT_EXIST),
-    ;
+
+    /** 请求路径不存在 */
+    PATH_NOT_FOUND(RestResultCodeConstant.PATH_NOT_FOUND, RestResultDescribeConstant.PATH_NOT_FOUND);
 
     /**
      * 标识码
