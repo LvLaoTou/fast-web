@@ -1,24 +1,36 @@
 package com.lv.fast.config;
 
-import com.lv.fast.common.entity.Code;
+import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.EnumUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+
+import java.lang.reflect.Method;
 
 /**
  * @author lvlaotou
  */
 @Slf4j
-public class EnumConverter<P,T extends Enum<? extends Code<P>>> implements Converter<P, T> {
+public class EnumConverter<P, E extends Enum<? extends EnumInterface<P>>> implements Converter<P, E> {
 
-    private Class<T> enumClass;
+    private Class<E> enumClass;
 
-    public EnumConverter(Class<T> enumClass){
+    public EnumConverter(Class<E> enumClass){
         this.enumClass = enumClass;
     }
 
+    @SneakyThrows
     @Override
-    public T convert(P source) {
-        return EnumUtil.getEnumByCode(enumClass, source, "没有匹配的枚举");
+    public E convert(P code) {
+        String errorDescribe = "无效枚举参数";
+        try{
+            Method method = enumClass.getMethod("errorDescribe", null);
+            if (method != null){
+                Object invoke = method.invoke(null, null);
+                errorDescribe = invoke.toString();
+            }
+        }catch (Exception e){}
+        return EnumUtil.getEnumByCode(enumClass, code, errorDescribe);
     }
 }

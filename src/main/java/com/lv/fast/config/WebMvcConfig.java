@@ -10,7 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.lv.fast.common.constant.DateTimeConstant;
-import com.lv.fast.common.entity.Code;
+import com.lv.fast.common.entity.EnumInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
@@ -46,10 +46,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverterFactory(new ConverterFactory<String, Enum<? extends Code<String>>>() {
-            private final ConcurrentHashMap<Class, EnumConverter> CONCURRENT_MAP = new ConcurrentHashMap<>();
+        ConcurrentHashMap<Class, EnumConverter> CONCURRENT_MAP = new ConcurrentHashMap<>();
+        registry.addConverterFactory(new ConverterFactory<String, Enum<? extends EnumInterface<String>>>() {
             @Override
-            public <T extends Enum<? extends Code<String>>> Converter<String, T> getConverter(Class<T> aClass) {
+            public <T extends Enum<? extends EnumInterface<String>>> Converter<String, T> getConverter(Class<T> aClass) {
                 EnumConverter<String, T> enumConverter = CONCURRENT_MAP.get(aClass);
                 if (enumConverter == null){
                     enumConverter = new EnumConverter<>(aClass);
@@ -58,10 +58,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 return enumConverter;
             }
         });
-        registry.addConverterFactory(new ConverterFactory<Integer, Enum<? extends Code<Integer>>>() {
-            private final ConcurrentHashMap<Class, EnumConverter> CONCURRENT_MAP = new ConcurrentHashMap<>();
+        registry.addConverterFactory(new ConverterFactory<Integer, Enum<? extends EnumInterface<Integer>>>() {
             @Override
-            public <T extends Enum<? extends Code<Integer>>> Converter<Integer, T> getConverter(Class<T> aClass) {
+            public <T extends Enum<? extends EnumInterface<Integer>>> Converter<Integer, T> getConverter(Class<T> aClass) {
                 EnumConverter<Integer, T> enumConverter = CONCURRENT_MAP.get(aClass);
                 if (enumConverter == null){
                     enumConverter = new EnumConverter<>(aClass);

@@ -2,8 +2,8 @@ package com.lv.fast.common.enums;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.lv.fast.common.util.EnumUtil;
 import com.lv.fast.common.entity.Code;
+import com.lv.fast.common.util.EnumUtil;
 
 /**
  * 排序方式
@@ -28,7 +28,7 @@ public enum OrderTypeEnum implements Code<String> {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static OrderTypeEnum create(String code){
-        return EnumUtil.getEnumByCode(OrderTypeEnum.class, code, "无效的排序方式");
+    public static OrderTypeEnum match(Object code){
+        return EnumUtil.getEnumByCode(OrderTypeEnum.class, code, "无效排序方式");
     }
 }

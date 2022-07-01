@@ -23,8 +23,8 @@ public class EnumUtil {
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, P code, String errorDescribe){
-        return getEnumByCode(target, code, errorDescribe, true);
+    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, Object code, String errorDescribe){
+        return getEnumByCode(target, code, true, errorDescribe);
     }
 
     /**
@@ -36,7 +36,7 @@ public class EnumUtil {
      * @param ignoreCase 忽略大小写
      * @return 泛型对象
      */
-    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, P code, String errorDescribe, boolean ignoreCase){
+    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, Object code, boolean ignoreCase, String errorDescribe){
         Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
         T[] enumConstants = target.getEnumConstants();
         List<T> baseList = Arrays.stream(enumConstants).filter(t -> {
