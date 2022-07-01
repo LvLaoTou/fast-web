@@ -81,6 +81,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public RestResult handle(Exception e){
         log.error("未知异常", e);
+        Throwable cause = e.getCause();
+        if (cause != null){
+            while (true){
+                Throwable sunCause = cause.getCause();
+                if (sunCause == null){
+                    return handle(cause);
+                }
+                cause = sunCause;
+            }
+        }
         return RestResult.error();
     }
 
