@@ -2,14 +2,14 @@ package com.lv.fast.common.enums;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.lv.fast.common.entity.Code;
+import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.EnumUtil;
 
 /**
  * 排序方式
  * @author lvlaotou
  */
-public enum OrderTypeEnum implements Code<String> {
+public enum OrderTypeEnum implements EnumInterface<String> {
 
     /**
      * 升序
