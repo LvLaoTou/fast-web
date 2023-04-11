@@ -11,7 +11,5 @@ WORKDIR application
 COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
-RUN true # 非必须因docker不能连续超过三次COPY 参考https://github.com/moby/moby/issues/37340
 COPY --from=builder application/application/ ./
-RUN true
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
