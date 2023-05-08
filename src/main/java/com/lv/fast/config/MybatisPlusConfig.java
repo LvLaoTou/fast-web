@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @author lvlaotou
  */
 @Configuration
+// TODO 此配置为临时配置，开发时需替换为实际配置，故此如果没有替换为实际配置而Mybatis-Plus会发出警告日志，替换为实际配置不会出现警告日志
 @MapperScan("com.**.dao")
 public class MybatisPlusConfig {
 

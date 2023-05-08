@@ -43,7 +43,7 @@ spring:
 #mybatis
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
-  # 别名包扫描路径，通过该属性可以给包中的类注册别名，注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名
+  # TODO 别名包扫描路径，通过该属性可以给包中的类注册别名，注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名
   typeAliasesPackage: com.**.DO
   global-config:
     #数据库相关配置
