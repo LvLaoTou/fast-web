@@ -1,6 +1,6 @@
 package com.lv.fast.common.valid;
 
-import com.lv.fast.common.entity.Code;
+import com.lv.fast.common.entity.EnumInterface;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -25,17 +25,8 @@ public @interface EnumCheck {
     Class<? extends Payload>[] payload() default { };
 
     /** 指定枚举类 */
-    Class<? extends Enum<? extends Code>> enumClass();
-
-    /** 需要排除的 */
-    String[] exclude() default { };
+    Class<? extends Enum<? extends EnumInterface<?>>> enumClass();
 
     /** 当作用于集合或者数组的时候 是否需要全部匹配  */
     boolean isAllMatch() default true;
-
-    /** 需要排除的是否忽略大小写 */
-    boolean excludeIgnoreCase() default true;
-
-    /** 需要匹配的是否忽略大小写 */
-    boolean matchIgnoreCase() default true;
 }
