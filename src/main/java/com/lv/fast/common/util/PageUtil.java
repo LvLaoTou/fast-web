@@ -48,7 +48,7 @@ public class PageUtil {
      * @param <T> 泛型
      * @return 分页对象
      */
-    public static <T extends PageQuery> Page getPage(T pageQuery){
+    public static <T extends PageQuery> Page<?> getPage(T pageQuery){
         return new Page<>(pageQuery.getPageIndex(),pageQuery.getPageSize());
     }
 }
