@@ -17,9 +17,7 @@ public class AopEvaluationContext extends MethodBasedEvaluationContext {
         super(rootObject, rootObject.getMethod(), rootObject.getArgs(), parameterNameDiscoverer);
         //把 Context 中的变量都放到 RootObject 中
         if (CollectionUtil.isNotEmpty(variables)){
-            variables.forEach((k,v)->{
-                setVariable(k, v);
-            });
+            variables.forEach(this::setVariable);
         }
         //把方法的返回值和 错误信息 都放到 RootObject 中
         setVariable(LogRecordConstant.METHOD_RESULT_EVALUATION, rootObject.getResult());
