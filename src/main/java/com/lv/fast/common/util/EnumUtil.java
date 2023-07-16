@@ -1,11 +1,12 @@
 package com.lv.fast.common.util;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.lv.fast.common.entity.Code;
-import com.lv.fast.exception.BusinessException;
+import com.lv.fast.common.entity.EnumInterface;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -22,28 +23,10 @@ public class EnumUtil {
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, Object code, String errorDescribe){
-        return getEnumByCode(target, code, true, errorDescribe);
-    }
-
-    /**
-     * 通过code获取枚举对象
-     * @param target 枚举对象
-     * @param code code
-     * @param errorDescribe 错误描述
-     * @param <T> 泛型
-     * @param ignoreCase 忽略大小写
-     * @return 泛型对象
-     */
-    public static  <P,T extends Enum<? extends Code<P>>> T getEnumByCode(Class<T> target, Object code, boolean ignoreCase, String errorDescribe){
+    public static  <T extends Enum<? extends EnumInterface<?>>> T getEnumByCode(Class<T> target, Object code, String errorDescribe){
         Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
         T[] enumConstants = target.getEnumConstants();
-        List<T> baseList = Arrays.stream(enumConstants).filter(t -> {
-            if (ignoreCase){
-                return code.toString().equalsIgnoreCase(((Code<?>)t).getCode().toString());
-            }
-            return code.toString().equals(((Code<?>)t).getCode().toString());
-        }).collect(Collectors.toList());
+        List<T> baseList = Arrays.stream(enumConstants).filter(t -> ObjectUtil.equals(code, ((EnumInterface<?>)t).getCode())).collect(Collectors.toList());
         Assert.notEmpty(baseList,errorDescribe);
         Assert.isTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
         return baseList.get(0);
@@ -56,24 +39,17 @@ public class EnumUtil {
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <E,T extends Enum<? extends Code<E>>> boolean isValid(Class<T> target, E code, boolean ignoreCase){
-        Code<?>[] enumConstants = (Code<?>[]) target.getEnumConstants();
-        if (enumConstants == null || enumConstants.length < 1){
+    public static  <T extends Enum<? extends EnumInterface<?>>> boolean isValid(Class<T> target, Object code){
+        if (Objects.isNull(code)){
             return false;
         }
-        long count = Arrays.stream(enumConstants).filter(enumValid -> {
-            if (code == null){
-                return false;
-            }
-            if (code instanceof String){
-                return ignoreCase ? ((String) code).equalsIgnoreCase((String) enumValid.getCode())
-                        : (code).equals(enumValid.getCode());
-            }
-            if (code instanceof Integer || code instanceof Long){
-                return (code).equals(enumValid.getCode());
-            }
-            throw new BusinessException("枚举泛型非法");
-        }).count();
+        T[] enumConstants = target.getEnumConstants();
+        if (ArrayUtil.isEmpty(enumConstants)){
+            return false;
+        }
+        long count = Arrays.stream(enumConstants).filter(enumValid ->
+            ObjectUtil.equals(code, ((EnumInterface<?>)enumValid).getCode())
+        ).count();
         return count == 1;
     }
 
@@ -81,10 +57,15 @@ public class EnumUtil {
      * 校验指定值是否在目标枚举范围内
      * @param target 目标对象
      * @param code 需要校验的值
+     * @param exclude 需要排除的值
      * @param <T> 泛型
      * @return 泛型对象
      */
-    public static  <E,T extends Enum<? extends Code<E>>> boolean isValid(Class<T> target, E code){
-        return isValid(target, code, true);
+    public static  <T extends Enum<? extends EnumInterface<?>>> boolean isValid(Class<T> target, Object code, Set<Object> exclude){
+        T[] enumConstants = target.getEnumConstants();
+        Optional<T> optional = Arrays.stream(enumConstants)
+                .filter(enumValid -> (CollectionUtil.isEmpty(exclude) || !exclude.contains(code))
+                        && ObjectUtil.equals(code, ((EnumInterface<?>) enumValid).getCode())).findAny();
+        return optional.isPresent();
     }
 }
