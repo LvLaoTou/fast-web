@@ -32,7 +32,7 @@ public class Assert {
      * @param target 目标对象
      * @param describe 错误信息
      */
-    public static void notEmpty(Object target, Describe describe){
+    public static void notEmpty(Object target, Describe<?> describe){
         notEmpty(target, describe.getCode().toString(), describe.getDescribe());
     }
 
@@ -72,7 +72,7 @@ public class Assert {
      * @param target 检测对象
      * @param describe 错误信息
      */
-    public static void notBlank(String target, Describe describe){
+    public static void notBlank(String target, Describe<?> describe){
         notBlank(target, describe.getCode().toString(), describe.getDescribe());
     }
 
@@ -92,7 +92,7 @@ public class Assert {
      * @param flag 条件
      * @param describe 错误信息
      */
-    public static void isTrue(boolean flag, Describe describe){
+    public static void isTrue(boolean flag, Describe<?> describe){
         isTrue(flag, describe.getCode().toString(), describe.getDescribe());
     }
 
@@ -102,9 +102,7 @@ public class Assert {
      * @param message 错误描述
      */
     public static void isTrue(boolean flag, String code, String message){
-        if (!flag){
-            throw new BusinessException(code, message);
-        }
+        isFalse(!flag, code, message);
     }
 
     /******************************************************************Assert Boolean Is False***********************************************************************/
@@ -123,7 +121,7 @@ public class Assert {
      * @param flag 条件
      * @param describe 错误信息
      */
-    public static void isFalse(boolean flag, Describe describe){
+    public static void isFalse(boolean flag, Describe<?> describe){
         isFalse(flag, describe.getCode().toString(), describe.getDescribe());
     }
 
