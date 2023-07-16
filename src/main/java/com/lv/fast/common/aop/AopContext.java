@@ -40,6 +40,7 @@ public class AopContext {
         return mapStack.peek();
     }
 
+    @SuppressWarnings("unused")
     public static Object getVariable(String key){
         Map<String, Object> variableMap = listVariable();
         if (CollectionUtil.isEmpty(variableMap)){

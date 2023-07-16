@@ -35,7 +35,7 @@ public enum OperateTypeEnum implements Code<Integer> {
 
     @EnumValue
     @JsonValue
-    private int code;
+    private final int code;
 
     OperateTypeEnum(int code){
         this.code = code;

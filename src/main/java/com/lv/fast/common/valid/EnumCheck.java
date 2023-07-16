@@ -25,7 +25,7 @@ public @interface EnumCheck {
     Class<? extends Payload>[] payload() default { };
 
     /** 指定枚举类 */
-    Class<? extends Enum<? extends Code>> enumClass();
+    Class<? extends Enum<? extends Code<Object>>> enumClass();
 
     /** 需要排除的 */
     String[] exclude() default { };

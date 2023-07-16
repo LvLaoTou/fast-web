@@ -15,13 +15,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
     @Bean
-    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate redisTemplate = new RedisTemplate();
+    public RedisTemplate<?, ?> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(factory);
         //关闭事务
         redisTemplate.setEnableTransactionSupport(false);
         //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
-        Jackson2JsonRedisSerializer jsonSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        Jackson2JsonRedisSerializer<?> jsonSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         jsonSerializer.setObjectMapper(JsonConstant.WRITE_MAPPER);
         //使用StringRedisSerializer来序列化和反序列化redis的key值
         StringRedisSerializer stringSerializer = new StringRedisSerializer();

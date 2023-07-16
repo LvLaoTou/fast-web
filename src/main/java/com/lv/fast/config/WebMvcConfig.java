@@ -42,7 +42,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * get请求对枚举参数的支持
-     * @param registry
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
@@ -50,7 +49,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverterFactory(new ConverterFactory<String, Enum<? extends EnumInterface<String>>>() {
             @Override
             public <T extends Enum<? extends EnumInterface<String>>> Converter<String, T> getConverter(Class<T> aClass) {
-                EnumConverter<String, T> enumConverter = CONCURRENT_MAP.get(aClass);
+                EnumConverter enumConverter = CONCURRENT_MAP.get(aClass);
                 if (enumConverter == null){
                     enumConverter = new EnumConverter<>(aClass);
                     CONCURRENT_MAP.put(aClass, enumConverter);

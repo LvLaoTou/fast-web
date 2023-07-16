@@ -20,11 +20,11 @@ public class RestResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 状态标识码 */
-    @Schema(description = "状态码 成功:"+RestResultCodeConstant.SUCCESS, example = RestResultCodeConstant.SUCCESS, required = true)
+    @Schema(description = "状态码 成功:"+RestResultCodeConstant.SUCCESS, example = RestResultCodeConstant.SUCCESS, requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     /** 描述信息 */
-    @Schema(description = "请求响应描述", example = "success", required = true)
+    @Schema(description = "请求响应描述", example = "success", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
     /** 数据 */
@@ -46,15 +46,15 @@ public class RestResult<T> implements Serializable {
         return new RestResult<>(code, message, data);
     }
 
-    public static <T> RestResult<T> build(Describe describe, T data){
+    public static <T> RestResult<T> build(Describe<?> describe, T data){
         return build(describe.getCode().toString(), describe.getDescribe(), data);
     }
 
-    public static RestResult build(Describe describe){
+    public static RestResult<?> build(Describe<?> describe){
         return build(describe.getCode().toString(), describe.getDescribe(), null);
     }
 
-    public static RestResult build(boolean isSuccess){
+    public static RestResult<?> build(boolean isSuccess){
         return isSuccess ? success() : error();
     }
 
@@ -76,16 +76,19 @@ public class RestResult<T> implements Serializable {
         return build(RestResultEnum.UNKNOWN_ERROR, null);
     }
 
+    @SuppressWarnings("unused")
     public RestResult<T> withCode(String code){
         this.code = code;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public RestResult<T> withMessage(String message){
         this.message = message;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public RestResult<T> withData(T data){
         this.data = data;
         return this;

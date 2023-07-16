@@ -34,9 +34,7 @@ public class ThreadUtil {
                     TimeUnit.SECONDS,
                     new LinkedBlockingDeque<>(5),
                     new ThreadFactoryBuilder()
-                            .setUncaughtExceptionHandler((t,e)->{
-                                log.error("日志子线程{}发生异常", t.getName() ,e);
-                            })
+                            .setUncaughtExceptionHandler((t,e)->log.error("线程池子线程{}发生异常", t.getName() ,e))
                             .setNameFormat(LOG_THREAD_NAME_PREFIX)
                             .build(),
                     new ThreadPoolExecutor.CallerRunsPolicy());

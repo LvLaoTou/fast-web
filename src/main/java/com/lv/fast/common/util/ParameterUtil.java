@@ -19,8 +19,6 @@ public class ParameterUtil {
 
     /**
      * 获取请求参数
-     * @param joinPoint
-     * @return
      */
     public static Map<String, Object> getRequestParam(JoinPoint joinPoint){
         Assert.notEmpty(joinPoint, "JoinPoint is null");
@@ -40,9 +38,12 @@ public class ParameterUtil {
     @SneakyThrows
     public static String getRequestParamJson(JoinPoint joinPoint){
         Map<String, Object> requestParam = getRequestParam(joinPoint);
-        Map<String, Object> param = requestParam.entrySet().stream()
-                .filter(entry -> !(entry.getValue() instanceof MultipartFile))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<String, Object> param = null;
+        if (requestParam != null) {
+            param = requestParam.entrySet().stream()
+                    .filter(entry -> !(entry.getValue() instanceof MultipartFile))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
         return JsonUtil.toJson(param);
     }
 }

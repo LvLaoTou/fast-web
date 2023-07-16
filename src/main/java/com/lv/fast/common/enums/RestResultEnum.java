@@ -8,7 +8,7 @@ import com.lv.fast.common.constant.RestResultDescribeConstant;
  *  全局统一响应枚举对象
  * @author lvlaotou
  */
-public enum RestResultEnum implements Describe {
+public enum RestResultEnum implements Describe<String> {
 
     /** 成功 */
     SUCCESS(RestResultCodeConstant.SUCCESS, RestResultDescribeConstant.SUCCESS),

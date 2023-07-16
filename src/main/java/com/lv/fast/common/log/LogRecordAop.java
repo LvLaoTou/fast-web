@@ -58,7 +58,7 @@ public class LogRecordAop {
     }
 
     @SneakyThrows
-    @Around("pointcut(logRecord)")
+    @Around(value = "pointcut(logRecord)", argNames = "joinPoint,logRecord")
     public Object around(ProceedingJoinPoint joinPoint, LogRecord logRecord){
         AopRootObject.AopRootObjectBuilder builder = AopRootObject.builder();
         Object result = null;
@@ -96,7 +96,7 @@ public class LogRecordAop {
                         String conditionSpel = logRecord.condition();
                         if (StrUtil.isNotBlank(conditionSpel)){
                             // 获取触发条件
-                            isRecord = parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class);
+                            isRecord = Boolean.TRUE.equals(parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class));
                         }
                         if (isRecord){
                             boolean isSuccess = StrUtil.isBlank(rootObject.getErrorMessage());
@@ -135,7 +135,7 @@ public class LogRecordAop {
                             logRecordService.record(recordBuilder.build());
                         }
                     }catch (Exception e){
-                        log.error("记录操作日志异常:{}", e);
+                        log.error("记录操作日志异常", e);
                     }
                 });
             }catch (Exception e){

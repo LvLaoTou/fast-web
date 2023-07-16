@@ -62,8 +62,6 @@ mybatis-plus:
     call-setters-on-nulls: true
     # 允许value为null
     jdbc-type-for-null: 'null'
-  # 配置枚举扫描包
-  type-enums-package: com.**.enums
 
 #Actuator配置
 management:

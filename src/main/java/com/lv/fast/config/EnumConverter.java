@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Slf4j
 public class EnumConverter<P, E extends Enum<? extends EnumInterface<P>>> implements Converter<P, E> {
 
-    private Class<E> enumClass;
+    private final Class<E> enumClass;
 
     public EnumConverter(Class<E> enumClass){
         this.enumClass = enumClass;
@@ -26,11 +26,9 @@ public class EnumConverter<P, E extends Enum<? extends EnumInterface<P>>> implem
         String errorDescribe = "无效枚举参数";
         try{
             Method method = enumClass.getMethod("errorDescribe", null);
-            if (method != null){
-                Object invoke = method.invoke(null, null);
-                errorDescribe = invoke.toString();
-            }
-        }catch (Exception e){}
+            Object invoke = method.invoke(null, null);
+            errorDescribe = invoke.toString();
+        }catch (Exception ignored){}
         return EnumUtil.getEnumByCode(enumClass, code, errorDescribe);
     }
 }

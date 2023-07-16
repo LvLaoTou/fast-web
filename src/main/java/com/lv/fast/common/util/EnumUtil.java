@@ -6,7 +6,6 @@ import com.lv.fast.exception.BusinessException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -41,9 +40,9 @@ public class EnumUtil {
         T[] enumConstants = target.getEnumConstants();
         List<T> baseList = Arrays.stream(enumConstants).filter(t -> {
             if (ignoreCase){
-                return code.toString().equalsIgnoreCase(((Code)t).getCode().toString());
+                return code.toString().equalsIgnoreCase(((Code<?>)t).getCode().toString());
             }
-            return code.toString().equals(((Code)t).getCode().toString());
+            return code.toString().equals(((Code<?>)t).getCode().toString());
         }).collect(Collectors.toList());
         Assert.notEmpty(baseList,errorDescribe);
         Assert.isTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
@@ -58,7 +57,7 @@ public class EnumUtil {
      * @return 泛型对象
      */
     public static  <E,T extends Enum<? extends Code<E>>> boolean isValid(Class<T> target, E code, boolean ignoreCase){
-        Code[] enumConstants = (Code[]) target.getEnumConstants();
+        Code<?>[] enumConstants = (Code<?>[]) target.getEnumConstants();
         if (enumConstants == null || enumConstants.length < 1){
             return false;
         }
@@ -87,19 +86,5 @@ public class EnumUtil {
      */
     public static  <E,T extends Enum<? extends Code<E>>> boolean isValid(Class<T> target, E code){
         return isValid(target, code, true);
-    }
-
-    /**
-     * 校验指定值是否在目标枚举范围内
-     * @param target 目标对象
-     * @param code 需要校验的值
-     * @param exclude 需要排除的值
-     * @param <T> 泛型
-     * @return 泛型对象
-     */
-    public static  <T extends Enum<? extends Code>> boolean isValid(Class<T> target, String code, String[] exclude){
-        Code[] enumConstants = (Code[]) target.getEnumConstants();
-        long count = Arrays.stream(enumConstants).filter(enumValid -> Objects.equals(enumValid.getCode(), code)).count();
-        return count == 1;
     }
 }

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RedisAop {
 
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, ?> redisTemplate;
 
 
     @Pointcut("@annotation(redisHashCache)")
@@ -51,7 +51,7 @@ public class RedisAop {
     }
 
     @SneakyThrows
-    @Around("hashCachePointcut(redisHashCache)")
+    @Around(value = "hashCachePointcut(redisHashCache)", argNames = "joinPoint,redisHashCache")
     public Object hashCache(ProceedingJoinPoint joinPoint, RedisHashCache redisHashCache){
         AopContext.initVariableThreadContext();
         try{
@@ -94,7 +94,7 @@ public class RedisAop {
     }
 
     @SneakyThrows
-    @Around("evictPointcut(evict)")
+    @Around(value = "evictPointcut(evict)", argNames = "joinPoint,evict")
     public Object evictCache(ProceedingJoinPoint joinPoint, RedisEvict evict){
         AopContext.initVariableThreadContext();
         try {
@@ -121,7 +121,7 @@ public class RedisAop {
     }
 
     @SneakyThrows
-    @Around("batchEvictPointcut(batchEvict)")
+    @Around(value = "batchEvictPointcut(batchEvict)", argNames = "joinPoint,batchEvict")
     public Object batchEvictCache(ProceedingJoinPoint joinPoint, RedisBatchEvict batchEvict){
         AopContext.initVariableThreadContext();
         try {

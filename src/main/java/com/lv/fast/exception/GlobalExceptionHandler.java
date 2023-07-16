@@ -24,23 +24,23 @@ import java.util.concurrent.ExecutionException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public RestResult handle(BusinessException e) {
+    public RestResult<?> handle(BusinessException e) {
         log.error("发生自定义异常", e);
         return RestResult.build(e);
     }
 
     @ExceptionHandler(UndeclaredThrowableException.class)
-    public RestResult handle(UndeclaredThrowableException e) {
+    public RestResult<?> handle(UndeclaredThrowableException e) {
         return handle(e.getCause());
     }
 
     @ExceptionHandler(ExecutionException.class)
-    public RestResult handle(ExecutionException e) {
+    public RestResult<?> handle(ExecutionException e) {
         return handle(e.getCause());
     }
 
     @ExceptionHandler(BindException.class)
-    public RestResult handle(BindException e) {
+    public RestResult<?> handle(BindException e) {
         log.error("请求参数异常", e);
         String message = "参数错误";
         FieldError fieldError = e.getBindingResult().getFieldError();
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
             String field = fieldError.getField();
             message += ",参数名:"+field;
             String defaultMessage = fieldError.getDefaultMessage();
-            if (defaultMessage.contains("nested exception")){
+            if (defaultMessage != null && defaultMessage.contains("nested exception")) {
                 defaultMessage = "类型错误";
             }
             message += ",错误描述:"+defaultMessage;
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public RestResult handle(ConstraintViolationException e) {
+    public RestResult<?> handle(ConstraintViolationException e) {
         log.error("请求参数异常", e);
         String message = e.getMessage();
         if (StrUtil.isNotBlank(message)){
@@ -67,19 +67,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public RestResult handle(DuplicateKeyException e){
+    public RestResult<?> handle(DuplicateKeyException e){
         log.error("数据库异常", e);
         return RestResult.build(RestResultEnum.DATABASE_EXIST_ERROR);
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public RestResult handle(NoHandlerFoundException e) {
+    public RestResult<?> handle(NoHandlerFoundException e) {
         log.error("路径异常，没有对应的处理器", e);
         return RestResult.build(RestResultEnum.PATH_NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public RestResult handle(Exception e){
+    public RestResult<?> handle(Exception e){
         log.error("未知异常", e);
         Throwable cause = e.getCause();
         if (cause != null){
@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
         return RestResult.error();
     }
 
-    public RestResult handle(Throwable throwable){
+    public RestResult<?> handle(Throwable throwable){
         if (throwable instanceof ExecutionException){
             return handle((ExecutionException) throwable);
         }

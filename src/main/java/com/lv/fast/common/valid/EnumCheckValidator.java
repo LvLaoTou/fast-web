@@ -29,7 +29,7 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
 
     @Override
     public void initialize(EnumCheck enumCheck) {
-        enumClass = (Class<? extends Enum<? extends Code<Object>>>) enumCheck.enumClass();
+        enumClass = enumCheck.enumClass();
         exclude = enumCheck.exclude();
         isAllMatch = enumCheck.isAllMatch();
         excludeIgnoreCase = enumCheck.excludeIgnoreCase();
@@ -42,13 +42,15 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
             return true;
         }
         Assert.notEmpty(enumClass,"枚举参数校验异常");
-        Collection<Object> target = null;
+        Collection<?> target = null;
         try{
-            if (code instanceof Collection){
-                target = ((Collection<Object>) code);
+            if (code instanceof Collection<?>){
+                target = ((Collection<?>) code);
             }
             if (code.getClass().isArray()){
-                target = Arrays.stream((Object[]) code).collect(Collectors.toSet());
+                if (code instanceof Object[]) {
+                    target = Arrays.stream((Object[]) code).collect(Collectors.toSet());
+                }
             }
         }catch (ClassCastException e){
             log.error("EnumCheck注解目标对象转换异常", e);
@@ -58,8 +60,8 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
         if (target != null){
             // 校验需要排除的
             if (exclude != null){
-                flag = target.stream().allMatch(
-                        targetCode->!Arrays.stream(exclude)
+                flag = target.stream().noneMatch(
+                        targetCode-> Arrays.stream(exclude)
                                 .anyMatch(excludeCode -> (excludeIgnoreCase ? targetCode.toString().equalsIgnoreCase(excludeCode) : targetCode.toString().equals(excludeCode))
                                 )
                 );
