@@ -24,34 +24,34 @@ public class TestController {
 
     @PostMapping("/post")
     @Operation(summary = "测试post请求", description = "测试post请求")
-    public RestResult test(@RequestBody @Validated TestRequest request){
+    public RestResult<?> test(@RequestBody @Validated TestRequest request){
         return RestResult.success(testService.convert(request));
     }
 
     @GetMapping("/testHash")
-    public RestResult testHash(@RequestParam long param){
+    public RestResult<?> testHash(@RequestParam long param){
         return RestResult.success(testService.testRedisCache(param));
     }
 
     @GetMapping("/testEvict")
-    public RestResult testEvict(@RequestParam long param){
-        testService.testRedisEvict(param);
+    public RestResult<?> testEvict(){
+        testService.testRedisEvict();
         return RestResult.success();
     }
 
     @GetMapping("/testBatchEvict")
-    public RestResult testBatchEvict(@RequestParam long param){
-        testService.testRedisBatchEvict(param);
+    public RestResult<?> testBatchEvict(){
+        testService.testRedisBatchEvict();
         return RestResult.success();
     }
 
     @GetMapping("/test/enum")
-    public RestResult testEnumParam(@RequestParam TestEnum param){
+    public RestResult<?> testEnumParam(@RequestParam TestEnum param){
         return RestResult.success(param);
     }
 
     @PostMapping("/enum")
-    public RestResult testEnum(@RequestBody TestEnumRequest param){
+    public RestResult<?> testEnum(@RequestBody TestEnumRequest param){
         return RestResult.success(param);
     }
 }

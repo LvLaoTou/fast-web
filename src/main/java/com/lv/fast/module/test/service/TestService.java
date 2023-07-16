@@ -51,7 +51,7 @@ public class TestService {
             hashKey = "#param",
             unless = "#param < 20"
     )
-    public void testRedisEvict(long param){
+    public void testRedisEvict(){
         System.out.println("执行清除缓存业务");
     }
 
@@ -80,7 +80,7 @@ public class TestService {
             },
             unless = "#param > 10"
     )
-    public void testRedisBatchEvict(long param){
-        System.out.printf("执行批量清除缓存业务");
+    public void testRedisBatchEvict(){
+        System.out.print("执行批量清除缓存业务");
     }
 }

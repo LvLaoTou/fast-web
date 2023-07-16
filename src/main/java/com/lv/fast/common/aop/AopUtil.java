@@ -59,6 +59,8 @@ public class AopUtil {
         return parseExpression(joinPoint, spel, String.class);
     }
 
+
+    @SuppressWarnings("unused")
     public static String parseExpressionIfBlankReturnMethodNameAndParam(ProceedingJoinPoint joinPoint, String spel){
         if (StrUtil.isBlank(spel)){
             Object[] parameterValues = joinPoint.getArgs();

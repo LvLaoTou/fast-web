@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author lvlaotou
  */
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR,reason = "发生自定义异常")
-public class BusinessException extends RuntimeException implements Describe {
+public class BusinessException extends RuntimeException implements Describe<String> {
 
     /**
      * 状态码
@@ -25,15 +25,17 @@ public class BusinessException extends RuntimeException implements Describe {
     /**
      * 无参构造
      */
+    @SuppressWarnings("unused")
     public BusinessException(){}
 
     /**
      * 使用自定义异常枚举类构造自定义异常
      * @param describe 统一响应接口
      */
-    public BusinessException(Describe describe){
+    @SuppressWarnings("unused")
+    public BusinessException(Describe<String> describe){
         super(describe.getDescribe());
-        this.code = describe.getCode().toString();
+        this.code = describe.getCode();
         this.describe = describe.getDescribe();
     }
 

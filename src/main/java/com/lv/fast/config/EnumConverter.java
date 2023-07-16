@@ -25,8 +25,8 @@ public class EnumConverter<P, E extends Enum<? extends EnumInterface<P>>> implem
     public E convert(P code) {
         String errorDescribe = "无效枚举参数";
         try{
-            Method method = enumClass.getMethod("errorDescribe", null);
-            Object invoke = method.invoke(null, null);
+            Method method = enumClass.getMethod("errorDescribe");
+            Object invoke = method.invoke(null);
             errorDescribe = invoke.toString();
         }catch (Exception ignored){}
         return EnumUtil.getEnumByCode(enumClass, code, errorDescribe);

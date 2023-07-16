@@ -61,6 +61,7 @@ public class EnumUtil {
      * @param <T> 泛型
      * @return 泛型对象
      */
+    @SuppressWarnings("unused")
     public static  <T extends Enum<? extends EnumInterface<?>>> boolean isValid(Class<T> target, Object code, Set<Object> exclude){
         T[] enumConstants = target.getEnumConstants();
         Optional<T> optional = Arrays.stream(enumConstants)

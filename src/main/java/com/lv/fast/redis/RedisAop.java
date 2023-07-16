@@ -156,9 +156,7 @@ public class RedisAop {
                             })
                     );
             if (CollectionUtil.isNotEmpty(hashMap)){
-                hashMap.forEach((k,v)->{
-                    redisTemplate.opsForHash().delete(k, v.toArray());
-                });
+                hashMap.forEach((k,v)->redisTemplate.opsForHash().delete(k, v.toArray()));
             }
             Set<String> keyList = Arrays.stream(value)
                     .filter(evict -> {
