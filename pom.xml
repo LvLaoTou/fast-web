@@ -30,12 +30,6 @@
 
     <dependencies>
 
-        <!-- 去掉springboot默认日志配置 -->
-        <dependency>
-            <artifactId>spring-boot-starter-logging</artifactId>
-            <groupId>org.springframework.boot</groupId>
-        </dependency>
-
         <!--Spring Boot 监控管理工具-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
