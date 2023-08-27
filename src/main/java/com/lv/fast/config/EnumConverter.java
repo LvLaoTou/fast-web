@@ -2,9 +2,9 @@ package com.lv.fast.config;
 
 import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.EnumUtil;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Method;
 
@@ -20,9 +20,8 @@ public class EnumConverter<P, E extends Enum<? extends EnumInterface<P>>> implem
         this.enumClass = enumClass;
     }
 
-    @SneakyThrows
     @Override
-    public E convert(P code) {
+    public E convert(@Nullable P code) {
         String errorDescribe = "无效枚举参数";
         try{
             Method method = enumClass.getMethod("errorDescribe");

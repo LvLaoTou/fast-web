@@ -26,7 +26,7 @@ public class EnumUtil {
     public static  <T extends Enum<? extends EnumInterface<?>>> T getEnumByCode(Class<T> target, Object code, String errorDescribe){
         Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
         T[] enumConstants = target.getEnumConstants();
-        List<T> baseList = Arrays.stream(enumConstants).filter(t -> ObjectUtil.equals(code, ((EnumInterface<?>)t).getCode())).collect(Collectors.toList());
+        List<T> baseList = Arrays.stream(enumConstants).filter(t -> ObjectUtil.equals(code.toString(), ((EnumInterface<?>)t).getCode().toString())).collect(Collectors.toList());
         Assert.notEmpty(baseList,errorDescribe);
         Assert.isTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
         return baseList.get(0);
