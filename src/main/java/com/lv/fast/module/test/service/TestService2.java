@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestService2 {
 
-    @LogRecord(success = "'请求id:'+#request.id+',请求姓名:'+#request.name+'方法名:'+#methodName+'请求名称:'+#requestName",
+    @LogRecord(describe = "'请求id:'+#request.id+',请求姓名:'+#request.name+'方法名:'+#methodName+'请求名称:'+#requestName",
             operateType = OperateTypeEnum.SELECT,
             bizNo = "T(java.util.UUID).randomUUID()",
-            fail = "'执行嵌套,错误信息:'+#"+ LogRecordConstant.ERROR_MESSAGE_EVALUATION,
+            errorMessage = "'执行嵌套,错误信息:'+#"+ LogRecordConstant.ERROR_MESSAGE_EVALUATION,
             condition = "#request.success")
     public long test(TestRequest request){
         AopContext.putVariable("methodName", "test");

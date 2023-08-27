@@ -28,4 +28,7 @@ public class Record {
 
     /** 业务号 */
     private String bizNo;
+
+    /** 错误信息 */
+    private String errorMessage;
 }

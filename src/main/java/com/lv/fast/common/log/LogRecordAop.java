@@ -99,32 +99,32 @@ public class LogRecordAop {
                             isRecord = Boolean.TRUE.equals(parser.parseExpression(conditionSpel).getValue(evaluationContext, Boolean.class));
                         }
                         if (isRecord){
-                            boolean isSuccess = StrUtil.isBlank(rootObject.getErrorMessage());
+                            String errorMessage = rootObject.getErrorMessage();
+                            boolean isSuccess = StrUtil.isBlank(errorMessage);
                             String operatorSpel = logRecord.operator();
                             if (StrUtil.isNotBlank(operatorSpel)){
                                 operator.set(parser.parseExpression(operatorSpel).getValue(evaluationContext, Operator.class));
                             }
                             String describe = null;
-                            if (isSuccess){
-                                String successSpel = logRecord.success();
-                                if (StrUtil.isNotBlank(successSpel)){
-                                    describe = parser.parseExpression(successSpel).getValue(evaluationContext, String.class);
-                                }
-                            }else {
-                                String failSpel = logRecord.fail();
-                                if (StrUtil.isNotBlank(failSpel)){
-                                    describe = parser.parseExpression(failSpel).getValue(evaluationContext, String.class);
-                                }else {
-                                    describe = rootObject.getErrorMessage();
+                            String describeSpel = logRecord.describe();
+                            if (StrUtil.isNotBlank(describeSpel)){
+                                describe = parser.parseExpression(describeSpel).getValue(evaluationContext, String.class);
+                            }
+                            if (!isSuccess){
+                                String errorMessageSpel = logRecord.errorMessage();
+                                if (StrUtil.isNotBlank(errorMessageSpel)){
+                                    errorMessage = parser.parseExpression(errorMessageSpel).getValue(evaluationContext, String.class);
                                 }
                             }
-
                             Record.RecordBuilder recordBuilder = Record.builder()
                                     .success(isSuccess)
                                     .operateType(logRecord.operateType())
                                     .operator(operator.get());
                             if (StrUtil.isNotBlank(describe)){
                                 recordBuilder.describe(describe);
+                            }
+                            if (StrUtil.isNotBlank(errorMessage)){
+                                recordBuilder.errorMessage(errorMessage);
                             }
                             String bizNoSpel = logRecord.bizNo();
                             if (StrUtil.isNotBlank(bizNoSpel)){

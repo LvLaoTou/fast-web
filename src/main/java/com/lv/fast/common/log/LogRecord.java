@@ -13,15 +13,15 @@ import java.lang.annotation.*;
 public @interface LogRecord {
 
     /**
-     * 成功模板
+     * 操作描述
      * 支持spel表达式,spel表达式结果需要为String
      */
-    String success();
+    String describe();
 
     /**
      * 业务号
      */
-    String bizNo();
+    String bizNo() default "";
 
     /**
      * 操作类型
@@ -29,11 +29,11 @@ public @interface LogRecord {
     OperateTypeEnum operateType();
 
     /**
-     * 失败模板
+     * 错误信息
      * 支持spel表达式,spel表达式结果需要为String
      * 默认为java.lang.Throwable#getMessage()
      */
-    String fail() default "";
+    String errorMessage() default "";
 
     /**
      * 操作者

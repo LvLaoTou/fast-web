@@ -21,10 +21,10 @@ public class TestService {
 
     private final TestService2 testService2;
 
-    @LogRecord(success = "'请求id:'+#request.id+',请求姓名:'+#request.name+'方法名:'+#methodName+'请求名称:'+#requestName",
+    @LogRecord(describe = "'请求id:'+#request.id+',请求姓名:'+#request.name+'方法名:'+#methodName+'请求名称:'+#requestName",
             operateType = OperateTypeEnum.UPDATE,
             bizNo = "T(java.util.UUID).randomUUID()",
-            fail = "'执行获取请求姓名失败'",
+            errorMessage = "'执行获取请求姓名失败'",
             condition = "#request.success")
     public String convert(TestRequest request){
         AopContext.putVariable("methodName", "convert");
