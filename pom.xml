@@ -30,6 +30,18 @@
 
     <dependencies>
 
+        <!-- 排除springboot日志包 主动引入log4j2使其成为唯一的日志实现-->
+        <dependency>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!--Spring Boot 监控管理工具-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
