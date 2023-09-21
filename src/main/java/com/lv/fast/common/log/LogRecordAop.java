@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
@@ -79,7 +80,7 @@ public class LogRecordAop {
                 AtomicReference<Operator> operator = new AtomicReference<>(operatorService.getOperator());
                 ThreadUtil.LOG_THREAD_POOL_EXECUTOR.execute(()->{
                     try{
-                        Map<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
+                        LinkedHashMap<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
                         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
                         Method method = methodSignature.getMethod();
                         builder.param(params).method(method);

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * @author lvlaotou
@@ -19,7 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AopRootObject {
 
-    private Map<String, Object> param;
+    private LinkedHashMap<String, Object> param;
 
     private Method method;
 
