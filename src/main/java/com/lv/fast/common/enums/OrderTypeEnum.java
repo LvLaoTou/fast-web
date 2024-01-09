@@ -27,8 +27,14 @@ public enum OrderTypeEnum implements EnumInterface<String> {
         return name();
     }
 
+    @Override
+    public String errorDescribe() {
+        return "无效排序方式";
+    }
+
+
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static OrderTypeEnum match(Object code){
-        return EnumUtil.getEnumByCode(OrderTypeEnum.class, code, "无效排序方式");
+        return EnumUtil.getEnumByCode(OrderTypeEnum.class, code);
     }
 }

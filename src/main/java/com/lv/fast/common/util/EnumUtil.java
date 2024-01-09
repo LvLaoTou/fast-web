@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
  */
 public class EnumUtil {
 
+    public static  <T extends Enum<? extends EnumInterface<?>>> T getEnumByCode(Class<T> target, Object code){
+        return getEnumByCode(target, code, null);
+    }
+
     /**
      * 通过code获取枚举对象
      * @param target 枚举对象
@@ -24,8 +28,13 @@ public class EnumUtil {
      * @return 泛型对象
      */
     public static  <T extends Enum<? extends EnumInterface<?>>> T getEnumByCode(Class<T> target, Object code, String errorDescribe){
-        Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
         T[] enumConstants = target.getEnumConstants();
+        Assert.notEmpty(enumConstants, "枚举对象为空");
+        if (StrUtil.isBlank(errorDescribe)){
+            EnumInterface enumConstant = (EnumInterface) enumConstants[0];
+            errorDescribe = enumConstant.errorDescribe();
+        }
+        Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
         List<T> baseList = Arrays.stream(enumConstants).filter(t -> ObjectUtil.equals(code.toString(), ((EnumInterface<?>)t).getCode().toString())).collect(Collectors.toList());
         Assert.notEmpty(baseList,errorDescribe);
         Assert.isTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");

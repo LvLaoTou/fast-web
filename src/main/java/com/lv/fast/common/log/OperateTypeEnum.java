@@ -46,8 +46,14 @@ public enum OperateTypeEnum implements EnumInterface<Integer> {
         return this.code;
     }
 
+    @Override
+    public String errorDescribe() {
+        return "无效操作类型";
+    }
+
+
     @JsonCreator
     public static OperateTypeEnum create(int code){
-        return EnumUtil.getEnumByCode(OperateTypeEnum.class, code, "无效的操作类型");
+        return EnumUtil.getEnumByCode(OperateTypeEnum.class, code);
     }
 }

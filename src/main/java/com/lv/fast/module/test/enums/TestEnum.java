@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.EnumUtil;
 
+/**
+ * 测试 枚举
+ * @author lvlaotou
+ */
+
 public enum TestEnum implements EnumInterface<Integer> {
 
     ONE(1),
@@ -25,12 +30,13 @@ public enum TestEnum implements EnumInterface<Integer> {
         return this.code;
     }
 
-    public static String errorDescribe(){
+    @Override
+    public String errorDescribe(){
         return "无效测试枚举";
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static TestEnum match(Object code){
-        return EnumUtil.getEnumByCode(TestEnum.class, code, errorDescribe());
+        return EnumUtil.getEnumByCode(TestEnum.class, code);
     }
 }
