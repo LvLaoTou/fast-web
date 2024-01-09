@@ -1,12 +1,14 @@
 package com.lv.fast.common.aop;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.lv.fast.common.util.Assert;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * 线程上下文
@@ -20,20 +22,20 @@ public class AopContext {
     /**
      * 上下文变量存储容器
      */
-    private final static InheritableThreadLocal<Stack<Map<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
+    private final static InheritableThreadLocal<LinkedList<LinkedHashMap<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
 
     public static void putVariable(String key, Object value){
         Assert.notEmpty(key, "key不能为空");
         Assert.notEmpty(value, "value不能为空");
         // 由线程日志切面完成初始化
-        Stack<Map<String, Object>> mapStack = getStack();
+        LinkedList<LinkedHashMap<String, Object>> mapStack = getStack();
         Assert.notEmpty(mapStack, "线程上下文未初始化");
         Map<String, Object> variableMap = mapStack.peek();
         variableMap.put(key, value);
     }
 
-    public static Map<String, Object> listVariable(){
-        Stack<Map<String, Object>> mapStack = getStack();
+    public static LinkedHashMap<String, Object> listVariable(){
+        LinkedList<LinkedHashMap<String, Object>> mapStack = getStack();
         if (mapStack == null || mapStack.isEmpty()){
             return null;
         }
@@ -49,11 +51,11 @@ public class AopContext {
         return variableMap.get(key);
     }
 
-    public static Stack<Map<String, Object>> getStack(){
+    public static LinkedList<LinkedHashMap<String, Object>> getStack(){
         return variableMapStack.get();
     }
 
-    public static void setStack(Stack<Map<String, Object>> stack){
+    public static void setStack(LinkedList<LinkedHashMap<String, Object>> stack){
         Assert.notEmpty(stack, "线程上下文环境变量栈不能为空");
         variableMapStack.set(stack);
     }
@@ -64,16 +66,16 @@ public class AopContext {
     }
 
     public static void initVariableThreadContext(){
-        Stack<Map<String, Object>> stack = getStack();
+        LinkedList<LinkedHashMap<String, Object>> stack = getStack();
         if (stack == null){
-            stack = new Stack<>();
+            stack = Lists.newLinkedList();
         }
-        stack.push(new HashMap<>());
+        stack.push(Maps.newLinkedHashMap());
         AopContext.setStack(stack);
     }
 
     public static void clearVariableThreadContext(){
-        Stack<Map<String, Object>> stack = getStack();
+        LinkedList<LinkedHashMap<String, Object>> stack = getStack();
         if (stack == null){
             AopContext.clear();
         }else {

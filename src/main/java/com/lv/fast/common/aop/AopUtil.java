@@ -11,7 +11,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +32,7 @@ public class AopUtil {
     private final static ExpressionParser parser = new SpelExpressionParser();
 
     public static <T> T parseExpression(ProceedingJoinPoint joinPoint, String spel, Class<T> target){
-        Map<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
+        LinkedHashMap<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         AopRootObject rootObject = AopRootObject.builder()

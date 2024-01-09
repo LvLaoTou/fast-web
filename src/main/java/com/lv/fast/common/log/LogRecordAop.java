@@ -22,10 +22,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -65,7 +62,7 @@ public class LogRecordAop {
         Object result = null;
         try {
             // 初始化环境变量线程上下文
-            initVariableThreadContext();
+            AopContext.initVariableThreadContext();
             result = joinPoint.proceed();
             return result;
         }catch (Throwable throwable){
@@ -73,9 +70,9 @@ public class LogRecordAop {
             throw throwable;
         } finally {
             try {
-                Map<String, Object> variable = AopContext.listVariable();
+                LinkedHashMap<String, Object> variable = AopContext.listVariable();
                 // 清除线程上下问环境变量
-                clearVariableThreadContext();
+                AopContext.clearVariableThreadContext();
                 Object finalResult = result;
                 AtomicReference<Operator> operator = new AtomicReference<>(operatorService.getOperator());
                 ThreadUtil.LOG_THREAD_POOL_EXECUTOR.execute(()->{
@@ -141,27 +138,6 @@ public class LogRecordAop {
                 });
             }catch (Exception e){
                 log.error("记录操作日志异常", e);
-            }
-        }
-    }
-
-    private static void initVariableThreadContext(){
-        Stack<Map<String, Object>> stack = AopContext.getStack();
-        if (stack == null){
-            stack = new Stack<>();
-        }
-        stack.push(new HashMap<>());
-        AopContext.setStack(stack);
-    }
-
-    private static void clearVariableThreadContext(){
-        Stack<Map<String, Object>> stack = AopContext.getStack();
-        if (stack == null){
-            AopContext.clear();
-        }else {
-            stack.pop();
-            if (stack.isEmpty()){
-                AopContext.clear();
             }
         }
     }
