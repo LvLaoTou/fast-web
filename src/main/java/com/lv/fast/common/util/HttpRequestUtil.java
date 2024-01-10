@@ -1,8 +1,8 @@
 package com.lv.fast.common.util;
 
 import cn.hutool.core.util.StrUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * HttpRequest工具类

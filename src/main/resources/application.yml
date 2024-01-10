@@ -16,8 +16,6 @@ spring:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   mvc:
-    # 开启全局异常捕获NoHandlerFoundException异常
-    throw-exception-if-no-handler-found: true
     # 避免无法捕获NoHandlerFoundException，如果地址错误SpringMvc优先被默认的/**静态资源映射当成静态资源处理
     static-path-pattern: /static/**
   main:
@@ -85,3 +83,30 @@ mica:
     mode: escape
     # 拦截路径
     path-patterns: ${server.servlet.context-path}
+
+# knife4j的增强配置
+knife4j:
+  enable: true
+
+springdoc:
+  cache:
+    # 是否禁用缓存
+    disabled: true
+  # 是否在spring doc openapi显示actuator端点
+  show-actuator: true
+  # 是否 允许带有 ModelAndView 的 RestControllers 返回出现在 OpenAPI 描述中
+  model-and-view-allowed: false
+  # 是否将 @ControllerAdvice 响应添加到所有生成的响应中
+  override-with-generic-response: true
+  # 是否格式化打印 springdoc.api-docs.path返回的数据
+  writer-with-default-pretty-printer: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    enabled: false
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '公共接口'
+      paths-to-match: '/**'

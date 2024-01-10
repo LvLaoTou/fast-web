@@ -22,6 +22,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.StandardCharsets;
@@ -39,6 +40,12 @@ import java.time.format.DateTimeFormatter;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final Jackson2ObjectMapperBuilder builder;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 增加knife4j ui路径处理器
+        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+    }
 
     /**
      * get请求对枚举参数的支持

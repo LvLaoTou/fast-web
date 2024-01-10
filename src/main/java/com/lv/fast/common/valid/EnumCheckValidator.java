@@ -5,10 +5,10 @@ import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.Assert;
 import com.lv.fast.common.util.EnumUtil;
 import com.lv.fast.exception.BusinessException;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;

@@ -3,6 +3,7 @@ package com.lv.fast.common.aop;
 import com.lv.fast.common.util.HttpRequestUtil;
 import com.lv.fast.common.util.JsonUtil;
 import com.lv.fast.common.util.ParameterUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 请求日志aop

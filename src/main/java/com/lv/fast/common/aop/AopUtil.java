@@ -5,7 +5,7 @@ import com.lv.fast.common.util.ParameterUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
@@ -24,12 +24,12 @@ public class AopUtil {
     /**
      * Spring 参数解析器
      */
-    private final static LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+    private final static StandardReflectionParameterNameDiscoverer DISCOVERER = new StandardReflectionParameterNameDiscoverer();
 
     /**
      * spel 表达式解析器
      */
-    private final static ExpressionParser parser = new SpelExpressionParser();
+    private final static ExpressionParser PARSER = new SpelExpressionParser();
 
     public static <T> T parseExpression(ProceedingJoinPoint joinPoint, String spel, Class<T> target){
         LinkedHashMap<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
@@ -39,8 +39,8 @@ public class AopUtil {
                 .param(params)
                 .method(method)
                 .build();
-        AopEvaluationContext evaluationContext = new AopEvaluationContext(rootObject, discoverer, AopContext.listVariable());
-        return parser.parseExpression(spel).getValue(evaluationContext, target);
+        AopEvaluationContext evaluationContext = new AopEvaluationContext(rootObject, DISCOVERER, AopContext.listVariable());
+        return PARSER.parseExpression(spel).getValue(evaluationContext, target);
     }
 
     public static String parseExpressionIfBlankReturnMethodParam(ProceedingJoinPoint joinPoint, String spel){

@@ -4,18 +4,19 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/fast?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
     username: root
     password: 123456
-  redis:
-    host: 127.0.0.1
-    database: 0
-    port: 6379
-    password:
-    timeout: 1000ms
-    lettuce:
-      pool:
-        enabled: true
-        max-active: 15
-        min-idle: 0
-        max-idle: 50
+  data:
+    redis:
+      password:
+      database: 0
+      host: 127.0.0.1
+      timeout: 1000ms
+      port: 6379
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 15
+          min-idle: 0
+          max-idle: 50
 
 #mybatis-plus日志输出
 mybatis-plus:
@@ -29,14 +30,6 @@ logging:
 
 # spring doc配置
 springdoc:
-  cache:
-    # 是否禁用缓存
-    disabled: true
-  # 是否在spring doc openapi显示actuator端点
-  show-actuator: true
-  # 是否 允许带有 ModelAndView 的 RestControllers 返回出现在 OpenAPI 描述中
-  model-and-view-allowed: false
-  # 是否将 @ControllerAdvice 响应添加到所有生成的响应中
-  override-with-generic-response: true
-  # 是否格式化打印 springdoc.api-docs.path返回的数据
-  writer-with-default-pretty-printer: true
+  # 开启swagger
+  swagger-ui:
+    enabled: true
