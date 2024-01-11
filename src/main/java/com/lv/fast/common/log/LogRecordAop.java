@@ -6,7 +6,6 @@ import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.aop.AopEvaluationContext;
 import com.lv.fast.common.aop.AopRootObject;
 import com.lv.fast.common.util.ParameterUtil;
-import com.lv.fast.common.util.ThreadUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -75,7 +75,7 @@ public class LogRecordAop {
                 AopContext.clearVariableThreadContext();
                 Object finalResult = result;
                 AtomicReference<Operator> operator = new AtomicReference<>(operatorService.getOperator());
-                ThreadUtil.LOG_THREAD_POOL_EXECUTOR.execute(()->{
+                CompletableFuture.runAsync(()->{
                     try{
                         LinkedHashMap<String, Object> params = ParameterUtil.getRequestParam(joinPoint);
                         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
