@@ -12,3 +12,5 @@
 | 增加Gradle版本            | feature | 是    | 2021-12-07 |
 | 增加接入动态线程池             | feature | 否    |  |
 | 将记录业务日志功能独立成项目        | feature | 否    |            |
+| 增加基于Redis缓存双删注解功能     | feature | 否    |            |
+| 增加基于Redis防止重复提交注解功能   | feature | 否    |            |

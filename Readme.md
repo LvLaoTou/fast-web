@@ -37,6 +37,7 @@
     |-- Dockerfile 构建docker镜像
 ```
 ## 技术桟
+- JDK：***17+***
 - 基础框架：SpringBoot
 - ORM：Mybatis-plus
 - 日志：Sl4j Log4j2
@@ -44,7 +45,7 @@
 - 缓存：Redis
 - 应用监控：Actuator
 - 容器：Docker
-- 接口管理：Spring doc
+- 接口管理：Spring doc && knife4j
 - 工具包：Guava Lombok Hutool
 ## 基础功能
 - 基础框架：SpringBoot，[官网](https://spring.io/projects/spring-boot)
@@ -58,10 +59,10 @@
   - 主键策略：配置为使用数据库自增，详情查看src/main/resources/application.yml
   - 其他配置：开启驼峰命名映射，关闭缓存，允许value为null，关闭Mybatis-plus banner打印，详情查看src/main/resources/application.yml
 - 数据库：集成Mysql，具体配置参考src/main/resources/application-dev.yml
-  - 驱动：mysql-connector-java（Springboot管理依赖）
+  - 驱动：mysql-connector-j（Springboot管理依赖）
   - 连接池： hikari
-- 接口管理：集成[Spring doc](https://springdoc.org/#properties) 暂未集成knife4j，因为在集成com.github.xiaoymin:knife4j-springdoc-ui:3.0.3版本时出现一些[问题](https://gitee.com/xiaoym/knife4j/issues/I4J6R7)
-  - 访问路径：http://{ip}:{port}/{context-path}/{springdoc.swagger-ui.path}，默认值http://127.0.0.1:8080/web/swagger-ui.html
+- 接口管理：集成[Spring doc](https://springdoc.org/#properties) 和 [knife4j](https://doc.xiaominfo.com/)
+  - 访问路径：http://{ip}:{port}/{context-path}/{knife4j.path}，默认值http://127.0.0.1:8080/web/doc.html
 - 安全：
   - xss(mica-xss)过滤，[官网](https://gitee.com/596392912/mica/tree/master/mica-xss) ，配置参考src/main/resources/application.yml
   - sql注入，***目前依赖开发者自行避免,比如使用Mybatis的占位符功能，因为我没有找到比较好的解决方案，如果有好的解决方案请联系我/或提交pr***
