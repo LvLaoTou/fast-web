@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 /**
  * @author lvlaotou
  */
-public class AopUtil {
+public class ExpressionUtil {
 
-    private AopUtil(){}
+    private ExpressionUtil(){}
 
     /**
      * Spring 参数解析器

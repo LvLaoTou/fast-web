@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.lv.fast.common.aop.AopContext;
-import com.lv.fast.common.aop.AopUtil;
+import com.lv.fast.common.aop.ExpressionUtil;
 import com.lv.fast.common.util.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -61,10 +61,10 @@ public class RedisAop {
             String condition = redisHashCache.condition();
             if (StrUtil.isNotBlank(condition)){
                 // 获取触发条件
-                isQueryCache = AopUtil.parseExpression(joinPoint, condition, Boolean.class);
+                isQueryCache = ExpressionUtil.parseExpression(joinPoint, condition, Boolean.class);
             }
-            String key = AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
-            String hashKey = AopUtil.parseExpressionIfBlankReturnMethodParam(joinPoint, hashKeySpel);
+            String key = ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
+            String hashKey = ExpressionUtil.parseExpressionIfBlankReturnMethodParam(joinPoint, hashKeySpel);
             if (isQueryCache){
                 Object redisValue = redisTemplate.opsForHash().get(key, hashKey);
                 if (redisValue != null && StrUtil.isNotBlank(redisValue.toString())){
@@ -78,7 +78,7 @@ public class RedisAop {
             String unless = redisHashCache.unless();
             if (StrUtil.isNotBlank(unless)){
                 AopContext.putVariable("result", result);
-                canPutCache = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+                canPutCache = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
             }
             if (canPutCache){
                 redisTemplate.opsForHash().put(key, hashKey, result);
@@ -102,14 +102,14 @@ public class RedisAop {
             String unless = evict.unless();
             boolean isEvict = true;
             if (StrUtil.isNotBlank(unless)){
-                isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+                isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
             }
             if (isEvict){
                 String keySpel = evict.key();
                 String hashKeySpel = evict.hashKey();
-                String key = AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
+                String key = ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
                 if (StrUtil.isNotBlank(hashKeySpel)){
-                    redisTemplate.opsForHash().delete(key, AopUtil.parseExpression(joinPoint, hashKeySpel, String.class));
+                    redisTemplate.opsForHash().delete(key, ExpressionUtil.parseExpression(joinPoint, hashKeySpel, String.class));
                 }else {
                     redisTemplate.delete(key);
                 }
@@ -129,7 +129,7 @@ public class RedisAop {
             String batchUnless = batchEvict.unless();
             boolean batchIsEvict = true;
             if (StrUtil.isNotBlank(batchUnless)){
-                batchIsEvict = AopUtil.parseExpression(joinPoint, batchUnless, Boolean.class);
+                batchIsEvict = ExpressionUtil.parseExpression(joinPoint, batchUnless, Boolean.class);
             }
             RedisEvict[] value = batchEvict.value();
             boolean finalBatchIsEvict = batchIsEvict;
@@ -141,15 +141,15 @@ public class RedisAop {
                         }
                         String unless = evict.unless();
                         if (StrUtil.isNotBlank(unless)){
-                            Boolean isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+                            Boolean isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
                             if (isEvict != null){
                                 return isEvict;
                             }
                         }
                         return finalBatchIsEvict;
                     })
-                    .collect(Collectors.toMap(evict-> AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()),
-                            evict -> Sets.newHashSet(AopUtil.parseExpression(joinPoint, evict.hashKey(), String.class)),
+                    .collect(Collectors.toMap(evict-> ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()),
+                            evict -> Sets.newHashSet(ExpressionUtil.parseExpression(joinPoint, evict.hashKey(), String.class)),
                             (Set<String> a, Set<String> b) -> {
                                     a.addAll(b);
                                     return a;
@@ -166,14 +166,14 @@ public class RedisAop {
                         }
                         String unless = evict.unless();
                         if (StrUtil.isNotBlank(unless)){
-                            Boolean isEvict = AopUtil.parseExpression(joinPoint, unless, Boolean.class);
+                            Boolean isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
                             if (isEvict != null){
                                 return isEvict;
                             }
                         }
                         return finalBatchIsEvict;
                     })
-                    .map(evict-> AopUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()))
+                    .map(evict-> ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()))
                     .collect(Collectors.toSet());
             if (CollectionUtil.isNotEmpty(keyList)){
                 redisTemplate.delete(keyList);
