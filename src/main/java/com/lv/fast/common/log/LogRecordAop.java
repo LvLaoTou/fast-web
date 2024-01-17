@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.aop.AopEvaluationContext;
 import com.lv.fast.common.aop.AopRootObject;
+import com.lv.fast.common.constant.AopOrderConstant;
 import com.lv.fast.common.util.ParameterUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author lvlaotou
  */
 @Aspect
-@Order
+@Order(AopOrderConstant.OPERATE_LOG_AOP)
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -71,7 +72,7 @@ public class LogRecordAop {
         } finally {
             try {
                 LinkedHashMap<String, Object> variable = AopContext.listVariable();
-                // 清除线程上下问环境变量
+                // 清除线程上下文环境变量
                 AopContext.clearVariableThreadContext();
                 Object finalResult = result;
                 AtomicReference<Operator> operator = new AtomicReference<>(operatorService.getOperator());

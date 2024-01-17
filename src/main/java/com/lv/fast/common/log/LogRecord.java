@@ -20,6 +20,7 @@ public @interface LogRecord {
 
     /**
      * 业务号
+     * 支持spel表达式,spel表达式结果需要为String
      */
     String bizNo() default "";
 

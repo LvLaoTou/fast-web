@@ -1,5 +1,6 @@
 package com.lv.fast.common.aop;
 
+import com.lv.fast.common.constant.AopOrderConstant;
 import com.lv.fast.common.util.HttpRequestUtil;
 import com.lv.fast.common.util.JsonUtil;
 import com.lv.fast.common.util.ParameterUtil;
@@ -21,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 请求日志aop
  * @author lvlaotou
  */
-@Order
+@Order(AopOrderConstant.REQUEST_LOG_AOP)
 @Slf4j(topic = "RequestLog")
 @Aspect
 @Component
