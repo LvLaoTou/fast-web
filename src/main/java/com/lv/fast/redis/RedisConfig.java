@@ -21,8 +21,7 @@ public class RedisConfig {
         //关闭事务
         redisTemplate.setEnableTransactionSupport(false);
         //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
-        Jackson2JsonRedisSerializer<?> jsonSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        jsonSerializer.setObjectMapper(JsonConstant.WRITE_MAPPER);
+        Jackson2JsonRedisSerializer<?> jsonSerializer = new Jackson2JsonRedisSerializer<>(JsonConstant.WRITE_MAPPER, Object.class);
         //使用StringRedisSerializer来序列化和反序列化redis的key值
         StringRedisSerializer stringSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(stringSerializer);

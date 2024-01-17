@@ -95,20 +95,20 @@ public class GlobalExceptionHandler {
     }
 
     public RestResult<?> handle(Throwable throwable){
-        if (throwable instanceof ExecutionException){
-            return handle((ExecutionException) throwable);
+        if (throwable instanceof ExecutionException exception){
+            return handle(exception);
         }
-        if (throwable instanceof UndeclaredThrowableException){
-            return handle((UndeclaredThrowableException) throwable);
+        if (throwable instanceof UndeclaredThrowableException exception){
+            return handle(exception);
         }
-        if (throwable instanceof BusinessException){
-            return handle((BusinessException) throwable);
+        if (throwable instanceof BusinessException exception){
+            return handle(exception);
         }
-        if (throwable instanceof BindException){
-            return handle((BindException) throwable);
+        if (throwable instanceof BindException exception){
+            return handle(exception);
         }
-        if (throwable instanceof DuplicateKeyException){
-            return handle((DuplicateKeyException) throwable);
+        if (throwable instanceof DuplicateKeyException exception){
+            return handle(exception);
         }
         log.error("发生异常", throwable);
         return RestResult.error();
