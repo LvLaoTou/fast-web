@@ -9,3 +9,5 @@ HELP.md
 mvnw.cmd
 mvnw
 /src/test/java/com/lv/fast/ApiTest.java
+
+# AI 统一配置：.ai/ + .omp/ + .spec-superflow/ 均入库，团队共享
