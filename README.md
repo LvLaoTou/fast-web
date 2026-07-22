@@ -138,8 +138,8 @@ cd .spec-superflow && git pull origin main && cd ..
 
 ## 技术栈
 
-- JDK：***17+***
-- 基础框架：SpringBoot
+- JDK：***21+***
+- 基础框架：SpringBoot 4.1.0
 - ORM：Mybatis-Plus
 - 日志：Slf4j + Log4j2
 - 数据库：Mysql（Hikari 连接池）
