@@ -2,7 +2,9 @@ package com.lv.fast.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
@@ -12,14 +14,12 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.lv.fast.common.constant.DateTimeConstant;
 import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.EnumUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -36,10 +36,7 @@ import java.time.format.DateTimeFormatter;
  * @author lvlaotou
  */
 @Configuration
-@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
-
-    private final Jackson2ObjectMapperBuilder builder;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -83,24 +80,28 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 配置SpringBoot Jackson
+     * 配置SpringBoot Jackson (Spring Boot 4 默认 Jackson 3，Jackson2ObjectMapperBuilder 不再自动配置，手动构建)
      * @return MappingJackson2HttpMessageConverter
      */
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setDefaultCharset(StandardCharsets.UTF_8);
-        builder.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeConstant.FORMATTER));
-        builder.deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeConstant.FORMATTER));
-        builder.serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
-        builder.deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
-        builder.serializerByType(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
-        builder.deserializerByType(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
+        JavaTimeModule timeModule = new JavaTimeModule();
+        timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeConstant.FORMATTER));
+        timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeConstant.FORMATTER));
+        timeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
+        timeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
+        timeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
+        timeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
         //返回long字段 转换为String 因为js中得数字类型不能包含所有的java long值
-        builder.serializerByType(Long.class, ToStringSerializer.instance);
-        builder.serializerByType(Long.TYPE, ToStringSerializer.instance);
-        //配置枚举转换器
-        ObjectMapper objectMapper = builder.build();
+        com.fasterxml.jackson.databind.module.SimpleModule longModule = new com.fasterxml.jackson.databind.module.SimpleModule();
+        longModule.addSerializer(Long.class, ToStringSerializer.instance);
+        longModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        ObjectMapper objectMapper = JsonMapper.builder()
+                .addModule(timeModule)
+                .addModule(longModule)
+                .build();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         converter.setObjectMapper(objectMapper);
         return converter;
