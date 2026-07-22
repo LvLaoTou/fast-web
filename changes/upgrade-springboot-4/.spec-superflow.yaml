@@ -1,0 +1,45 @@
+# .spec-superflow.yaml — lightweight state machine
+# Derived data. Always rebuildable from artifacts. Lost/corrupt → fall back to content-level detection.
+
+# === Core state ===
+state: closing
+workflow: full
+revision: 1
+
+# === Hashes (fast staleness detection) ===
+artifacts_hash: sha256:7e3ca2f902af6ae868b3d8de830ea36b797c566077050d3ca0cdc51b20ca83ae
+contract_hash: null
+
+# === Execution progress ===
+execution_mode: sdd
+execution_plan_hash: sha256:439a407615110f0d738358e84d17f1ad9f7fc7fffe62528ca46579dad11a189b
+execution_plan_revision: 1
+batches_completed: 0
+test_result: null
+spec_merged: false
+
+# === Metadata ===
+change_name: upgrade-springboot-4
+last_transition: 2026-07-22T15:17:00.000Z
+last_transition_from: executing
+last_transition_to: closing
+
+# === Decision points ===
+dp_0_decisions: 变更名称: upgrade-springboot-4; 意图: 将 Spring Boot 从 3.2.1 升级到最新稳定版(4.1.x)，同步升级所有三方依赖到最新稳定版，全量代码适配; 约束: Java 21+（用户自行安装JDK）; 范围: pom.xml依赖升级 + 代码破坏性变更适配; artifact_language=zh-CN
+dp_0_result: confirmed
+dp_0_confirmed: true
+dp_0_timestamp: 2026-07-22T14:28:37Z
+dp_1_result: null
+dp_1_timestamp: null
+dp_2_result: approved: 4个工件全部通过验证，用户确认无调整
+dp_2_timestamp: 2026-07-22T14:41:50Z
+dp_3_result: approved: 用户批准执行契约，3个串行wave
+dp_3_timestamp: 2026-07-22T14:44:03Z
+dp_4_result: sdd: plan revision 1; user-confirmed; 3个串行wave，SDD保持依赖和review receipt显式记录
+dp_4_timestamp: 2026-07-22T14:57:48.592Z
+dp_5_result: null
+dp_5_timestamp: null
+dp_6_result: null
+dp_6_timestamp: null
+dp_7_result: approved: 用户确认收口归档
+dp_7_timestamp: 2026-07-22T15:16:43Z
