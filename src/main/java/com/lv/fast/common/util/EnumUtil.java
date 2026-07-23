@@ -31,7 +31,7 @@ public class EnumUtil {
         T[] enumConstants = target.getEnumConstants();
         Assert.notEmpty(enumConstants, "枚举对象为空");
         if (StrUtil.isBlank(errorDescribe)){
-            EnumInterface enumConstant = (EnumInterface) enumConstants[0];
+            EnumInterface<?> enumConstant = (EnumInterface<?>) enumConstants[0];
             errorDescribe = enumConstant.errorDescribe();
         }
         Assert.notEmpty(code, StrUtil.isNotBlank(errorDescribe) ? errorDescribe : "code不能为空");
