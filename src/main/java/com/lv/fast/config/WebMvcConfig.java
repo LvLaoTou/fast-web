@@ -1,16 +1,5 @@
 package com.lv.fast.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.lv.fast.common.constant.DateTimeConstant;
 import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.EnumUtil;
@@ -20,10 +9,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.ext.javatime.deser.LocalDateDeserializer;
+import tools.jackson.databind.ext.javatime.deser.LocalDateTimeDeserializer;
+import tools.jackson.databind.ext.javatime.deser.LocalTimeDeserializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalDateTimeSerializer;
+import tools.jackson.databind.ext.javatime.ser.LocalTimeSerializer;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.ser.std.ToStringSerializer;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -80,30 +78,29 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 配置SpringBoot Jackson (Spring Boot 4 默认 Jackson 3，Jackson2ObjectMapperBuilder 不再自动配置，手动构建)
-     * @return MappingJackson2HttpMessageConverter
+     * 配置SpringBoot Jackson (Spring Boot 4 默认 Jackson 3，手动构建消息转换器)
+     * @return JacksonJsonHttpMessageConverter
      */
     @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setDefaultCharset(StandardCharsets.UTF_8);
-        JavaTimeModule timeModule = new JavaTimeModule();
+    public JacksonJsonHttpMessageConverter mappingJackson2HttpMessageConverter() {
+        // 自定义 java.time 序列化/反序列化格式
+        SimpleModule timeModule = new SimpleModule();
         timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeConstant.FORMATTER));
         timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeConstant.FORMATTER));
         timeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
         timeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
         timeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
         timeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
-        //返回long字段 转换为String 因为js中得数字类型不能包含所有的java long值
-        com.fasterxml.jackson.databind.module.SimpleModule longModule = new com.fasterxml.jackson.databind.module.SimpleModule();
+        //返回long字段 转换为String 因为js中的数字类型不能包含所有的java long值
+        SimpleModule longModule = new SimpleModule();
         longModule.addSerializer(Long.class, ToStringSerializer.instance);
         longModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        ObjectMapper objectMapper = JsonMapper.builder()
+        JsonMapper jsonMapper = JsonMapper.builder()
                 .addModule(timeModule)
                 .addModule(longModule)
                 .build();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        converter.setObjectMapper(objectMapper);
+        JacksonJsonHttpMessageConverter converter = new JacksonJsonHttpMessageConverter(jsonMapper);
+        converter.setDefaultCharset(StandardCharsets.UTF_8);
         return converter;
     }
 
