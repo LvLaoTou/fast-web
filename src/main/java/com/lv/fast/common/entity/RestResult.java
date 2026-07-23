@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.io.Serial;
 import java.util.HashMap;
 
 /**
@@ -17,6 +18,7 @@ import java.util.HashMap;
 @Schema(description = "Http Restful 接口统一响应对象")
 public class RestResult<T> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 状态标识码 */
