@@ -41,35 +41,26 @@ public class JsonConstant {
     public static final JsonMapper READ_MAPPER = getJsonMapper();
 
     private static ObjectMapper getObjectMapper(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        //设置java.util.Date时间类的序列化以及反序列化的格式
-        objectMapper.setDateFormat(new SimpleDateFormat(DateTimeConstant.DATE_TIME_FORMAT));
-        //注册时间模块
-        objectMapper.registerModule(getTimeModule());
-        // 包含所有字段
-        objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        // 在序列化一个空对象时时不抛出异常
-        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        // 忽略反序列化时在json字符串中存在, 但在java对象中不存在的属性
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        return objectMapper;
+        return JsonMapper.builder()
+                .defaultDateFormat(new SimpleDateFormat(DateTimeConstant.DATE_TIME_FORMAT))
+                .addModule(getTimeModule())
+                .defaultPropertyInclusion(JsonInclude.Value.ALL_ALWAYS)
+                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+                .build();
     }
 
     private static JsonMapper getJsonMapper(){
-        // 忽略大小写
-        JsonMapper jsonMapper = JsonMapper.builder()
+        return JsonMapper.builder()
                 .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+                .defaultDateFormat(new SimpleDateFormat(DateTimeConstant.DATE_TIME_FORMAT))
+                .addModule(getTimeModule())
+                .defaultPropertyInclusion(JsonInclude.Value.ALL_ALWAYS)
+                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .build();
-        jsonMapper.registerModule(getTimeModule());
-        jsonMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        jsonMapper.setDateFormat(new SimpleDateFormat(DateTimeConstant.DATE_TIME_FORMAT));
-        // 在序列化一个空对象时时不抛出异常
-        jsonMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        // 忽略反序列化时在json字符串中存在, 但在java对象中不存在的属性
-        jsonMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        jsonMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        return jsonMapper;
     }
 
     private static JavaTimeModule getTimeModule(){
