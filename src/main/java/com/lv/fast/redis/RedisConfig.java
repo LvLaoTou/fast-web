@@ -1,13 +1,12 @@
 package com.lv.fast.redis;
 
-import com.lv.fast.common.constant.JsonConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -25,8 +24,8 @@ public class RedisConfig {
         redisTemplate.setConnectionFactory(factory);
         //关闭事务
         redisTemplate.setEnableTransactionSupport(false);
-        //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
-        Jackson2JsonRedisSerializer<?> jsonSerializer = new Jackson2JsonRedisSerializer<>(JsonConstant.WRITE_MAPPER, Object.class);
+        //使用JacksonJsonRedisSerializer来序列化和反序列化redis的value值 (Spring Boot 4 默认 Jackson 3)
+        JacksonJsonRedisSerializer<?> jsonSerializer = new JacksonJsonRedisSerializer<>(Object.class);
         //使用StringRedisSerializer来序列化和反序列化redis的key值
         StringRedisSerializer stringSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(stringSerializer);
@@ -41,7 +40,7 @@ public class RedisConfig {
      */
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
-        Jackson2JsonRedisSerializer<?> jsonSerializer = new Jackson2JsonRedisSerializer<>(JsonConstant.WRITE_MAPPER, Object.class);
+        JacksonJsonRedisSerializer<?> jsonSerializer = new JacksonJsonRedisSerializer<>(Object.class);
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofHours(1))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
