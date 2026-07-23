@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -84,7 +85,7 @@ public class RedisAop {
                 redisTemplate.opsForHash().put(key, hashKey, result);
                 long timeout = redisHashCache.timeout();
                 if (timeout > 0){
-                    redisTemplate.expire(key, timeout, redisHashCache.unit());
+                    redisTemplate.expire(key, Duration.of(timeout, redisHashCache.unit().toChronoUnit()));
                 }
             }
             return result;
