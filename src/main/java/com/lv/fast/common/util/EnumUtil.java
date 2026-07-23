@@ -38,7 +38,7 @@ public class EnumUtil {
         List<T> baseList = Arrays.stream(enumConstants).filter(t -> ObjectUtil.equals(code.toString(), ((EnumInterface<?>)t).getCode().toString())).collect(Collectors.toList());
         Assert.notEmpty(baseList,errorDescribe);
         Assert.isTrue(baseList.size() == 1, errorDescribe+"，预计1个值匹配，实际"+baseList.size()+"个匹配");
-        return baseList.get(0);
+        return baseList.getFirst();
     }
 
     /**
