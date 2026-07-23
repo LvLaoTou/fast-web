@@ -22,6 +22,7 @@ import tools.jackson.databind.ext.javatime.ser.LocalTimeSerializer;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.module.SimpleModule;
 import tools.jackson.databind.ser.std.ToStringSerializer;
+import org.jspecify.annotations.NonNull;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -49,13 +50,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverterFactory(new ConverterFactory<String, Enum<? extends EnumInterface<String>>>() {
             @Override
-            public <T extends Enum<? extends EnumInterface<String>>> Converter<String, T> getConverter(Class<T> aClass) {
+            public <T extends Enum<? extends EnumInterface<String>>> @NonNull Converter<String, T> getConverter(@NonNull Class<T> aClass) {
                 return source -> EnumUtil.getEnumByCode(aClass, source);
             }
         });
         registry.addConverterFactory(new ConverterFactory<Number, Enum<? extends EnumInterface<Number>>>() {
             @Override
-            public <T extends Enum<? extends EnumInterface<Number>>> Converter<Number, T> getConverter(Class<T> aClass) {
+            public <T extends Enum<? extends EnumInterface<Number>>> @NonNull Converter<Number, T> getConverter(@NonNull Class<T> aClass) {
                 return source -> EnumUtil.getEnumByCode(aClass, source);
             }
         });
