@@ -22,7 +22,7 @@ public class HttpRequestUtil {
         if (StrUtil.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (StrUtil.isBlank(ip) || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (StrUtil.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
         if (StrUtil.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
