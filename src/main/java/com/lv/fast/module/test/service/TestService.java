@@ -8,6 +8,7 @@ import com.lv.fast.redis.RedisBatchEvict;
 import com.lv.fast.redis.RedisEvict;
 import com.lv.fast.redis.RedisHashCache;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author lvlaotou
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TestService {
@@ -42,7 +44,7 @@ public class TestService {
             unit = TimeUnit.HOURS
     )
     public long testRedisCache(long param){
-        System.out.println("执行业务:"+param);
+        log.info("执行业务:{}", param);
         return param + 1;
     }
 
@@ -52,7 +54,7 @@ public class TestService {
             unless = "#param < 20"
     )
     public void testRedisEvict(){
-        System.out.println("执行清除缓存业务");
+        log.info("执行清除缓存业务");
     }
 
     @RedisBatchEvict(
@@ -81,6 +83,6 @@ public class TestService {
             unless = "#param > 10"
     )
     public void testRedisBatchEvict(){
-        System.out.print("执行批量清除缓存业务");
+        log.info("执行批量清除缓存业务");
     }
 }
