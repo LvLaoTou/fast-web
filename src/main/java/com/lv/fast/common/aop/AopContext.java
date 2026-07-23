@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 线程上下文
@@ -30,7 +31,7 @@ public class AopContext {
         // 由线程日志切面完成初始化
         LinkedList<LinkedHashMap<String, Object>> mapStack = getStack();
         Assert.notEmpty(mapStack, "线程上下文未初始化");
-        Map<String, Object> variableMap = mapStack.peek();
+        Map<String, Object> variableMap = Objects.requireNonNull(mapStack.peek(), "线程上下文环境变量栈为空");
         variableMap.put(key, value);
     }
 
