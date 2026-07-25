@@ -2,6 +2,7 @@ package com.lv.fast.exception;
 
 import com.lv.fast.common.entity.Describe;
 import com.lv.fast.common.constant.RestResultCodeConstant;
+import com.lv.fast.common.constant.RestResultDescribeConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -23,10 +24,13 @@ public class BusinessException extends RuntimeException implements Describe<Stri
     private String describe;
 
     /**
-     * 无参构造
+     * 无参构造，默认未知错误，避免 code 为 null 导致统一响应构建 NPE
      */
     @SuppressWarnings("unused")
-    public BusinessException(){}
+    public BusinessException(){
+        this.code = RestResultCodeConstant.UNKNOWN;
+        this.describe = RestResultDescribeConstant.UNKNOWN;
+    }
 
     /**
      * 使用自定义异常枚举类构造自定义异常
