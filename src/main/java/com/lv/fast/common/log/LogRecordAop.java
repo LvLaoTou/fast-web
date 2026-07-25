@@ -1,6 +1,5 @@
 package com.lv.fast.common.log;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.aop.AopEvaluationContext;
@@ -87,9 +86,6 @@ public class LogRecordAop {
                         }
                         AopRootObject rootObject = builder.build();
                         AopEvaluationContext evaluationContext = new AopEvaluationContext(rootObject, discoverer, variable);
-                        if (CollectionUtil.isNotEmpty(variable)){
-                            variable.forEach(evaluationContext::setVariable);
-                        }
                         // 是否记录日志
                         boolean isRecord = true;
                         String conditionSpel = logRecord.condition();
