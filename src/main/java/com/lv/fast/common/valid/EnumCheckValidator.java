@@ -4,10 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.lv.fast.common.entity.EnumInterface;
 import com.lv.fast.common.util.Assert;
 import com.lv.fast.common.util.EnumUtil;
-import com.lv.fast.exception.BusinessException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +14,6 @@ import java.util.stream.Collectors;
 /**
  * @author lvlaotou
  */
-@Slf4j
 public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object> {
     private Class<? extends Enum<? extends EnumInterface<?>>> enumClass;
 
@@ -35,15 +32,10 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
         }
         Assert.notNull(enumClass,"枚举参数校验异常");
         Collection<?> target = null;
-        try{
-            if (code instanceof Collection<?> collection){
-                target = collection;
-            }else if (code instanceof Object[] array){
-                target = Arrays.stream(array).collect(Collectors.toSet());
-            }
-        }catch (ClassCastException e){
-            log.error("EnumCheck注解目标对象转换异常", e);
-            throw new BusinessException("EnumCheck注解类型转换异常");
+        if (code instanceof Collection<?> collection){
+            target = collection;
+        }else if (code instanceof Object[] array){
+            target = Arrays.stream(array).collect(Collectors.toSet());
         }
         boolean flag;
         if (CollectionUtil.isNotEmpty(target)){
