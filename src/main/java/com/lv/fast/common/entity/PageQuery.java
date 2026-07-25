@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.validation.annotation.Validated;
 
 
 /**
@@ -17,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
  * @author lvlaotou
  */
 @Data
-@Validated
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
