@@ -2,6 +2,7 @@ package com.lv.fast.common.constant;
 
 /**
  * aop 排序 常量类
+ * @author lvlaotou
  */
 public class AopOrderConstant {
 
