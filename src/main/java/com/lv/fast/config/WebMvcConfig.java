@@ -28,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * webmvc配置类
@@ -88,10 +87,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         SimpleModule timeModule = new SimpleModule();
         timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeConstant.FORMATTER));
         timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeConstant.FORMATTER));
-        timeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
-        timeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT)));
-        timeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
-        timeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT)));
+        timeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeConstant.DATE_FORMATTER));
+        timeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeConstant.DATE_FORMATTER));
+        timeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeConstant.TIME_FORMATTER));
+        timeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeConstant.TIME_FORMATTER));
         //返回long字段 转换为String 因为js中的数字类型不能包含所有的java long值
         SimpleModule longModule = new SimpleModule();
         longModule.addSerializer(Long.class, ToStringSerializer.instance);
@@ -112,7 +111,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnBean(name = "requestMappingHandlerAdapter")
     public Converter<String, LocalDateTime> localDateTimeConverter() {
-        return source -> LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DateTimeConstant.DATE_TIME_FORMAT));
+        return source -> LocalDateTime.parse(source, DateTimeConstant.FORMATTER);
     }
 
     /**
@@ -121,7 +120,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnBean(name = "requestMappingHandlerAdapter")
     public Converter<String, LocalDate> localDateConverter() {
-        return source -> LocalDate.parse(source,  DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT));
+        return source -> LocalDate.parse(source, DateTimeConstant.DATE_FORMATTER);
     }
 
     /**
@@ -130,6 +129,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnBean(name = "requestMappingHandlerAdapter")
     public Converter<String, LocalTime> localTimeConverter() {
-        return source -> LocalTime.parse(source,  DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT));
+        return source -> LocalTime.parse(source, DateTimeConstant.TIME_FORMATTER);
     }
 }

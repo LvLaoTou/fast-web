@@ -37,4 +37,14 @@ public class DateTimeConstant {
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter
             .ofPattern(DATE_TIME_FORMAT)
             .withZone(ZoneId.of(TIME_ZONE));
+
+    /**
+     * 日期格式化对象
+     */
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+
+    /**
+     * 时间格式化对象
+     */
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
 }
