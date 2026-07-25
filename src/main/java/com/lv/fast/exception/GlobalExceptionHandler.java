@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
         return RestResult.error();
     }
 
-    public RestResult<?> handle(Throwable throwable){
+    private RestResult<?> handle(Throwable throwable){
         if (throwable instanceof ExecutionException exception){
             return handle(exception);
         }
