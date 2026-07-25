@@ -99,6 +99,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         JsonMapper jsonMapper = JsonMapper.builder()
                 .addModule(timeModule)
                 .addModule(longModule)
+                .addModule(new EnumInterfaceModule())
                 .build();
         JacksonJsonHttpMessageConverter converter = new JacksonJsonHttpMessageConverter(jsonMapper);
         converter.setDefaultCharset(StandardCharsets.UTF_8);

@@ -1,9 +1,7 @@
 package com.lv.fast.common.enums;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.lv.fast.common.entity.EnumInterface;
-import com.lv.fast.common.util.EnumUtil;
 
 /**
  * 排序方式
@@ -33,8 +31,4 @@ public enum OrderTypeEnum implements EnumInterface<String> {
     }
 
 
-    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static OrderTypeEnum match(Object code){
-        return EnumUtil.getEnumByCode(OrderTypeEnum.class, code);
-    }
 }
