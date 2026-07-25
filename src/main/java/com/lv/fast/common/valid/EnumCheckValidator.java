@@ -33,7 +33,7 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
         if (code == null){
             return true;
         }
-        Assert.notEmpty(enumClass,"枚举参数校验异常");
+        Assert.notNull(enumClass,"枚举参数校验异常");
         Collection<?> target = null;
         try{
             if (code instanceof Collection<?>){

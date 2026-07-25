@@ -12,10 +12,15 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * SpEL表达式解析工具类
+ *
  * @author lvlaotou
+ * @since 2026-07-25
+ * @generated-by oh-my-pi (qwen3.8-max-preview)
  */
 public class ExpressionUtil {
 
@@ -46,7 +51,7 @@ public class ExpressionUtil {
     public static String parseExpressionIfBlankReturnMethodParam(ProceedingJoinPoint joinPoint, String spel){
         if (StrUtil.isBlank(spel)){
             Object[] parameterValues = joinPoint.getArgs();
-            return Arrays.stream(parameterValues).map(Object::toString).collect(Collectors.joining("-"));
+            return Arrays.stream(parameterValues).map(arg -> Objects.toString(arg, "")).collect(Collectors.joining("-"));
         }
         return parseExpression(joinPoint, spel, String.class);
     }
@@ -59,14 +64,12 @@ public class ExpressionUtil {
         return parseExpression(joinPoint, spel, String.class);
     }
 
-
-    @SuppressWarnings("unused")
     public static String parseExpressionIfBlankReturnMethodNameAndParam(ProceedingJoinPoint joinPoint, String spel){
         if (StrUtil.isBlank(spel)){
             Object[] parameterValues = joinPoint.getArgs();
             Signature signature = joinPoint.getSignature();
             String methodName = signature.getDeclaringTypeName()+"#"+signature.getName();
-            return methodName + "@" + Arrays.stream(parameterValues).map(Object::toString).collect(Collectors.joining("-"));
+            return methodName + "@" + Arrays.stream(parameterValues).map(arg -> Objects.toString(arg, "")).collect(Collectors.joining("-"));
         }
         return parseExpression(joinPoint, spel, String.class);
     }

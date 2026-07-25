@@ -26,8 +26,8 @@ public class AopContext {
     private final static InheritableThreadLocal<LinkedList<LinkedHashMap<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
 
     public static void putVariable(String key, Object value){
-        Assert.notEmpty(key, "key不能为空");
-        Assert.notEmpty(value, "value不能为空");
+        Assert.notBlank(key, "key不能为空");
+        Assert.notNull(value, "value不能为空");
         // 由线程日志切面完成初始化
         LinkedList<LinkedHashMap<String, Object>> mapStack = getStack();
         Assert.notEmpty(mapStack, "线程上下文未初始化");

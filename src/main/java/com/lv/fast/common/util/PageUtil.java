@@ -12,7 +12,10 @@ import java.util.stream.Collectors;
 
 /**
  * 分页工具类
+ *
  * @author lvlaotou
+ * @since 2026-07-25
+ * @generated-by oh-my-pi (qwen3.8-max-preview)
  */
 public class PageUtil {
 
@@ -20,22 +23,22 @@ public class PageUtil {
 
     /**
      * mybatis plus 分页对象类型转换
-     * @param source 源对象
-     * @param target 目标对象
-     * @param <T> 分页对象枚举对象
-     * @param <S> 目标对象
+     * @param source 源分页对象
+     * @param target 目标记录类型
+     * @param <S> 源记录类型
+     * @param <T> 目标记录类型
      * @return 新的分页对象
      */
-    public static  <T,S> IPage<T> pageBeanConvert(IPage<S> source, Class<T> target){
+    public static <S, T> IPage<T> pageBeanConvert(IPage<S> source, Class<T> target){
+        Assert.notNull(source, "源分页对象不能为空");
         List<S> records = source.getRecords();
         IPage<T> targetPage = new Page<>();
-        BeanUtil.copyProperties(source,targetPage);
+        BeanUtil.copyProperties(source, targetPage);
         if (CollectionUtil.isEmpty(records)){
-            List<T> targetList = new ArrayList<>();
-            targetPage.setRecords(targetList);
+            targetPage.setRecords(new ArrayList<>());
             return targetPage;
         }
-        List<T> collect = source.getRecords().stream()
+        List<T> collect = records.stream()
                 .map(s -> BeanUtil.copyProperties(s, target))
                 .collect(Collectors.toList());
         targetPage.setRecords(collect);
@@ -44,11 +47,11 @@ public class PageUtil {
 
     /**
      * 获取mybatis分页对象
-     * @param pageQuery 分页对象
-     * @param <T> 泛型
+     * @param pageQuery 分页查询参数
      * @return 分页对象
      */
-    public static <T extends PageQuery> Page<?> getPage(T pageQuery){
-        return new Page<>(pageQuery.getPageIndex(),pageQuery.getPageSize());
+    public static Page<?> getPage(PageQuery pageQuery){
+        Assert.notNull(pageQuery, "分页查询参数不能为空");
+        return new Page<>(pageQuery.getPageIndex(), pageQuery.getPageSize());
     }
 }

@@ -5,16 +5,44 @@ import cn.hutool.core.util.StrUtil;
 import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.entity.Describe;
 import com.lv.fast.exception.BusinessException;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 自定义断言
  * @author lvlaotou
  */
-@Slf4j
-public class Assert {
+public final class Assert {
 
     private Assert(){}
+
+    /* *****************************************************************Assert Object Not Null********************************************************************** */
+
+    /**
+     * 断言不为null，为null则抛出异常
+     * @param target 目标对象
+     * @param message 错误描述信息
+     */
+    public static void notNull(Object target, String message){
+        notNull(target, RestResultCodeConstant.PARAM_ERROR, message);
+    }
+
+    /**
+     * 断言不为null，为null则抛出异常
+     * @param target 目标对象
+     * @param describe 错误信息
+     */
+    public static void notNull(Object target, Describe<?> describe){
+        notNull(target, String.valueOf(describe.getCode()), describe.getDescribe());
+    }
+
+    /**
+     * 断言不为null，为null则抛出异常
+     * @param target 目标对象
+     * @param code 错误状态码
+     * @param message 错误描述信息
+     */
+    public static void notNull(Object target, String code, String message){
+        isFalse(target == null, code, message);
+    }
 
     /* *****************************************************************Assert Object Not Empty********************************************************************** */
 
@@ -32,9 +60,8 @@ public class Assert {
      * @param target 目标对象
      * @param describe 错误信息
      */
-    @SuppressWarnings("unused")
     public static void notEmpty(Object target, Describe<?> describe){
-        notEmpty(target, describe.getCode().toString(), describe.getDescribe());
+        notEmpty(target, String.valueOf(describe.getCode()), describe.getDescribe());
     }
 
     /**
@@ -44,7 +71,7 @@ public class Assert {
      * @param message 错误描述信息
      */
     public static void notEmpty(Object target, String code, String message){
-        isTrue(ObjectUtil.isNotEmpty(target), code, message);
+        isFalse(ObjectUtil.isEmpty(target), code, message);
     }
 
     /* *****************************************************************Assert String Not Blank********************************************************************** */
@@ -56,7 +83,7 @@ public class Assert {
      * @param message 错误描述
      */
     public static void notBlank(String target, String code, String message){
-        isTrue(StrUtil.isNotBlank(target), code, message);
+        isFalse(StrUtil.isBlank(target), code, message);
     }
 
     /**
@@ -64,7 +91,6 @@ public class Assert {
      * @param target 检测对象
      * @param message 错误描述
      */
-    @SuppressWarnings("unused")
     public static void notBlank(String target, String message){
         notBlank(target, RestResultCodeConstant.PARAM_ERROR, message);
     }
@@ -74,9 +100,8 @@ public class Assert {
      * @param target 检测对象
      * @param describe 错误信息
      */
-    @SuppressWarnings("unused")
     public static void notBlank(String target, Describe<?> describe){
-        notBlank(target, describe.getCode().toString(), describe.getDescribe());
+        notBlank(target, String.valueOf(describe.getCode()), describe.getDescribe());
     }
 
     /* ****************************************************************Assert Boolean Is True********************************************************************** */
@@ -95,9 +120,8 @@ public class Assert {
      * @param flag 条件
      * @param describe 错误信息
      */
-    @SuppressWarnings("unused")
     public static void isTrue(boolean flag, Describe<?> describe){
-        isTrue(flag, describe.getCode().toString(), describe.getDescribe());
+        isTrue(flag, String.valueOf(describe.getCode()), describe.getDescribe());
     }
 
     /**
@@ -116,7 +140,6 @@ public class Assert {
      * @param flag 条件
      * @param message 错误描述
      */
-    @SuppressWarnings("unused")
     public static void isFalse(boolean flag, String message){
         isFalse(flag, RestResultCodeConstant.PARAM_ERROR, message);
     }
@@ -126,9 +149,8 @@ public class Assert {
      * @param flag 条件
      * @param describe 错误信息
      */
-    @SuppressWarnings("unused")
     public static void isFalse(boolean flag, Describe<?> describe){
-        isFalse(flag, describe.getCode().toString(), describe.getDescribe());
+        isFalse(flag, String.valueOf(describe.getCode()), describe.getDescribe());
     }
 
     /**

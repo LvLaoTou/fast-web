@@ -1,7 +1,7 @@
 package com.lv.fast.common.aop;
 
 import com.lv.fast.common.constant.AopOrderConstant;
-import com.lv.fast.common.util.HttpRequestUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.lv.fast.common.util.JsonUtil;
 import com.lv.fast.common.util.ParameterUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +55,7 @@ public class RequestLogAop {
                 String requestParamJson = ParameterUtil.getRequestParamJson(pjp);
                 log.debug("---------------------------------------------记录请求信息开始---------------------------------------------");
                 log.debug("请求URI路径：{}", request.getRequestURI());
-                log.debug("客户端IP地址：{}", HttpRequestUtil.getRequestIp(request));
+                log.debug("客户端IP地址：{}", JakartaServletUtil.getClientIP(request));
                 log.debug("请求参数：{}", requestParamJson);
                 log.debug("请求响应：{}", result == null ? "" : (result instanceof MultipartFile) ? "响应内容" : JsonUtil.toJson(result));
                 log.debug("是否执行成功：{}", isSuccess);
