@@ -75,9 +75,10 @@ public class RedisAop {
                 }
             }
             Object result = joinPoint.proceed();
-            boolean canPutCache = true;
+            // null 结果不缓存：避免向 Redis 写入 null，也避免 putVariable 对 null 值的断言异常
+            boolean canPutCache = result != null;
             String unless = redisHashCache.unless();
-            if (StrUtil.isNotBlank(unless)){
+            if (canPutCache && StrUtil.isNotBlank(unless)){
                 AopContext.putVariable("result", result);
                 canPutCache = Boolean.TRUE.equals(ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class));
             }
