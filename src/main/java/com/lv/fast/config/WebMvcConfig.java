@@ -83,7 +83,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @return JacksonJsonHttpMessageConverter
      */
     @Bean
-    public JacksonJsonHttpMessageConverter mappingJackson2HttpMessageConverter() {
+    public JacksonJsonHttpMessageConverter jacksonJsonHttpMessageConverter() {
         // 自定义 java.time 序列化/反序列化格式
         SimpleModule timeModule = new SimpleModule();
         timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeConstant.FORMATTER));
