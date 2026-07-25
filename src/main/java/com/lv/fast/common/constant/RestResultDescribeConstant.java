@@ -21,10 +21,10 @@ public class RestResultDescribeConstant {
     /** 参数错误 */
     public static final String PARAM_ERROR = "参数错误";
 
-    /** 数据库记录不存在 */
+    /** 数据库记录已存在 */
     public static final String DATABASE_EXIST = "数据库中该记录已存在";
 
-    /** 数据库记录已存在 */
+    /** 数据库记录不存在 */
     public static final String DATABASE_NOT_EXIST = "数据库中该记录不存在";
 
     /** 请求地址不存在 */
