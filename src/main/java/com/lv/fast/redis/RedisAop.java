@@ -138,20 +138,7 @@ public class RedisAop {
             RedisEvict[] value = batchEvict.value();
             boolean finalBatchIsEvict = batchIsEvict;
             Map<String, Set<String>> hashMap = Arrays.stream(value)
-                    .filter(evict -> {
-                        String hashKey = evict.hashKey();
-                        if (StrUtil.isBlank(hashKey)){
-                            return false;
-                        }
-                        String unless = evict.unless();
-                        if (StrUtil.isNotBlank(unless)){
-                            Boolean isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
-                            if (isEvict != null){
-                                return isEvict;
-                            }
-                        }
-                        return finalBatchIsEvict;
-                    })
+                    .filter(evict -> StrUtil.isNotBlank(evict.hashKey()) && shouldEvict(joinPoint, evict, finalBatchIsEvict))
                     .collect(Collectors.toMap(evict-> ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()),
                             evict -> Sets.newHashSet(ExpressionUtil.parseExpression(joinPoint, evict.hashKey(), String.class)),
                             (Set<String> a, Set<String> b) -> {
@@ -163,20 +150,7 @@ public class RedisAop {
                 hashMap.forEach((k,v)->redisTemplate.opsForHash().delete(k, v.toArray()));
             }
             Set<String> keyList = Arrays.stream(value)
-                    .filter(evict -> {
-                        String hashKey = evict.hashKey();
-                        if (StrUtil.isNotBlank(hashKey)){
-                            return false;
-                        }
-                        String unless = evict.unless();
-                        if (StrUtil.isNotBlank(unless)){
-                            Boolean isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
-                            if (isEvict != null){
-                                return isEvict;
-                            }
-                        }
-                        return finalBatchIsEvict;
-                    })
+                    .filter(evict -> StrUtil.isBlank(evict.hashKey()) && shouldEvict(joinPoint, evict, finalBatchIsEvict))
                     .map(evict-> ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, evict.key()))
                     .collect(Collectors.toSet());
             if (CollectionUtil.isNotEmpty(keyList)){
@@ -186,5 +160,19 @@ public class RedisAop {
         }finally {
             AopContext.clearVariableThreadContext();
         }
+    }
+
+    /**
+     * 判断单个 RedisEvict 是否需要执行清除：unless 表达式非空时以其结果为准，否则回退到批量级开关
+     */
+    private boolean shouldEvict(ProceedingJoinPoint joinPoint, RedisEvict evict, boolean batchIsEvict){
+        String unless = evict.unless();
+        if (StrUtil.isNotBlank(unless)){
+            Boolean isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
+            if (isEvict != null){
+                return isEvict;
+            }
+        }
+        return batchIsEvict;
     }
 }
