@@ -62,7 +62,7 @@ public class RedisAop {
             String condition = redisHashCache.condition();
             if (StrUtil.isNotBlank(condition)){
                 // 获取触发条件
-                isQueryCache = ExpressionUtil.parseExpression(joinPoint, condition, Boolean.class);
+                isQueryCache = Boolean.TRUE.equals(ExpressionUtil.parseExpression(joinPoint, condition, Boolean.class));
             }
             String key = ExpressionUtil.parseExpressionIfBlankReturnMethodName(joinPoint, keySpel);
             String hashKey = ExpressionUtil.parseExpressionIfBlankReturnMethodParam(joinPoint, hashKeySpel);
@@ -79,7 +79,7 @@ public class RedisAop {
             String unless = redisHashCache.unless();
             if (StrUtil.isNotBlank(unless)){
                 AopContext.putVariable("result", result);
-                canPutCache = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
+                canPutCache = Boolean.TRUE.equals(ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class));
             }
             if (canPutCache){
                 redisTemplate.opsForHash().put(key, hashKey, result);
@@ -103,7 +103,7 @@ public class RedisAop {
             String unless = evict.unless();
             boolean isEvict = true;
             if (StrUtil.isNotBlank(unless)){
-                isEvict = ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class);
+                isEvict = Boolean.TRUE.equals(ExpressionUtil.parseExpression(joinPoint, unless, Boolean.class));
             }
             if (isEvict){
                 String keySpel = evict.key();
@@ -130,7 +130,7 @@ public class RedisAop {
             String batchUnless = batchEvict.unless();
             boolean batchIsEvict = true;
             if (StrUtil.isNotBlank(batchUnless)){
-                batchIsEvict = ExpressionUtil.parseExpression(joinPoint, batchUnless, Boolean.class);
+                batchIsEvict = Boolean.TRUE.equals(ExpressionUtil.parseExpression(joinPoint, batchUnless, Boolean.class));
             }
             RedisEvict[] value = batchEvict.value();
             boolean finalBatchIsEvict = batchIsEvict;
