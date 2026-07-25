@@ -50,27 +50,37 @@ public class ExpressionUtil {
 
     public static String parseExpressionIfBlankReturnMethodParam(ProceedingJoinPoint joinPoint, String spel){
         if (StrUtil.isBlank(spel)){
-            Object[] parameterValues = joinPoint.getArgs();
-            return Arrays.stream(parameterValues).map(arg -> Objects.toString(arg, "")).collect(Collectors.joining("-"));
+            return joinArgs(joinPoint);
         }
         return parseExpression(joinPoint, spel, String.class);
     }
 
     public static String parseExpressionIfBlankReturnMethodName(ProceedingJoinPoint joinPoint, String spel){
         if (StrUtil.isBlank(spel)){
-            Signature signature = joinPoint.getSignature();
-            return signature.getDeclaringTypeName()+"#"+signature.getName();
+            return getMethodFullName(joinPoint);
         }
         return parseExpression(joinPoint, spel, String.class);
     }
 
     public static String parseExpressionIfBlankReturnMethodNameAndParam(ProceedingJoinPoint joinPoint, String spel){
         if (StrUtil.isBlank(spel)){
-            Object[] parameterValues = joinPoint.getArgs();
-            Signature signature = joinPoint.getSignature();
-            String methodName = signature.getDeclaringTypeName()+"#"+signature.getName();
-            return methodName + "@" + Arrays.stream(parameterValues).map(arg -> Objects.toString(arg, "")).collect(Collectors.joining("-"));
+            return getMethodFullName(joinPoint) + "@" + joinArgs(joinPoint);
         }
         return parseExpression(joinPoint, spel, String.class);
+    }
+
+    /**
+     * 拼接方法所有入参的字符串形式，以 "-" 连接
+     */
+    private static String joinArgs(ProceedingJoinPoint joinPoint){
+        return Arrays.stream(joinPoint.getArgs()).map(arg -> Objects.toString(arg, "")).collect(Collectors.joining("-"));
+    }
+
+    /**
+     * 获取方法全限定名，格式：声明类全限定名#方法名
+     */
+    private static String getMethodFullName(ProceedingJoinPoint joinPoint){
+        Signature signature = joinPoint.getSignature();
+        return signature.getDeclaringTypeName() + "#" + signature.getName();
     }
 }
