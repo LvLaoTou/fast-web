@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Sets;
 import com.lv.fast.common.aop.AopContext;
 import com.lv.fast.common.aop.ExpressionUtil;
-import com.lv.fast.common.util.JsonUtil;
+import com.lv.fast.common.constant.JsonConstant;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +71,9 @@ public class RedisAop {
                 if (redisValue != null && StrUtil.isNotBlank(redisValue.toString())){
                     MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
                     Method method = methodSignature.getMethod();
-                    return JsonUtil.toObject(redisValue.toString(), method.getReturnType());
+                    // 使用泛型返回类型反序列化，避免 List<Foo> 等泛型擦除后退化为 LinkedHashMap
+                    return JsonConstant.READ_MAPPER.readValue(redisValue.toString(),
+                            JsonConstant.READ_MAPPER.constructType(method.getGenericReturnType()));
                 }
             }
             Object result = joinPoint.proceed();
