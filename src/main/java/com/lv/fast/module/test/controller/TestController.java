@@ -45,7 +45,7 @@ public class TestController {
         return RestResult.success();
     }
 
-    @GetMapping("/test/enum")
+    @GetMapping("/enum")
     public RestResult<?> testEnumParam(@RequestParam TestEnum param){
         return RestResult.success(param);
     }
