@@ -15,8 +15,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.web.multipart.MultipartFile;
-
 
 /**
  * 请求日志aop
@@ -57,7 +55,7 @@ public class RequestLogAop {
                 log.debug("请求URI路径：{}", request.getRequestURI());
                 log.debug("客户端IP地址：{}", JakartaServletUtil.getClientIP(request));
                 log.debug("请求参数：{}", requestParamJson);
-                log.debug("请求响应：{}", result == null ? "" : (result instanceof MultipartFile) ? "响应内容" : JsonUtil.toJson(result));
+                log.debug("请求响应：{}", result == null ? "" : JsonUtil.toJson(result));
                 log.debug("是否执行成功：{}", isSuccess);
                 stopWatch.stop();
                 log.debug("耗时详情：");
