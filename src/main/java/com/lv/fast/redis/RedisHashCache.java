@@ -15,26 +15,26 @@ public @interface RedisHashCache{
     /**
      * redis key
      * hash类型时默认为方法全限定名
-     * 支持Spel表达试 返回结果必须为String
+     * 支持Spel表达式 返回结果必须为String
      */
     String key() default "";
 
     /**
      * redis hash key
      * 默认为方法参数
-     * 支持Spel表达试 返回结果必须为String
+     * 支持Spel表达式 返回结果必须为String
      */
     String hashKey() default "";
 
     /**
      * 是否查询缓存
-     * 支持Spel表达试 返回结果必须为boolean
+     * 支持Spel表达式 返回结果必须为boolean
      */
     String condition() default "";
 
     /**
      * 是否缓存结果
-     * 支持Spel表达试 返回结果必须为boolean
+     * 支持Spel表达式 返回结果必须为boolean
      */
     String unless() default "";
 
