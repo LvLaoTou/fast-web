@@ -36,12 +36,10 @@ public class EnumCheckValidator implements ConstraintValidator<EnumCheck,Object>
         Assert.notNull(enumClass,"枚举参数校验异常");
         Collection<?> target = null;
         try{
-            if (code instanceof Collection<?>){
-                target = (Collection<?>) code;
-            }
-            if (code.getClass().isArray()){
-                assert code instanceof Object[];
-                target = Arrays.stream((Object[]) code).collect(Collectors.toSet());
+            if (code instanceof Collection<?> collection){
+                target = collection;
+            }else if (code instanceof Object[] array){
+                target = Arrays.stream(array).collect(Collectors.toSet());
             }
         }catch (ClassCastException e){
             log.error("EnumCheck注解目标对象转换异常", e);
