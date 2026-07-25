@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Json常量类
@@ -41,7 +40,7 @@ public class JsonConstant {
      */
     public static final JsonMapper READ_MAPPER = getJsonMapper();
 
-    private static ObjectMapper getObjectMapper(){
+    private static JsonMapper.Builder baseBuilder(){
         return JsonMapper.builder()
                 .defaultDateFormat(new SimpleDateFormat(DateTimeConstant.DATE_TIME_FORMAT))
                 .addModule(getTimeModule())
@@ -49,20 +48,16 @@ public class JsonConstant {
                 .defaultPropertyInclusion(JsonInclude.Value.ALL_ALWAYS)
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-                .build();
+                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    }
+
+    private static ObjectMapper getObjectMapper(){
+        return baseBuilder().build();
     }
 
     private static JsonMapper getJsonMapper(){
-        return JsonMapper.builder()
+        return baseBuilder()
                 .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-                .defaultDateFormat(new SimpleDateFormat(DateTimeConstant.DATE_TIME_FORMAT))
-                .addModule(getTimeModule())
-                .addModule(new EnumInterfaceJackson2Module())
-                .defaultPropertyInclusion(JsonInclude.Value.ALL_ALWAYS)
-                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                 .build();
     }
 
@@ -73,13 +68,11 @@ public class JsonConstant {
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeConstant.FORMATTER));
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeConstant.FORMATTER));
         //处理LocalDate
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DateTimeConstant.DATE_FORMAT);
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(dateFormatter));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
+        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeConstant.DATE_FORMATTER));
+        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeConstant.DATE_FORMATTER));
         //处理LocalTime
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(DateTimeConstant.TIME_FORMAT);
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(timeFormatter));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(timeFormatter));
+        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeConstant.TIME_FORMATTER));
+        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeConstant.TIME_FORMATTER));
         return javaTimeModule;
     }
 }
