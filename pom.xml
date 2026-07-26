@@ -25,6 +25,7 @@
         <disruptor.version>4.0.0</disruptor.version>
         <knife4j.version>5.0.6</knife4j.version>
         <mica-xss.version>4.0.6</mica-xss.version>
+        <redisson.version>4.6.1</redisson.version>
         <docker-plugin.version>0.46.0</docker-plugin.version>
     </properties>
 
@@ -143,16 +144,11 @@
             <version>${mica-xss.version}</version>
         </dependency>
 
-        <!--redis依赖配置-->
+        <!--Redisson 客户端（替代 Lettuce，内置 spring-boot-starter-data-redis 并排除 lettuce/jedis）-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <!--redis lettuce 连接池需要依赖-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>${redisson.version}</version>
         </dependency>
     </dependencies>
 

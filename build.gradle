@@ -16,6 +16,7 @@ ext {
     disruptorVersion = '4.0.0'
     knife4jVersion = '5.0.6'
     micaXssVersion = '4.0.6'
+    redissonVersion = '4.6.1'
 }
 
 java {
@@ -75,11 +76,8 @@ dependencies {
     // xss 过滤
     implementation "net.dreamlu:mica-xss:${micaXssVersion}"
 
-    // redis 依赖配置
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-    // redis lettuce 连接池需要依赖
-    implementation 'org.apache.commons:commons-pool2'
+    // Redisson 客户端（替代 Lettuce，内置 spring-boot-starter-data-redis 并排除 lettuce/jedis）
+    implementation "org.redisson:redisson-spring-boot-starter:${redissonVersion}"
 
     // mysql 驱动
     runtimeOnly 'com.mysql:mysql-connector-j'

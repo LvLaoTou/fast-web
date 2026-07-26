@@ -171,7 +171,7 @@ cd .spec-superflow && git pull origin main && cd ..
 - ORM：Mybatis-Plus
 - 日志：Slf4j + Log4j2
 - 数据库：Mysql（Hikari 连接池）
-- 缓存：Redis
+- 缓存：Redis（Redisson 客户端）
 - 应用监控：Actuator
 - 容器：Docker
 - 接口管理：Spring doc + knife4j

@@ -11,12 +11,8 @@ spring:
       host: 127.0.0.1
       timeout: 1000ms
       port: 6379
-      lettuce:
-        pool:
-          enabled: true
-          max-active: 15
-          min-idle: 0
-          max-idle: 50
+      # Redisson 使用 Netty 连接池，无需 lettuce pool 配置
+      # Redisson 高级配置可通过 spring.redis.redisson.config 指定 YAML/JSON 格式
 
 #mybatis-plus日志输出
 mybatis-plus:
