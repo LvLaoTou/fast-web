@@ -204,20 +204,14 @@
                 <version>${docker-plugin.version}</version>
                 <configuration>
                     <!--如果本机没有docker环境的话可以指定远程docker服务-->
-                    <dockerHost>tcp://10.156.160.33:2375</dockerHost>
+                    <dockerHost>tcp://127.0.0.1:2375</dockerHost>
                     <!--镜像仓库 也可直接放在images.image.name, 可通过mvn -Ddocker.registry传入-->
                     <registry>docker.io</registry>
-                    <!--
-                        镜像仓库认证信息, 也可放在maven setting.xml中的<server>元素进行配置
-                        注意授权信息配置此处：
-                            优点：其他项目参与者可以直接推送镜像无需配置maven的setting.xml
-                            缺点：是明文暴露在代码中
-                            使用建议：镜像仓库和代码都是在内网,且密码可以告知开发人员
-                    -->
-                    <!--<authConfig>
-                        <username>jolokia</username>
-                        <password>s!cr!t</password>
-                    </authConfig>-->
+                    <!--镜像仓库认证信息, 建议放在maven setting.xml中的<server>元素进行配置-->
+                    <authConfig>
+                        <username></username>
+                        <password></password>
+                    </authConfig>
                     <images>
                         <image>
                             <!--也可将仓库地址放在此处,例${docker.registry}/${project.name}:${project.version},
