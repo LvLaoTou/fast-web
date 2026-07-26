@@ -196,8 +196,7 @@ cd .spec-superflow && git pull origin main && cd ..
 - 全局对象
   - `com.lv.fast.common.entity.RestResult` — 统一响应
   - `com.lv.fast.common.entity.Code` / `Describe` — 标识码/描述接口
-  - `com.lv.fast.common.constant.RestResultCodeConstant` / `RestResultDescribeConstant`
-  - `com.lv.fast.common.enums.RestResultEnum`
+  - `com.lv.fast.common.enums.RestResultEnum` — 全局错误码枚举（实现 `Describe` 接口，业务模块可扩展）
 - 异常
   - `com.lv.fast.exception.BusinessException` — 自定义业务异常
   - `com.lv.fast.exception.GlobalExceptionHandler` — 全局捕获

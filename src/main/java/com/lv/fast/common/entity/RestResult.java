@@ -1,7 +1,6 @@
 package com.lv.fast.common.entity;
 
 import com.google.common.collect.Maps;
-import com.lv.fast.common.constant.RestResultCodeConstant;
 import com.lv.fast.common.enums.RestResultEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -22,7 +21,7 @@ public class RestResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 状态标识码 */
-    @Schema(description = "状态码 成功:"+RestResultCodeConstant.SUCCESS, example = RestResultCodeConstant.SUCCESS, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "状态码 成功:0", example = "0", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     /** 描述信息 */

@@ -2,7 +2,7 @@ package com.lv.fast.common.util;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.lv.fast.common.constant.RestResultCodeConstant;
+import com.lv.fast.common.enums.RestResultEnum;
 import com.lv.fast.common.entity.Describe;
 import com.lv.fast.exception.BusinessException;
 
@@ -22,7 +22,7 @@ public final class Assert {
      * @param message 错误描述信息
      */
     public static void notNull(Object target, String message){
-        notNull(target, RestResultCodeConstant.PARAM_ERROR, message);
+        notNull(target, RestResultEnum.PARAM_ERROR.getCode(), message);
     }
 
     /**
@@ -52,7 +52,7 @@ public final class Assert {
      * @param message 错误描述信息
      */
     public static void notEmpty(Object target, String message){
-        notEmpty(target, RestResultCodeConstant.PARAM_ERROR, message);
+        notEmpty(target, RestResultEnum.PARAM_ERROR.getCode(), message);
     }
 
     /**
@@ -92,7 +92,7 @@ public final class Assert {
      * @param message 错误描述
      */
     public static void notBlank(String target, String message){
-        notBlank(target, RestResultCodeConstant.PARAM_ERROR, message);
+        notBlank(target, RestResultEnum.PARAM_ERROR.getCode(), message);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class Assert {
      * @param message 错误描述
      */
     public static void isTrue(boolean flag, String message){
-        isTrue(flag, RestResultCodeConstant.PARAM_ERROR, message);
+        isTrue(flag, RestResultEnum.PARAM_ERROR.getCode(), message);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class Assert {
      * @param message 错误描述
      */
     public static void isFalse(boolean flag, String message){
-        isFalse(flag, RestResultCodeConstant.PARAM_ERROR, message);
+        isFalse(flag, RestResultEnum.PARAM_ERROR.getCode(), message);
     }
 
     /**
