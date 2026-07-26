@@ -48,7 +48,10 @@ fast-web：  clone → AI 工具自动就绪 → Spec-first 工作流驱动开�
                 |-- application-dev.yml
                 |-- log4j2-spring.xml
         |-- test/                    单元测试
-    |-- pom.xml
+    |-- pom.xml                      Maven 构建
+    |-- build.gradle                 Gradle 构建（与 pom.xml 依赖对齐）
+    |-- settings.gradle
+    |-- gradlew / gradlew.bat        Gradle Wrapper
     |-- Dockerfile
     |-- LICENSE
     |-- TODO.md
@@ -67,7 +70,31 @@ AI 配置已全部入库，无需额外初始化。若软链接异常：
 ./.ai/ai-manage.sh sync
 ```
 
-### 2. 启动 AI 工作流
+### 2. 构建与运行
+
+项目同时支持 Maven 和 Gradle，选择其一即可：
+
+```bash
+# Maven
+mvn spring-boot:run
+
+# Gradle
+./gradlew bootRun
+```
+
+打包：
+```bash
+mvn package -DskipTests        # → target/fast-web.jar
+./gradlew bootJar              # → build/libs/fast-web.jar
+```
+
+Docker 构建（默认取 Maven 产物，Gradle 用户传 JAR_FILE）：
+```bash
+docker build -t fast-web:2.0.0 .
+docker build -t fast-web:2.0.0 --build-arg JAR_FILE=build/libs/fast-web.jar .
+```
+
+### 3. 启动 AI 工作流
 
 在 OMP（或其他支持的 AI 工具）中：
 ```
@@ -75,7 +102,7 @@ AI 配置已全部入库，无需额外初始化。若软链接异常：
 ```
 或 `/skill:workflow-start`。AI 会自动检测当前状态并路由到正确的开发阶段。
 
-### 3. 日常开发
+### 4. 日常开发
 
 - **大型功能**：走 Spec-first 工作流（需求 → 设计 → 契约 → 实现 → Review → 归档）
 - **小型变更**（≤4 文件纯配置/文档）：tweak 模式，直接编辑
@@ -139,6 +166,7 @@ cd .spec-superflow && git pull origin main && cd ..
 ## 技术栈
 
 - JDK：***21+***
+- 构建工具：Maven / Gradle（双构建，共享同一源码）
 - 基础框架：SpringBoot 4.1.0
 - ORM：Mybatis-Plus
 - 日志：Slf4j + Log4j2

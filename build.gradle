@@ -1,0 +1,106 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.lv'
+version = '2.0.0'
+description = 'spring boot web'
+
+// 版本号集中管理，与 pom.xml <properties> 保持一致，升级依赖时两处同步修改
+ext {
+    mybatisPlusVersion = '3.5.16'
+    hutoolVersion = '5.8.36'
+    guavaVersion = '33.4.8-jre'
+    disruptorVersion = '4.0.0'
+    knife4jVersion = '5.0.6'
+    micaXssVersion = '4.0.6'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    // 排除 springboot 默认日志包，主动引入 log4j2 使其成为唯一的日志实现（与 pom.xml 一致）
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot 监控管理工具
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // log4j2 依赖
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+    // log4j2 异步日志所需依赖
+    implementation "com.lmax:disruptor:${disruptorVersion}"
+
+    // Spring Boot 参数校验
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Spring Boot Web (4.x 废弃 spring-boot-starter-web，改用 webmvc)
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // aop (Spring Boot 4 移除了 spring-boot-starter-aop，AOP 自动配置已内置，仅需 aspectjweaver)
+    implementation 'org.aspectj:aspectjweaver'
+
+    // 接口文档 knife4j (OpenAPI3)
+    implementation "com.baizhukui:knife4j-openapi3-boot4-spring-boot-starter:${knife4jVersion}"
+
+    // Mybatis Plus ORM 框架
+    implementation "com.baomidou:mybatis-plus-spring-boot4-starter:${mybatisPlusVersion}"
+
+    // Mybatis Plus 分页插件所需 (3.5.9+ PaginationInnerInterceptor 移至独立模块)
+    implementation "com.baomidou:mybatis-plus-jsqlparser:${mybatisPlusVersion}"
+
+    // 工具包集合
+    implementation "cn.hutool:hutool-all:${hutoolVersion}"
+
+    // 谷歌 guava 工具包
+    implementation "com.google.guava:guava:${guavaVersion}"
+
+    // xss 过滤
+    implementation "net.dreamlu:mica-xss:${micaXssVersion}"
+
+    // redis 依赖配置
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // redis lettuce 连接池需要依赖
+    implementation 'org.apache.commons:commons-pool2'
+
+    // mysql 驱动
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // lombok 简化开发工具
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 单元测试
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// 固定 bootJar 名称，与 maven finalName 保持一致，便于 Dockerfile 统一引用
+tasks.named('bootJar') {
+    archiveFileName = 'fast-web.jar'
+}

@@ -2,7 +2,7 @@
 # 放置于项目根目录，供各 AI 编码工具（Claude Code / OMP / Codex / Gemini 等）原生读取。
 
 ## 项目定位
-- Spring Boot Web 脚手架（JDK 17+，Maven，包根 `com.lv.fast`）。
+- Spring Boot Web 脚手架（JDK 21+，Maven / Gradle 双构建，包根 `com.lv.fast`）。
 - 目标：开箱即用的 Java Web 脚手架，避免重复配置日志 / ORM / 异常。
 
 ## 通用

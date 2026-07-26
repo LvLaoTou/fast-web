@@ -5,6 +5,11 @@
 .mvn
 logs
 target
+
+# Gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
 HELP.md
 mvnw.cmd
 mvnw

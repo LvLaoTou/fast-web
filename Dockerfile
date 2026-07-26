@@ -1,15 +1,17 @@
-# 这里没有使用alpine镜像是因为open jdk官方没有维护基于alpine的jre镜像 可自行考虑替换为基于alpine的jre镜像
-FROM openjdk:8-jre-slim-buster as builder
+# 构建阶段：解压 Spring Boot 分层 jar（Boot 3.2+ / 4.x 使用 jarmode=tools）
+FROM eclipse-temurin:21-jre AS builder
 WORKDIR application
-COPY target/*.jar application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
+# 默认取 Maven 产物；Gradle 用户：docker build --build-arg JAR_FILE=build/libs/fast-web.jar .
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
-FROM openjdk:8-jre-slim-buster
+FROM eclipse-temurin:21-jre
 ENV TZ=Asia/Shanghai
 EXPOSE 8080
 WORKDIR application
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+COPY --from=builder application/extracted/dependencies/ ./
+COPY --from=builder application/extracted/spring-boot-loader/ ./
+COPY --from=builder application/extracted/snapshot-dependencies/ ./
+COPY --from=builder application/extracted/application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
